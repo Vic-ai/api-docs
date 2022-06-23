@@ -1,0 +1,38 @@
+openapi: 3.0.3
+info:
+  version: 0.3.10
+  contact: {}
+  title: Vic.Api
+  description: |
+    Vic.Api allows you to connect an *ERP* to the Vic.ai product suite.
+
+servers:
+- url: 'https://api.us.dev.vic.ai/v1'
+  description: 'development server, US'
+- url: 'https://api.no.dev.vic.ai/v1'
+  description: 'development server, NO'
+- url: 'https://api.us.stage.vic.ai/v1'
+  description: 'staging server, US'
+- url: 'https://api.no.stage.vic.ai/v1'
+  description: 'staging server, NO'
+- url: 'https://api.us.vic.ai/v1'
+  description: 'production server, US'
+- url: 'https://api.no.vic.ai/v1'
+  description: 'production server, NO'
+
+tags:
+- name: purchase orders
+
+paths: {}
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  callbacks: {}
+
+  parameters: {}
+
+  schemas: {}

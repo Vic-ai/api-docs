@@ -1,0 +1,2834 @@
+openapi: 3.0.3
+info:
+  version: 0.3.10
+  contact: {}
+  title: Vic.Api
+  description: |
+    Vic.Api allows you to connect an *ERP* to the Vic.ai product suite.
+
+    The API is structured to provide 3 categories of functionality:
+    - **Masterdata:** Masterdata are data in the ERP that Vic.ai interacts with.
+      So you must provide and update this masterdata in Vic.ai, and you may also verify the
+      masterdata copy in Vic.ai
+    - **Training Data:** AI requires historical data to train its data model. So you can put
+      historical invoices into Vic.ai to train it, and verify that they are in Vic.ai.
+    - **Webhooks:** Users or automated tasks could take various actions in the Vic.ai product suite
+      that result in an interaction with the ERP(for example, posting an invoice, or
+      requesting synchronization).  We'll tell you when such an action has occurred, via a webhook.
+  license:
+    name: MIT
+
+security:
+  - BearerAuth: []
+
+servers:
+  - url: 'https://api.us.dev.vic.ai/v0'
+    description: 'development server, US'
+  - url: 'https://api.no.dev.vic.ai/v0'
+    description: 'development server, NO'
+  - url: 'https://api.us.stage.vic.ai/v0'
+    description: 'staging server, US'
+  - url: 'https://api.no.stage.vic.ai/v0'
+    description: 'staging server, NO'
+  - url: 'https://api.us.vic.ai/v0'
+    description: 'production server, US'
+  - url: 'https://api.no.vic.ai/v0'
+    description: 'production server, NO'
+
+tags:
+  - name: accounts
+    description: |
+      GL (General Ledger) accounts are part of your *ERP* **Masterdata**.  In order to be associated with an
+      invoice line item, key data about the account must be stored in Vic.ai.  These operations allow querying and manipulation
+      of these GL account data.
+  - name: auth
+    description: |
+      Authorization-related routes.  These passthrough to our third-party authorization system.
+  - name: dimensions
+    description: |
+      Dimensions are part of your *ERP* **Masterdata**, and represent business categories that are associated with
+      invoice line items, that Vic.ai can automatically assign to invoice line items.  These operations allow querying and
+      manipulation of the dimension data.
+  - name: general
+    description: |
+      General requests on the state of the Vic.ai system
+  - name: invoices
+    description: |
+      These routes give you read-only access to two types of invoices:
+      - invoices which have not yet been posted to the ERP system
+      - invoices which have been posted to the ERP system
+
+      By default, access to unposted invoices is restricted.
+  - name: subscription
+    description: |
+      These requests represents a user’s action in the Vic.ai system and repsonses to those actions.
+  - name: training invoices
+    description: |
+      Invoices that are being used to train Vic.ai's machine learning system.
+  - name: vendors
+    description: |
+      Vendors are part of your *ERP* **Masterdata**, and represent companies that produce invoices.  In order to be
+      associated with an invoice, key data about the vendor must be stored in Vic.ai.  These operations allow querying and
+      manipulation of the vendor data.
+  - name: vat codes
+    description: |
+      In some regions, Vat Codes are part of your *ERP* **Masterdata**, that represent timeboxed
+      VAT codes and VAT values that Vic.ai can automatically assign to invoice line items
+
+paths:
+  /token:
+    post:
+      description: Use this request to obtain an authorization token
+      summary: Token service
+      operationId: obtainToken
+      tags:
+        - auth
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetTokenInput'
+      responses:
+        '200':
+          description: Successful access token request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetTokenResult'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /healthCheck:
+    get:
+      description: Use this request to obtain a health check statement.
+      summary: Health check
+      operationId: healthCheck
+      tags:
+        - general
+      responses:
+        '200':
+          description: Successful health check response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheck'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts:
+    get:
+      description: Use this request to query the GL account data that are stored in Vic.ai.
+      summary: List all accounts
+      operationId: listAccounts
+      tags:
+        - accounts
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          description: A paged array of accounts
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/account/{id}':
+    get:
+      description: Use this request to get data for a single GL account that is stored in Vic.ai.
+      summary: Info for a specific account
+      operationId: getAccount
+      tags:
+        - accounts
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: |
+        Use this request to *upsert* GL account data for one GL account into Vic.ai.
+
+        If the account is known by Vic.ai, the externalId supplied will be used to resolve the account and
+        perform an update of the data, otherwise, a new account will be inserted.
+
+        If the upsert action is part of a syncRequest, you should include the syncRequest
+        ID in the `X-Request-Id` header.
+      summary: Upserts an account
+      operationId: upsertAccount
+      tags:
+        - accounts
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpsert'
+      responses:
+        '201':
+          description: Successful upsert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single account that is stored in Vic.ai
+      summary: Deletes an account
+      operationId: deleteAccount
+      tags:
+        - accounts
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '201':
+          description: Information for deleted account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /dimensions:
+    get:
+      description: Use this request to query the dimensions data that are stored in Vic.ai.
+      summary: List all dimensions
+      operationId: listDimensions
+      tags:
+        - dimensions
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          description: A paged array of dimensions
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dimensions'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/dimension/{id}':
+    get:
+      description: Use this request to get data for a single dimension that is stored in Vic.ai.
+      summary: Info for a specific dimension
+      operationId: getDimension
+      tags:
+        - dimensions
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dimension'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: |
+        Use this request to *upsert* dimensions data for one dimension into Vic.ai.
+
+        If the dimension is known by Vic.ai, the externalId supplied will be used to resolve the dimension and
+        perform an update of the data, otherwise, a new dimension will be inserted.
+
+        If the upsert action is part of a syncRequest, you should include the syncRequest
+        ID in the `X-Request-Id` header.
+      summary: Upserts a dimension
+      operationId: upsertDimension
+      tags:
+        - dimensions
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DimensionUpsert'
+      responses:
+        '200':
+          description: Dimension was updated successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dimension'
+        '201':
+          description: Dimension was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dimension'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single dimension that is stored in Vic.ai
+      summary: Deletes a dimension
+      operationId: deleteDimension
+      tags:
+        - dimensions
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '201':
+          description: Information from deleted dimension
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dimension'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /vendors:
+    get:
+      description: Use this request to query the vendor data that are stored in Vic.ai.
+      summary: List all vendors
+      operationId: listVendors
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/VendorConfirmedFilter'
+        - $ref: '#/components/parameters/VendorUnconfirmedFilter'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/SortOrder'
+        - name: state
+          in: query
+          description: |
+            Filter vendors by state.
+
+            - `PENDING` - The vendor is not confirmed, has no errors, and was
+              not predicted. It is pending to be confirmed.
+            - `ACTIVE` - The vendor is confirmed and has no errors.
+            - `PREDICTED` - The vendor was predicted by Vic.
+            - `ERRORED` - The vendor has errors set.
+          required: false
+          schema:
+            $ref: "#/components/schemas/VendorStateFilter"
+      responses:
+        '200':
+          description: A paged array of vendors
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendors'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/vendor/{id}':
+    get:
+      description: Use this request to get data for a single vendor that is stored in Vic.ai.
+      summary: Info for a specific vendor
+      operationId: getVendor
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: |
+        Updates or inserts a vendor into the Vic.ai system.
+
+        All fields passed are set on the vendor. All fields that are omitted from the
+        request body are considered to be null and will be set to null.
+
+        If the vendor is known by Vic.ai, the `externalId` supplied will be used to
+        resolve the vendor and perform an update of the data, otherwise, a new vendor
+        will be inserted.
+
+        If the upsert action is part of a `syncRequest`, you should include the
+        `syncRequest` ID in the `X-Request-Id` header.
+      summary: Upserts a vendor
+      operationId: upsertVendor
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VendorUpsert'
+      responses:
+        '200':
+          description: Vendor was successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        '201':
+          description: Vendor was successfully inserted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single vendor that is stored in Vic.ai
+      summary: Deletes a vendor
+      operationId: deleteVendor
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '201':
+          description: Information from deleted vendor
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/vendor/{id}/errors':
+    post:
+      description: |
+        Use this post to report vendor update failure errors back to Vic.ai.
+        Strictly a repsonse to the callbacks.  Request id is required. The id MUST be an internalId.
+        The request id is generated as a result of the callback.  We assume it is in the logs.
+        In this case you already responded to a request with a 202 Accepted, but now you
+        have an error you want to report back, instead of saying nothing at all.
+      summary: Completes the response callback cycle resulting from a 202
+      operationId: setVendorRemoteErrors
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/RequestId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetVendorRemoteErrors'
+      responses:
+        '200':
+          description: Successful vendor error report
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Clears errors on the Vendor.
+      description: Used to clear errors that have been fixed in the ERP system.
+      operationId: clearVendorRemoteErrors
+      tags:
+        - vendors
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/RequestId'
+      responses:
+        '200':
+          description: Vendor errors were cleared.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vendor'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoices:
+    get:
+      description: Use this request to query the invoice data that are stored in Vic.ai.
+      summary: List all invoices
+      operationId: listInvoices
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/SortOrder'
+        - $ref: '#/components/parameters/InvoiceStateFilter'
+      responses:
+        '200':
+          description: A paged array of invoices
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoices'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create an invoice.
+      description: |
+        Creates an invoice within the Vic system.
+      operationId: createInvoice
+      tags:
+        - invoices
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateInvoice"
+      responses:
+        "201":
+          description: Invoice was created successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Input was invalid.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  '/invoice/{id}':
+    get:
+      description: Use this request to get data for a single invoice that is stored in Vic.ai
+      summary: Info for a specific invoice
+      operationId: getInvoice
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    patch:
+      description: |
+        Use this request to indicate that an invoice has been posted or transferred to the ERP system,
+        in the case where you have not activated a subscription, or you have responded to the subscription
+        with a 202-asynchronous response.
+
+        Note that this operation can either be a confirmation, or a rejection, depending on the shape of
+        the payload.
+
+        Possible payloads:
+
+        - InvoiceConfirm: used to confirm that the invoice data have been successfully posted to the ERP,
+          possibly including a postingError.
+
+          - Use of this postingError means that the invoice data are posted, but some secondary content
+            needs amendation in the ERP that cannot be performed from the vic user
+            interface (for example: a problem uploading the posted document).
+
+        - InvoiceReject: used to communicate that the invoice data have NOT been successfully posted to
+          the ERP, due to invalid data.  This should NOT be used to communicate an error in posting due
+          to a general failure such as a network issue or an availability issue with the ERP, in those
+          or similar cases, a retry should be performed without notifying the vic system.
+
+        Currently unsupported:
+
+        - InvoiceClearError: the error set in an `InvoiceConfirm` operation should be cleared because the
+          postingError has been resolved in the ERP.  This cannot be used to clear an error due to
+          `InvoiceReject`.
+
+        Note that `:id` *must* be internalId for this route.
+      summary: Asynchronous reply to invoice post or invoice transfer
+      operationId: ackInvoice
+      tags:
+        - invoices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: the internalId of the invoice which should be confirmed
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: '#/components/schemas/InvoiceConfirm'
+                - $ref: '#/components/schemas/InvoiceReject'
+      responses:
+        '201':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single invoice that is stored in Vic.ai
+      summary: Deletes an invoice
+      operationId: deleteInvoice
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+        - $ref: '#/components/parameters/Comment'
+      responses:
+        '204':
+          description: Invoice was successfully deleted.
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invoice/{id}/process:
+    post:
+      summary: Start the invoice processing.
+      description: |
+        Tells Vic that the invoice is ready to start being processed. Once this
+        is called, it may not be called again.
+      operationId: startProcessingInvoice
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/UseSystem'
+        - name: id
+          in: path
+          required: true
+          description: The Invoice internal id or external id.
+          schema:
+            type: string
+      responses:
+        "202":
+          description: Invoice has started processing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Invoice not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Invoice failed to start processing.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  '/invoice/{id}/document':
+    get:
+      description: Use this request to get the document associated with a single invoice that is stored in Vic.ai
+      summary: Document for a specific invoice
+      operationId: getInvoiceDocument
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/UseSystem'
+        - name: id
+          in: path
+          required: true
+          description: The Invoice internal id or external id.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/pdf:
+              schema:
+                type: string
+                format: binary
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Upload document invoice
+      description: |
+        This attaches a document to the invoice for processing. An external id
+        must be specified for an invoice prior to calling this.
+
+        * Once an invoice has been processed, you may not attach a new document.
+        * Once a document has been attached to an invoice, it may not be
+          changed.
+      operationId: uploadDocumentInvoice
+      tags:
+        - invoices
+      parameters:
+        - $ref: '#/components/parameters/UseSystem'
+        - name: id
+          in: path
+          required: true
+          description: The Invoice internal id or external id.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - document
+              properties:
+                document:
+                  type: string
+                  format: binary
+                  nullable: false
+      responses:
+        "200":
+          description: Document was uploaded successfully.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Invoice"
+        "403":
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Invoice was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Errors with the input are present.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  '/invoice/{id}/lineItems':
+    get:
+      description: |
+        List all of the line items for the invoice.
+
+        NOTE: They are ungrouped so that you may inspect and modify them as
+        necessary.
+
+      summary: line items for a specific invoice
+      operationId: getInvoicelineItems
+      tags:
+        - invoices
+        - lineItems
+      parameters:
+        - $ref: '#/components/parameters/UseSystem'
+        - name: id
+          in: path
+          required: true
+          description: The Invoice internal id or external id.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: The ungrouped line items for the invoice.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InvoiceLineItem'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /trainingInvoices:
+    get:
+      description: Use this request to query the invoice data that are stored in Vic.ai.
+      summary: List all invoices
+      operationId: listTrainingInvoices
+      tags:
+        - training invoices
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          description: A paged array of invoices
+          headers:
+            x-next:
+              description: A link to the next page of responses
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingInvoices'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/trainingInvoice/{id}':
+    get:
+      description: Use this request to get data for a single training invoice that is stored in Vic.ai
+      summary: Info for a specific invoice
+      operationId: getTrainingInvoice
+      tags:
+        - training invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingInvoice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: |
+        Use this request to *upsert* training invoice data for one invoice into Vic.ai.
+
+        For `multipart/form-data` encoded payloads:
+
+        - The request body should contain the invoice object (invoiceData part) as JSON, and
+          corresponding invoice documents as a single pdf file (invoicePayload part) as multipart
+          form data.
+
+        - Omitting the invoiceDocument field may only be used for updates.
+
+        You may also encode a `application/json` payload.  This may only be used for updates.
+
+        If the invoice is known by Vic.ai, the externalId supplied will be used to resolve the invoice and
+        perform an update of the data, otherwise, a new invoice will be inserted.
+      summary: Upserts a training invoice
+      operationId: upsertTrainingInvoice
+      tags:
+        - training invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - invoiceData
+              properties:
+                invoiceData:
+                  $ref: '#/components/schemas/TrainingInvoiceUpsert'
+                invoiceDocument:
+                  type: string
+                  format: binary
+            encoding:
+              invoiceData:
+                contentType: application/json
+                headers:
+                  Content-Type:
+                    required: true
+                    schema:
+                      type: string
+              invoiceDocument:
+                contentType: 'application/pdf, image/png, image/tiff, application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+                headers:
+                  Content-Type:
+                    required: true
+                    schema:
+                      type: string
+      responses:
+        '201':
+          description: Successful upsert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingInvoice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single training invoice that is stored in Vic.ai
+      summary: Deletes a training invoice
+      operationId: deleteTrainingInvoice
+      tags:
+        - training invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '201':
+          description: Information from deleted training invoice
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TrainingInvoice'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/trainingInvoice/{id}/document':
+    get:
+      description: Use this request to get the document associated with a training invoice that is stored in Vic.ai
+      summary: Document for a specific invoice
+      operationId: getTrainingInvoiceDocument
+      tags:
+        - training invoices
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: Expected response for a valid training invoice
+          content:
+            application/pdf: {}
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /vatCodes:
+    get:
+      description: Use this request to query all the vat code data that are stored in Vic.ai.
+      summary: List all vat codes
+      operationId: listVatCodes
+      tags:
+        - vat codes
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/SortOrder'
+        - $ref: '#/components/parameters/VatCodeFilter'
+      responses:
+        '200':
+          description: An array of vat codes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VatCodes'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/vatCode/{id}':
+    get:
+      description: Use this request to get data for a single vat code that is stored in Vic.ai
+      summary: Info for a specific vat code
+      operationId: getVatCode
+      tags:
+        - vat codes
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VatCode'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      description: |
+        Use this request to *upsert* vat code into Vic.ai.
+
+        The request body should contain the vat code object as JSON.
+
+        If the vat code is known by Vic.ai, the id supplied will be used to resolve the vat code and
+        perform an update of the data, otherwise, a new vat code will be inserted.
+      summary: Upserts a vat code
+      operationId: upsertVatCode
+      tags:
+        - vat codes
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VatCodeUpsert'
+      responses:
+        '201':
+          description: Successful upsert
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VatCode'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      description: Use this request to delete data for a single vat code that is stored in Vic.ai
+      summary: Deletes a vat code
+      operationId: deleteVatCode
+      tags:
+        - vat codes
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '201':
+          description: Information from deleted vat code
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VatCode'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /subscription:
+    put:
+      description: |
+        This request is used to configure or modify a new subscription to user and automated actions.
+
+        You must supply a callback url and set an access token that Vic.ai can use to authenticate
+        itself in your system.  Notifications of user actions will proceed via the documented schema.
+
+        The callback url must be https.
+      summary: Subscribe to callback notifications
+      operationId: subscribe
+      tags:
+        - subscriptions
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SubscriptionUpsert'
+      responses:
+        '201':
+          description: Successful subscription
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionUpsert'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      callbacks:
+        vendorNew:
+          '{$request.body#/callbackUrl}/vendorNew':
+            post:
+              description: |
+                This request is sent when a user in Vic.ai adds a new vendor to the system.
+
+                Request body contains the vendor object.
+
+                A 201 response indicates that the vendor object has been successfully persisted to the ERP,
+                and it must contain the ERP's vendor object id as the externalId parameter.
+
+                Any other response will be considered a failure, the vendor object externalId will not be specified,
+                and the error message you specify will be surfaced to the user.
+
+                A 400 response indicates a data validation error.
+
+                This callback will timeout after 5 seconds.
+              parameters:
+                - $ref: '#/components/parameters/RequestId'
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/VendorCallback'
+              responses:
+                '201':
+                  description: Successful upsert
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/VendorConfirm'
+                '202':
+                  description: Acknowledge receipt
+                  content:
+                    application/json:
+                      schema:
+                        enum:
+                          - OK
+                '4XX':
+                  description: |
+                    Error when posting vendor.  If this is a generic error,
+                    use the `Error` schema; if it's an error reported by the
+                    ERP, use the `VendorError` schema.
+                  content:
+                    application/json:
+                      schema:
+                        oneOf:
+                          - $ref: '#/components/schemas/Error'
+                          - $ref: '#/components/schemas/VendorError'
+                default:
+                  description: unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+        invoicePost:
+          '{$request.body#/callbackUrl}/invoicePost':
+            post:
+              description: |
+                This request is sent when a user in Vic.ai posts an invoice object to the system.
+
+                Request body contains the invoice object (invoiceData part) as JSON, and corresponding
+                invoice documents as a pdf file (invoicePayload part) as multipart form data.  This will
+                always be a pdf file.
+
+                A 201 response indicates that the invoice object has been successfully persisted to the
+                ERP, and it must contain the ERP's invoice object id as the externalId
+                parameter.
+
+                A 202 response indicates that the receipt of the invoice object has been acknowledged;
+                an asynchronous update will occur via invoiceConfirm operationId; the supplied 'X-Request-Id'
+                in the request header will be provided as the `X-Request-Id` header for any associated
+                asynchronous updates.
+
+                Any other response will be considered a failure, the invoice object externalId will not be specified,
+                and the error message you specify will be surfaced to the user.
+
+                A 400 response indicates a data validation error.
+
+                This callback will timeout after 5 seconds; to prevent inconsistencies, if the request will take
+                longer than 5 seconds, it is appropriate to respond with a 202 response code.
+              parameters:
+                - $ref: '#/components/parameters/RequestId'
+              requestBody:
+                required: true
+                content:
+                  multipart/form-data:
+                    schema:
+                      type: object
+                      properties:
+                        invoiceData:
+                          $ref: '#/components/schemas/Invoice'
+                        invoiceDocument:
+                          type: string
+                          format: binary
+                    encoding:
+                      invoiceData:
+                        contentType: application/json
+                      invoiceDocument:
+                        contentType: application/pdf
+              responses:
+                '201':
+                  description: Successful upsert
+                  content:
+                    application/json:
+                      schema:
+                        oneOf:
+                          - $ref: '#/components/schemas/InvoiceConfirm'
+                '202':
+                  description: 'Deferred post, confirmation asynchronous'
+                '400':
+                  description: invalid invoice data
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+                default:
+                  description: unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+        invoiceTransfer:
+          '{$request.body#/callbackUrl}/invoiceTransfer':
+            post:
+              description: |
+                This request is sent when a user in Vic.ai selects and invoice document and *transfers* it to the ERP.
+                Note: there will be no Vic.ai generated invoice data sent with this a *transferred* invoice.
+
+                Request body contains the invoice document.
+
+                A 201 response indicates that the invoice document has been successfully transferred to the ERP,
+                and it must contain the ERP's invoice document id as the externalId parameter.
+
+                A 202 response indicates that the receipt of the invoice transfer has been acknowledged;
+                an asynchronous update will occur via invoiceConfirm operationId; the supplied 'X-Request-Id'
+                in the request header will be provided as the `X-Request-Id` header for any associated
+                asynchronous updates.
+
+                Any other response will be considered a failure, the invoice object externalId will not be specified,
+                and the error message you specify will be surfaced to the user.
+
+                A 400 response indicates a data validation error.
+
+                This callback will timeout after 5 seconds; to prevent inconsistencies, if the request will take
+                longer than 5 seconds, it is appropriate to respond with a 202 response code.
+              parameters:
+                - $ref: '#/components/parameters/RequestId'
+              requestBody:
+                required: true
+                content:
+                  application/pdf:
+                    schema:
+                      type: string
+                      format: binary
+              responses:
+                '201':
+                  description: Successful upsert
+                  content:
+                    application/json:
+                      schema:
+                        enum:
+                          - OK
+                '202':
+                  description: 'Deferred post, confirmation asynchronous'
+                default:
+                  description: unexpected error
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+        syncRequest:
+          '{$request.body#/callbackUrl}/syncRequest':
+            post:
+              description: |
+                This request is sent when a user in Vic.ai triggers a sync of all masterdata.
+
+                In response to this message, you’re expected to post masterdata (vendors, GL accounts, dimensions) into Vic.ai using
+                the respective routes.  You may perform a partial update, determining which data to update using queries.
+
+                The body of the syncRequest contains the requestId; this is a token that should be returned with all upsert
+                actions associated with this syncRequest.
+
+                A 200 response indicates that the request has been acknowledged and informs the user that the sync has been
+                successfully triggered.
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/RequestIdCallback'
+              responses:
+                '200':
+                  description: request acknowleged
+                default:
+                  description: request unservicable
+                  content:
+                    application/json:
+                      schema:
+                        $ref: '#/components/schemas/Error'
+    delete:
+      description: |
+        This request is used to cancel a subscription to user actions.  In conjunction with a post requst, you may use this as a
+        first step to update subscription URLs or authorization tokens.
+      summary: Unsubscribe from callback notifications
+      operationId: unsubscribe
+      tags:
+        - subscriptions
+      responses:
+        '201':
+          description: Successful deletion
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnsubscribeResult'
+        default:
+          description: unexpected error
+  /costAccounts:
+    get:
+      description: Use this request to query all the cost accounts for a specific client.
+      summary: List all cost accounts
+      operationId: getCostAccounts
+      tags:
+        - cost accounts
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/SortOrder'
+      responses:
+        '200':
+          description: An array of cost accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CostAccounts'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      description: The id of the database entry
+      schema:
+        type: string
+    PagingLimit:
+      name: limit
+      in: query
+      description: How many items to return at one time (max 100) (default 100)
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+    PagingCursor:
+      name: cursor
+      in: query
+      description: Which item to start from
+      required: false
+      schema:
+        type: string
+    SinceFilter:
+      name: since
+      in: query
+      description: |
+        Datetime value for incremental updates.
+
+        **NOTE**: For external datetimes, the expected format is not in UTC. for
+        vic-internal datetimes (see SinceIsExternal) the format is UTC.
+      required: false
+      schema:
+        type: string
+        format: date-time
+    InvoiceStateFilter:
+      name: state
+      in: query
+      description: selects the state of invoices which are to be searched (defaults to POSTED)
+      required: false
+      schema:
+        anyOf:
+          - $ref: '#/components/schemas/InvoiceState'
+          - enum:
+              - ALL
+              - POSTED
+    VendorConfirmedFilter:
+      name: confirmed
+      in: query
+      description: selects if confirmed vendors are to be displayed.
+      required: false
+      schema:
+        type: boolean
+        default: true
+    VendorUnconfirmedFilter:
+      name: unconfirmed
+      in: query
+      description: selects if unconfirmed vendors are to be displayed.
+      required: false
+      schema:
+        type: boolean
+        default: true
+    VatCodeFilter:
+      name: vatCode
+      in: query
+      description: selects the vat code which is to be displayed
+      required: false
+      schema:
+        type: string
+    Comment:
+      name: comment
+      in: query
+      description: selects the comment which is to be displayed
+      required: false
+      schema:
+        type: string
+        maxLength: 255
+        nullable: true
+    UseSystem:
+      name: useSystem
+      in: query
+      description: |
+        Which system to use for id or updatedAt filters.
+        NOTE: Please use the all-caps `INTERNAL` and `EXTERNAL` options. Lowercase `internal`
+        and `external` options are deprecated but supported for backwards-compatibility and
+        will be removed before 1.0; .
+      required: false
+      schema:
+        enum:
+          - INTERNAL
+          - EXTERNAL
+          - internal
+          - external
+        default: EXTERNAL
+    SortOrder:
+      name: sortOrder
+      in: query
+      description: what sort order should be used for queries
+      required: false
+      schema:
+        enum:
+          - ASCENDING
+          - DESCENDING
+        default: ASCENDING
+    RequestId:
+      in: header
+      name: X-Request-Id
+      description: token to be able to correctly log associated requests
+      required: false
+      schema:
+        type: string
+        format: uuid
+
+  schemas:
+    InternalId:
+      description: The internal id Vic uses for the record.
+      type: string
+      example: '47'
+    ExternalId:
+      description: |
+        The external id set by the ERP system. It does not have to be a UUID and
+        can be any string desired.
+      type: string
+      example: 21b31bc7-1267-4335-893c-d7fe4706a238
+      maxLength: 255
+    CountryCode:
+      description: |
+        The ISO-3166 country code. The acceptable values are Alpha-2 codes.
+      type: string
+      format: ISO-3166
+      maxLength: 2
+    MonetaryValue:
+      description: |
+        The monetary value as a string. A float should not be used. Our api will
+        accept a float, but for best results, please use a string with the
+        proper decimal precision.
+      type: string
+      format: decimal
+      example: "1.00"
+    ExternalData:
+      description: A free form json object that is stored with the record.
+      type: object
+    QueryCommon:
+      type: object
+      required:
+        - internalId
+        - internalUpdatedAt
+      properties:
+        internalId:
+          allOf:
+            - $ref: '#/components/schemas/InternalId'
+          readOnly: true
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+    UpsertCommon:
+      type: object
+      required:
+        - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+    HealthCheck:
+      type: object
+      required:
+        - status
+        - version
+        - company
+      properties:
+        status:
+          type: string
+          enum:
+            - PASS
+            - FAIL
+            - WARN
+        version:
+          type: string
+          format: semver
+        company:
+          type: string
+    AccountCommon:
+      type: object
+      required:
+        - number
+        - name
+      properties:
+        number:
+          type: string
+          format: number
+        name:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        requiredDimensionsExternal:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+        parentAccountExternalId:
+          $ref: '#/components/schemas/ExternalId'
+    Account:
+      allOf:
+        - $ref: '#/components/schemas/QueryCommon'
+        - $ref: '#/components/schemas/AccountCommon'
+      type: object
+      required:
+        - number
+        - name
+      properties:
+        requiredDimensionsInternal:
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalId'
+        parentAccountInternalId:
+          $ref: '#/components/schemas/InternalId'
+    AccountUpsert:
+      allOf:
+        - $ref: '#/components/schemas/UpsertCommon'
+        - $ref: '#/components/schemas/AccountCommon'
+    Accounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/Account'
+    DimensionCommon:
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        type:
+          type: string
+        shortName:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        parentDimensionExternalId:
+          $ref: '#/components/schemas/ExternalId'
+    Dimension:
+      allOf:
+        - $ref: '#/components/schemas/QueryCommon'
+        - $ref: '#/components/schemas/DimensionCommon'
+      required:
+        - name
+        - type
+      properties:
+        displayName:
+          type: string
+        parentDimensionInternalId:
+          $ref: '#/components/schemas/InternalId'
+    DimensionUpsert:
+      allOf:
+        - $ref: '#/components/schemas/UpsertCommon'
+        - $ref: '#/components/schemas/DimensionCommon'
+    Dimensions:
+      type: array
+      items:
+        $ref: '#/components/schemas/Dimension'
+    DimensionRef:
+      type: object
+      properties:
+        internalId:
+          type: string
+          maxLength: 255
+          nullable: true
+        externalId:
+          type: string
+          maxLength: 255
+          nullable: true
+    CostAccounts:
+      type: array
+      items:
+        $ref: '#/components/schemas/CostAccount'
+    CostAccount:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        externalId:
+          type: string
+          maxLength: 255
+        subType:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        externalUpdatedAt:
+          type: string
+          format: date-time
+    CreditAccountRef:
+      type: object
+      properties:
+        internalId:
+          type: string
+          maxLength: 255
+          nullable: true
+        externalId:
+          type: string
+          maxLength: 255
+          nullable: true
+    CostAccountInfo:
+      type: object
+      properties:
+        internalId:
+          description: The cost account's internal id.
+          type: string
+          maxLength: 255
+          nullable: true
+        externalId:
+          description: The cost account's external id.
+          type: string
+          maxLength: 255
+          nullable: true
+        number:
+          description: The cost account's number.
+          type: string
+          maxLength: 255
+          nullable: true
+    PaymentKind:
+      description: The payment kind.
+      enum:
+        - ACH
+        - CHECK
+        - IBAN
+        - BBAN
+        - PLUSGIRO
+        - BANKGIRO
+    InvoicePaymentInfo:
+      type: object
+      description: |
+        The invoice payment information.
+
+        The `kind` field is required in order to determine what payment
+        information the invoice needs to use.
+
+        All other fields are optional and should be filled out as best seen fit.
+
+        For `BBAN`, `IBAN`, `PLUSGIRO`, and `BANKGIRO` numbers use the
+        `accountNumber` field.
+
+        When using `IBAN` you should specify `bic`.
+      required:
+      - kind
+      properties:
+        kind:
+          $ref: "#/components/schemas/PaymentKind"
+        accountHolderName:
+          type: string
+          maxLength: 255
+          nullable: true
+        accountNumber:
+          type: string
+          maxLength: 255
+          nullable: true
+        routingNumber:
+          type: string
+          maxLength: 255
+          nullable: true
+        bic:
+          type: string
+          maxLength: 255
+          nullable: true
+    InvoicePaymentTerm:
+      type: object
+      required:
+      - count
+      - unit
+      properties:
+        count:
+          type: integer
+          minimum: 0
+        unit:
+          $ref: "#/components/schemas/PaymentTermUnit"
+    LineItemVat:
+      type: object
+      properties:
+        internalId:
+          type: string
+          maxLength: 255
+          nullable: true
+        externalId:
+          type: string
+          maxLength: 255
+          nullable: true
+        code:
+          type: string
+          maxLength: 255
+          nullable: true
+        amount:
+          oneOf:
+          - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+    CreateInvoiceLineItem:
+      type: object
+      required:
+      - amount
+      properties:
+        index:
+          description: A non-negative integer.
+          type: integer
+          nullable: true
+          minimum: 0
+        amount:
+          $ref: "#/components/schemas/MonetaryValue"
+        comment:
+          type: string
+          maxLength: 255
+          nullable: true
+        description:
+          type: string
+          maxLength: 255
+          nullable: true
+        billable:
+          type: boolean
+          nullable: true
+        vat:
+          oneOf:
+          - $ref: "#/components/schemas/LineItemVat"
+          nullable: true
+        costAccount:
+          oneOf:
+          - $ref: "#/components/schemas/CostAccountInfo"
+          nullable: true
+        dimensions:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+    CreateInvoiceVendor:
+      type: object
+      properties:
+        internalId:
+          description: |
+            The existing vendor internal id. This field takes precedence over
+            all other fields when present and not null.
+          type: string
+          nullable: true
+          maxLength: 255
+        externalId:
+          description: |
+            The existing vendor external id. This field takes precedence over
+            `orgNumber`.
+          type: string
+          nullable: true
+          maxLength: 255
+        orgNumber:
+          description: The org number of the vendor to aid in the predictions.
+          type: string
+          nullable: true
+          maxLength: 255
+        countryCode:
+          oneOf:
+          - $ref: "#/components/schemas/CountryCode"
+          description: The country code of the vendor
+          nullable: true
+    CreateInvoice:
+      description: The shape of the request to create an invoice.
+      type: object
+      required:
+        - transactionType
+      properties:
+        externalId:
+          oneOf:
+          - $ref: "#/components/schemas/ExternalId"
+          description: |
+            The external id if it is known within the external system. This
+            field can be null.
+          nullable: true
+        source:
+          description: Where the invoice originated from.
+          type: string
+          nullable: true
+          example: Millum
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        refNumber:
+          description: Number that appears on the invoice.
+          type: string
+          maxLength: 255
+        poNumber:
+          type: string
+          nullable: true
+        description:
+          description: The description of what the invoice is.
+          type: string
+          nullable: true
+        currency:
+          description: The currency code the invoice is in.
+          type: string
+          format: ISO-4217
+          maxLength: 3
+        language:
+          type: string
+          nullable: true
+          maxLength: 2
+          example: "en"
+        issueDate:
+          description: The date the invoice was issued on.
+          type: string
+          format: date
+        glDate:
+          type: string
+          format: date
+        dueDate:
+          description: The date the invoice is due on.
+          type: string
+          format: date
+        paymentRef:
+          description: |
+            The payment reference number. The KID is a customer identification
+            number that is mandatory for invoices in Norway.
+          type: string
+          maxLength: 255
+        paymentInfo:
+          oneOf:
+          - $ref: "#/components/schemas/InvoicePaymentInfo"
+          nullable: true
+        paymentTerm:
+          oneOf:
+          - $ref: "#/components/schemas/InvoicePaymentTerm"
+          description: |
+            The payment term the invoice should be paid in. If the term is not
+            known, pass `null` here.
+          nullable: true
+        creditAccount:
+          oneOf:
+          - $ref: "#/components/schemas/CreditAccountRef"
+          nullable: true
+        vendor:
+          oneOf:
+          - $ref: "#/components/schemas/CreateInvoiceVendor"
+          description: The vendor information that the invoice is from.
+          nullable: true
+        lineItems:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreateInvoiceLineItem"
+    InvoiceCommon:
+      type: object
+      properties:
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        refNumber:
+          description: number that appears on the invoice
+          type: string
+          maxLength: 255
+        poNumber:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 255
+        language:
+          type: string
+          nullable: true
+        issueDate:
+          type: string
+          format: date
+        glDate:
+          type: string
+          format: date
+        dueDate:
+          type: string
+          format: date
+        paymentInfo:
+          anyOf:
+            - $ref: '#/components/schemas/PaymentInfoUS'
+            - $ref: '#/components/schemas/PaymentInfoSE'
+            - $ref: '#/components/schemas/PaymentInfoNO'
+        invoiceInfo:
+          $ref: '#/components/schemas/InvoiceInfoNO'
+    InvoiceFetched:
+      required:
+        - status
+      properties:
+        postingError:
+          type: string
+        documentUrl:
+          type: string
+          format: url
+        status:
+          $ref: '#/components/schemas/InvoiceState'
+    InvoiceRequirable:
+      required:
+        - transactionType
+        - refNumber
+        - poNumber
+        - description
+        - currency
+        - language
+        - lineItems
+    Invoice:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InvoiceCommon'
+        - $ref: '#/components/schemas/InvoiceRequirable'
+        - $ref: '#/components/schemas/InvoiceFetched'
+      properties:
+        source:
+          description: Where the invoice originates from.
+          type: string
+          nullable: true
+          example: Millum
+        internalId:
+          type: string
+        paymentTerm:
+          oneOf:
+          - $ref: "#/components/schemas/InvoicePaymentTerm"
+          description: |
+            The payment term the invoice should be paid in. If the term is not
+            known, pass `null` here.
+          nullable: true
+        paymentRef:
+          description: |
+            The payment reference number. The KID is a customer identification
+            number that is mandatory for invoices in Norway.
+          type: string
+          maxLength: 255
+        vendorInternalId:
+          oneOf:
+          - $ref: '#/components/schemas/InternalId'
+          nullable: true
+        vendorExternalId:
+          oneOf:
+          - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+        vendor:
+          oneOf:
+          - $ref: '#/components/schemas/SparseVendor'
+          nullable: true
+        lineItems:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+    InvoiceConfirm:
+      type: object
+      required:
+        - externalId
+        - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+        postingError:
+          type: string
+    InvoiceReject:
+      type: object
+      required:
+        - item
+        - field
+        - reason
+      properties:
+        item:
+          type: integer
+          minimum: 0
+          nullable: true
+        field:
+          type: string
+          nullable: true
+        reason:
+          type: string
+    InvoiceState:
+      enum:
+        - NOT_READY
+        - IN_APPROVALS
+        - READY_FOR_POST
+        - READY_FOR_TRANSFER
+        - POSTED
+        - TRANSFERRED
+    TrainingInvoice:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InvoiceCommon'
+        - $ref: '#/components/schemas/InvoiceRequirable'
+      required:
+        - vendorExternalId
+        - externalId
+      properties:
+        vendorExternalId:
+          $ref: '#/components/schemas/ExternalId'
+        lineItems:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/InvoiceLineItem'
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+    TrainingInvoiceUpsert:
+      type: object
+      required:
+        - transactionType
+        - vendorExternalId
+        - externalUpdatedAt
+      properties:
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        refNumber:
+          description: number that appears on the invoice
+          type: string
+          maxLength: 255
+          nullable: true
+        poNumber:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 255
+          nullable: true
+        language:
+          type: string
+          nullable: true
+        issueDate:
+          type: string
+          format: date
+          nullable: true
+        glDate:
+          type: string
+          format: date
+          nullable: true
+        dueDate:
+          type: string
+          format: date
+          nullable: true
+        paymentInfo:
+          anyOf:
+            - $ref: '#/components/schemas/PaymentInfoUS'
+            - $ref: '#/components/schemas/PaymentInfoSE'
+            - $ref: '#/components/schemas/PaymentInfoNO'
+        invoiceInfo:
+          $ref: '#/components/schemas/InvoiceInfoNO'
+        vendorExternalId:
+          oneOf:
+            - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+        lineItems:
+          type: array
+          minItems: 1
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/TrainingInvoiceLineItemUpsert'
+        externalData:
+          oneOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+    Invoices:
+      type: array
+      items:
+        $ref: '#/components/schemas/Invoice'
+    TrainingInvoices:
+      type: array
+      items:
+        $ref: '#/components/schemas/TrainingInvoice'
+    InvoiceLineItemCommon:
+      type: object
+      required:
+        - amount
+      properties:
+        index:
+          description: 'position within invoice, if omitted, will be inferred'
+          type: integer
+        amount:
+          type: number
+        description:
+          type: string
+        comment:
+          type: string
+        billable:
+          type: boolean
+          default: false
+        accrual:
+          $ref: '#/components/schemas/AccrualInfo'
+        invoiceLineItemInfo:
+          anyOf:
+            - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
+            - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
+            - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+    InvoiceLineItem:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/InvoiceLineItemCommon'
+      required:
+        - costAccountExternalId
+        - dimensionsExternalIds
+      properties:
+        vat:
+          oneOf:
+          - $ref: "#/components/schemas/LineItemVat"
+          nullable: true
+        costAccountInternalId:
+          allOf:
+            - $ref: '#/components/schemas/InternalId'
+          nullable: true
+          deprecated: true
+          description: Use `costAccount` instead.
+        costAccountExternalId:
+          allOf:
+            - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+          deprecated: true
+          description: Use `costAccount` instead.
+        costAccount:
+          oneOf:
+          - $ref: "#/components/schemas/CostAccountInfo"
+          nullable: true
+        dimensions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+        dimensionsInternalIds:
+          deprecated: true
+          description: Use `dimensions` instead.
+          type: array
+          items:
+            $ref: '#/components/schemas/InternalId'
+        dimensionsExternalIds:
+          deprecated: true
+          description: Use `dimensions` instead.
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+    TrainingInvoiceLineItemUpsert:
+      type: object
+      required:
+        - costAccountExternalId
+        - amount
+      properties:
+        index:
+          description: Position within invoice, if omitted, will be inferred.
+          type: integer
+        amount:
+          type: number
+        description:
+          type: string
+        comment:
+          type: string
+        billable:
+          type: boolean
+          default: false
+        accrual:
+          $ref: '#/components/schemas/AccrualInfo'
+        invoiceLineItemInfo:
+          anyOf:
+            - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
+            - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
+            - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+        costAccountExternalId:
+          allOf:
+            - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+        dimensionsExternalIds:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+        lineItemIsVatOnly:
+          type: boolean
+          default: false
+    VatCode:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/QueryCommon'
+        - $ref: '#/components/schemas/VatCodeCommon'
+        - $ref: '#/components/schemas/VatCodeRequirable'
+    VatCodes:
+      type: array
+      items:
+        $ref: '#/components/schemas/VatCode'
+    VatCodeCommon:
+      type: object
+      properties:
+        code:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        externalId:
+          type: string
+          maxLength: 255
+        externalUpdatedAt:
+          type: string
+          format: date-time
+        activeStartingAt:
+          type: string
+          format: date-time
+        activeEndingAt:
+          type: string
+          format: date-time
+        rate:
+          type: number
+        remoteData:
+          type: object
+        defaultInvoiceCreditAccount:
+          type: string
+          maxLength: 255
+        vatCreditAccount:
+          type: string
+          maxLength: 255
+        vatDebitAccount:
+          type: string
+          maxLength: 255
+    VatCodeRequirable:
+      required:
+        - code
+        - description
+    VatCodeUpsert:
+      allOf:
+        - $ref: '#/components/schemas/UpsertCommon'
+        - $ref: '#/components/schemas/VatCodeCommon'
+    VendorState:
+      enum:
+        - CONFIRMED
+        - UNCONFIRMED
+    VendorStateFilter:
+      description: |
+        - `PENDING` - The vendor is not confirmed, has no errors, and was
+          not predicted. It is pending to be confirmed.
+        - `ACTIVE` - The vendor is confirmed and has no errors.
+        - `PREDICTED` - The vendor was predicted by Vic.
+        - `ERRORED` - The vendor has errors set.
+      enum:
+        - ACTIVE
+        - PENDING
+        - PREDICTED
+        - ERRORED
+    VendorCommon:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        addressStreet:
+          type: string
+          nullable: true
+        addressCity:
+          type: string
+          nullable: true
+        addressState:
+          type: string
+          nullable: true
+        addressPostalCode:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 3
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          $ref: "#/components/schemas/VendorState"
+        taxInfo:
+          anyOf:
+            - $ref: '#/components/schemas/TaxInfoUS'
+            - $ref: '#/components/schemas/TaxInfoSE'
+            - $ref: '#/components/schemas/TaxInfoNO'
+        defaultPaymentInfo:
+          anyOf:
+            - $ref: '#/components/schemas/PaymentInfoUS'
+            - $ref: '#/components/schemas/PaymentInfoSE'
+            - $ref: '#/components/schemas/PaymentInfoNO'
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        errors:
+          description: The errors that occurred in the external ERP system.
+          items:
+            $ref: "#/components/schemas/VendorRemoteError"
+    VendorRequirable:
+      required:
+        - name
+        - email
+        - phone
+        - addressStreet
+        - addressCity
+        - addressState
+        - addressPostalCode
+        - countryCode
+    SparseVendor:
+      type: object
+      description: A vendor object but sparsely populated.
+      required:
+      - internalId
+      properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        externalId:
+          oneOf:
+          - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+        orgNumber:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    Vendor:
+      allOf:
+        - $ref: '#/components/schemas/QueryCommon'
+        - $ref: '#/components/schemas/VendorCommon'
+        - $ref: '#/components/schemas/VendorRequirable'
+    Vendors:
+      type: array
+      items:
+        $ref: '#/components/schemas/Vendor'
+    VendorUpsert:
+      allOf:
+        - $ref: '#/components/schemas/UpsertCommon'
+        - $ref: '#/components/schemas/VendorCommon'
+    VendorCallback:
+      allOf:
+        - $ref: '#/components/schemas/VendorCommon'
+        - $ref: '#/components/schemas/VendorRequirable'
+        - type: object
+          required:
+            - internalId
+          properties:
+            internalId:
+              $ref: '#/components/schemas/InternalId'
+    VendorConfirm:
+      allOf:
+        - required:
+            - externalId
+        - $ref: '#/components/schemas/UpsertCommon'
+    SubscriptionUpsert:
+      type: object
+      properties:
+        callbackUrl:
+          type: string
+          format: uri
+          example: 'https://my.erp.com/vic-callback/'
+        accessToken:
+          type: string
+          maxLength: 1024
+        expiresAt:
+          type: string
+          format: date-time
+      required:
+        - callbackUrl
+        - accessToken
+        - expiresAt
+    Error:
+      description: |
+        generic error message in JSON format.  Note the 'code' field should
+        match the HTTP status code of the wrapping HTTP request.
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          minimum: 100
+          maximum: 599
+        message:
+          $ref: '#/components/schemas/ErrorString'
+    VendorRemoteError:
+      description: |
+        The remote error on a Vendor.
+
+        This is to describe any errors that have happened in the ERP system. If
+        the error that occurred does not pertain to a specific field, then the
+        `field` can be left null, or missing all together.
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          maxLength: 1024
+        field:
+          description: |
+            The field on the Vic.ai vendor that has the error.
+
+            If the error does not pertain to a specific field, then this will be
+            null.
+
+            Example: `{"field": "name"}` or `{"field": "externalUpdatedAt"}`
+          type: string
+          maxLength: 255
+    SetVendorRemoteErrors:
+      description: Data structure for setting a Vendor's remote errors.
+      type: object
+      required:
+        - errors
+      properties:
+        errors:
+          items:
+            $ref: "#/components/schemas/VendorRemoteError"
+    VendorError:
+      description: |
+        Data structure for describing errors when posting a vendor to an
+        ERP.  Use a string to describe a single error that applies to
+        the entire vendor object, or describes a general error when
+        attempting to post, e.g. a connection error.  Use an array of
+        strings if multiple errors apply to the entire vendor object.
+        If errors apply to specific fields in the ERP, in lieu of a string
+        return a FieldError object.
+      oneOf:
+        - $ref: '#/components/schemas/ErrorString'
+        - type: array
+          maxItems: 64
+          items:
+            oneOf:
+              - $ref: '#/components/schemas/ErrorString'
+              - $ref: '#/components/schemas/FieldError'
+    ErrorString:
+      type: string
+      maxLength: 255
+    FieldError:
+      description: |
+        Data structure for describing an error associated with a specific
+        field in another datastructure.
+        - internalField represents the Vic.API field name
+        - externalField represents the associated field name in the ERP
+      type: object
+      required:
+        - internalField
+        - externalField
+        - message
+      properties:
+        internalField:
+          $ref: '#/components/schemas/ErrorString'
+        externalField:
+          $ref: '#/components/schemas/ErrorString'
+        message:
+          $ref: '#/components/schemas/ErrorString'
+    PaymentTermUnit:
+      description: The payment term units supported.
+      enum:
+        - DAYS
+    PaymentTerm:
+      type: object
+      required:
+        - count
+        - unit
+      properties:
+        count:
+          type: integer
+          minimum: 1
+        unit:
+          $ref: "#/components/schemas/PaymentTermUnit"
+    AccrualTermUnit:
+      description: The accrual term units supported.
+      enum:
+        - MONTHS
+    AccrualInfo:
+      required:
+        - start
+        - count
+        - unit
+      properties:
+        start:
+          type: string
+          format: date
+        count:
+          type: integer
+          minimum: 1
+        unit:
+          $ref: "#/components/schemas/AccrualTermUnit"
+    TransactionType:
+      description: The type of invoice transaction.
+      enum:
+        - INVOICE
+        - CREDITNOTE
+      default: INVOICE
+    TaxInfoUS:
+      type: object
+      required:
+        - taxId
+      properties:
+        taxId:
+          type: string
+        is1099vendor:
+          type: boolean
+    TaxInfoSE:
+      type: object
+      required:
+        - orgNumber
+      properties:
+        orgNumber:
+          type: string
+    TaxInfoNO:
+      type: object
+      required:
+        - orgNumber
+      properties:
+        orgNumber:
+          type: string
+    PaymentInfoUS:
+      type: object
+      required:
+        - bankAccountNum
+        - bankCode
+      properties:
+        bankAccountNum:
+          type: string
+          maxLength: 255
+        bankCode:
+          type: string
+        paymentTerm:
+          $ref: '#/components/schemas/PaymentTerm'
+    PaymentInfoSE:
+      type: object
+      properties:
+        bankAccountNum:
+          type: string
+          maxLength: 255
+        bankGiro:
+          type: string
+          maxLength: 255
+        plusGiro:
+          type: string
+          maxLength: 255
+        bban:
+          type: string
+          maxLength: 255
+        internationalBankAccount:
+          type: object
+          required:
+            - iban
+            - bic
+          properties:
+            iban:
+              type: string
+              maxLength: 255
+            bic:
+              type: string
+              maxLength: 255
+        defaultMethod:
+          enum:
+            - BANKACCOUNT
+            - BANKGIRO
+            - PLUSGIRO
+            - IBAN
+            - BBAN
+    PaymentInfoNO:
+      type: object
+      properties:
+        bankAccountNum:
+          type: string
+          maxLength: 255
+        bankGiro:
+          type: string
+          maxLength: 255
+        plusGiro:
+          type: string
+          maxLength: 255
+        bban:
+          type: string
+          maxLength: 255
+        internationalBankAccount:
+          type: object
+          required:
+            - iban
+            - bic
+          properties:
+            iban:
+              type: string
+              maxLength: 255
+            bic:
+              type: string
+              maxLength: 255
+        defaultMethod:
+          enum:
+            - BANKACCOUNT
+            - BANKGIRO
+            - PLUSGIRO
+            - IBAN
+            - BBAN
+    InvoiceInfoNO:
+      type: object
+      required:
+        - kid
+      properties:
+        kid:
+          deprecated: true
+          description: |
+            **Deprecated**: The `paymentRef` on the `Invoice` should be used
+            instead.
+
+            The KID is a customer identification number that is mandatory for
+            invoices in Norway.
+          type: string
+        creditAccountExternalId:
+          type: string
+        creditAccountInternalId:
+          type: string
+    InvoiceLineItemInfoUS: {}
+    InvoiceLineItemInfoSE:
+      type: object
+      required:
+        - vatCode
+        - vatAmount
+      properties:
+        vatCode:
+          type: string
+        vatAmount:
+          type: number
+    InvoiceLineItemInfoNO:
+      type: object
+      required:
+        - vatCode
+        - vatAmount
+      properties:
+        vatCode:
+          type: string
+        vatAmount:
+          type: number
+    RequestIdCallback:
+      type: object
+      required:
+        - requestId
+      properties:
+        requestId:
+          type: string
+          format: uuid
+    GetTokenInput:
+      type: object
+      required:
+        - client_id
+        - client_secret
+      properties:
+        client_id:
+          type: string
+        client_secret:
+          type: string
+    GetTokenResult:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+      properties:
+        access_token:
+          type: string
+        token_type:
+          enum:
+            - Bearer
+        expires_in:
+          type: integer
+    UnsubscribeResult:
+      enum:
+        - OK
