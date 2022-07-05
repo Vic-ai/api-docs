@@ -2708,9 +2708,71 @@ components:
       items:
         $ref: '#/components/schemas/Vendor'
     VendorUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/VendorCommon'
+      type: object
+      required:
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        addressStreet:
+          type: string
+          nullable: true
+        addressCity:
+          type: string
+          nullable: true
+        addressState:
+          type: string
+          nullable: true
+        addressPostalCode:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 3
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          $ref: "#/components/schemas/VendorState"
+        taxInfo:
+          anyOf:
+          - $ref: '#/components/schemas/TaxInfoUS'
+          - $ref: '#/components/schemas/TaxInfoSE'
+          - $ref: '#/components/schemas/TaxInfoNO'
+        defaultPaymentInfo:
+          anyOf:
+          - $ref: '#/components/schemas/PaymentInfoUS'
+          - $ref: '#/components/schemas/PaymentInfoSE'
+          - $ref: '#/components/schemas/PaymentInfoNO'
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        errors:
+          description: The errors that occurred in the external ERP system.
+          items:
+            $ref: "#/components/schemas/VendorRemoteError"
     VendorCallback:
       allOf:
         - $ref: '#/components/schemas/VendorCommon'
