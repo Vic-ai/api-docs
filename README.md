@@ -8,10 +8,18 @@ and please open issues if you see areas that could be improved.
 ## Requirements
 
 * Python
+* Rust
 * [mdBook](https://github.com/rust-lang/mdBook)
 
 ```
 cargo install mdbook
+```
+
+Please ensure that you have the correct software versions as indicated in the `.tool-versions` file.
+Consider using [asdf](https://asdf-vm.com/) to streamline this process:
+
+```sh 
+$ asdf install
 ```
 
 ## Setup
