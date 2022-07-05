@@ -1549,6 +1549,7 @@ components:
       description: The internal id Vic uses for the record.
       type: string
       example: '47'
+      readOnly: true
     ExternalId:
       description: |
         The external id set by the ERP system. It does not have to be a UUID and
@@ -1580,9 +1581,7 @@ components:
         - internalUpdatedAt
       properties:
         internalId:
-          allOf:
-            - $ref: '#/components/schemas/InternalId'
-          readOnly: true
+          $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
           description: note that internalUpdatedAt is in UTC
