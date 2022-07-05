@@ -8,13 +8,15 @@ info:
 
     The API is structured to provide 3 categories of functionality:
     - **Masterdata:** Masterdata are data in the ERP that Vic.ai interacts with.
-      So you must provide and update this masterdata in Vic.ai, and you may also verify the
-      masterdata copy in Vic.ai
-    - **Training Data:** AI requires historical data to train its data model. So you can put
-      historical invoices into Vic.ai to train it, and verify that they are in Vic.ai.
-    - **Webhooks:** Users or automated tasks could take various actions in the Vic.ai product suite
-      that result in an interaction with the ERP(for example, posting an invoice, or
-      requesting synchronization).  We'll tell you when such an action has occurred, via a webhook.
+      So you must provide and update this masterdata in Vic.ai, and you may also
+      verify the masterdata copy in Vic.ai
+    - **Training Data:** AI requires historical data to train its data model. So
+      you can put historical invoices into Vic.ai to train it, and verify that
+      they are in Vic.ai.
+    - **Webhooks:** Users or automated tasks could take various actions in the
+      Vic.ai product suite that result in an interaction with the ERP (for
+      example, posting an invoice, or requesting synchronization). We'll tell
+      you when such an action has occurred, via a webhook.
   license:
     name: MIT
 
@@ -38,45 +40,51 @@ servers:
 tags:
   - name: accounts
     description: |
-      GL (General Ledger) accounts are part of your *ERP* **Masterdata**.  In order to be associated with an
-      invoice line item, key data about the account must be stored in Vic.ai.  These operations allow querying and manipulation
-      of these GL account data.
+      GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
+      order to be associated with an invoice line item, key data about the
+      account must be stored in Vic.ai.  These operations allow querying and
+      manipulation of these GL account data.
   - name: auth
     description: |
-      Authorization-related routes.  These passthrough to our third-party authorization system.
+      Authorization-related routes.  These passthrough to our third-party
+      authorization system.
   - name: dimensions
     description: |
-      Dimensions are part of your *ERP* **Masterdata**, and represent business categories that are associated with
-      invoice line items, that Vic.ai can automatically assign to invoice line items.  These operations allow querying and
-      manipulation of the dimension data.
+      Dimensions are part of your *ERP* **Masterdata**, and represent business
+      categories that are associated with invoice line items, that Vic.ai can
+      automatically assign to invoice line items. These operations allow
+      querying and manipulation of the dimension data.
   - name: general
     description: |
       General requests on the state of the Vic.ai system
   - name: invoices
     description: |
       These routes give you read-only access to two types of invoices:
-      - invoices which have not yet been posted to the ERP system
-      - invoices which have been posted to the ERP system
+      - Invoices which have not yet been posted to the ERP system.
+      - Invoices which have been posted to the ERP system.
 
       By default, access to unposted invoices is restricted.
   - name: subscription
     description: |
-      These requests represents a user’s action in the Vic.ai system and repsonses to those actions.
+      These requests represents a user’s action in the Vic.ai system and
+      repsonses to those actions.
   - name: training invoices
     description: |
       Invoices that are being used to train Vic.ai's machine learning system.
   - name: vendors
     description: |
-      Vendors are part of your *ERP* **Masterdata**, and represent companies that produce invoices.  In order to be
-      associated with an invoice, key data about the vendor must be stored in Vic.ai.  These operations allow querying and
-      manipulation of the vendor data.
+      Vendors are part of your *ERP* **Masterdata**, and represent companies
+      that produce invoices.  In order to be associated with an invoice, key
+      data about the vendor must be stored in Vic.ai. These operations allow
+      querying and manipulation of the vendor data.
   - name: vat codes
     description: |
-      In some regions, Vat Codes are part of your *ERP* **Masterdata**, that represent timeboxed
-      VAT codes and VAT values that Vic.ai can automatically assign to invoice line items
+      In some regions, Vat Codes are part of your *ERP* **Masterdata**, that
+      represent timeboxed VAT codes and VAT values that Vic.ai can automatically
+      assign to invoice line items.
 
 paths:
-  /token:
+  "/token":
     post:
       description: Use this request to obtain an authorization token
       summary: Token service
@@ -103,7 +111,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /healthCheck:
+  "/healthCheck":
     get:
       description: Use this request to obtain a health check statement.
       summary: Health check
@@ -123,9 +131,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /accounts:
+  "/accounts":
     get:
-      description: Use this request to query the GL account data that are stored in Vic.ai.
+      description: |
+        Use this request to query the GL account data that are stored in Vic.ai.
       summary: List all accounts
       operationId: listAccounts
       tags:
@@ -154,9 +163,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/account/{id}':
+  "/account/{id}":
     get:
-      description: Use this request to get data for a single GL account that is stored in Vic.ai.
+      description: |
+        Use this request to get data for a single GL account that is stored in
+        Vic.ai.
       summary: Info for a specific account
       operationId: getAccount
       tags:
@@ -179,13 +190,15 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       description: |
-        Use this request to *upsert* GL account data for one GL account into Vic.ai.
+        Use this request to *upsert* GL account data for one GL account into
+        Vic.ai.
 
-        If the account is known by Vic.ai, the externalId supplied will be used to resolve the account and
-        perform an update of the data, otherwise, a new account will be inserted.
+        If the account is known by Vic.ai, the externalId supplied will be used
+        to resolve the account and perform an update of the data, otherwise, a
+        new account will be inserted.
 
-        If the upsert action is part of a syncRequest, you should include the syncRequest
-        ID in the `X-Request-Id` header.
+        If the upsert action is part of a syncRequest, you should include the
+        syncRequest ID in the `X-Request-Id` header.
       summary: Upserts an account
       operationId: upsertAccount
       tags:
@@ -214,7 +227,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
-      description: Use this request to delete data for a single account that is stored in Vic.ai
+      description: |
+        Use this request to delete data for a single account that is stored in
+        Vic.ai
       summary: Deletes an account
       operationId: deleteAccount
       tags:
@@ -235,9 +250,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /dimensions:
+  "/dimensions":
     get:
-      description: Use this request to query the dimensions data that are stored in Vic.ai.
+      description: |
+        Use this request to query the dimensions data that are stored in Vic.ai.
       summary: List all dimensions
       operationId: listDimensions
       tags:
@@ -266,9 +282,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/dimension/{id}':
+  "/dimension/{id}":
     get:
-      description: Use this request to get data for a single dimension that is stored in Vic.ai.
+      description: |
+        Use this request to get data for a single dimension that is stored in
+        Vic.ai.
       summary: Info for a specific dimension
       operationId: getDimension
       tags:
@@ -291,13 +309,15 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       description: |
-        Use this request to *upsert* dimensions data for one dimension into Vic.ai.
+        Use this request to *upsert* dimensions data for one dimension into
+        Vic.ai.
 
-        If the dimension is known by Vic.ai, the externalId supplied will be used to resolve the dimension and
-        perform an update of the data, otherwise, a new dimension will be inserted.
+        If the dimension is known by Vic.ai, the `externalId` supplied will be
+        used to resolve the dimension and perform an update of the data,
+        otherwise, a new dimension will be inserted.
 
-        If the upsert action is part of a syncRequest, you should include the syncRequest
-        ID in the `X-Request-Id` header.
+        If the upsert action is part of a `syncRequest`, you should include the
+        `syncRequest` ID in the `X-Request-Id` header.
       summary: Upserts a dimension
       operationId: upsertDimension
       tags:
@@ -353,7 +373,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /vendors:
+  "/vendors":
     get:
       description: Use this request to query the vendor data that are stored in Vic.ai.
       summary: List all vendors
@@ -399,7 +419,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/vendor/{id}':
+  "/vendor/{id}":
     get:
       description: Use this request to get data for a single vendor that is stored in Vic.ai.
       summary: Info for a specific vendor
@@ -426,12 +446,12 @@ paths:
       description: |
         Updates or inserts a vendor into the Vic.ai system.
 
-        All fields passed are set on the vendor. All fields that are omitted from the
-        request body are considered to be null and will be set to null.
+        All fields passed are set on the vendor. All fields that are omitted
+        from the request body are considered to be null and will be set to null.
 
-        If the vendor is known by Vic.ai, the `externalId` supplied will be used to
-        resolve the vendor and perform an update of the data, otherwise, a new vendor
-        will be inserted.
+        If the vendor is known by Vic.ai, the `externalId` supplied will be used
+        to resolve the vendor and perform an update of the data, otherwise, a
+        new vendor will be inserted.
 
         If the upsert action is part of a `syncRequest`, you should include the
         `syncRequest` ID in the `X-Request-Id` header.
@@ -469,7 +489,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
-      description: Use this request to delete data for a single vendor that is stored in Vic.ai
+      description: |
+        Use this request to delete data for a single vendor that is stored in
+        Vic.ai
       summary: Deletes a vendor
       operationId: deleteVendor
       tags:
@@ -490,14 +512,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/vendor/{id}/errors':
+  "/vendor/{id}/errors":
     post:
       description: |
         Use this post to report vendor update failure errors back to Vic.ai.
-        Strictly a repsonse to the callbacks.  Request id is required. The id MUST be an internalId.
-        The request id is generated as a result of the callback.  We assume it is in the logs.
-        In this case you already responded to a request with a 202 Accepted, but now you
-        have an error you want to report back, instead of saying nothing at all.
+        Strictly a repsonse to the callbacks.
+
+        * The `X-Request-Id` header is required.
+        * The `id` MUST be a Vendor `internalId`.
       summary: Completes the response callback cycle resulting from a 202
       operationId: setVendorRemoteErrors
       tags:
@@ -546,9 +568,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /invoices:
+  "/invoices":
     get:
-      description: Use this request to query the invoice data that are stored in Vic.ai.
+      description: |
+        Use this request to query the invoice data that are stored in Vic.ai.
       summary: List all invoices
       operationId: listInvoices
       tags:
@@ -616,9 +639,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  '/invoice/{id}':
+  "/invoice/{id}":
     get:
-      description: Use this request to get data for a single invoice that is stored in Vic.ai
+      description: |
+        Use this request to get data for a single invoice that is stored in
+        Vic.ai
       summary: Info for a specific invoice
       operationId: getInvoice
       tags:
@@ -641,32 +666,35 @@ paths:
                 $ref: '#/components/schemas/Error'
     patch:
       description: |
-        Use this request to indicate that an invoice has been posted or transferred to the ERP system,
-        in the case where you have not activated a subscription, or you have responded to the subscription
-        with a 202-asynchronous response.
+        Use this request to indicate that an invoice has been posted or
+        transferred to the ERP system, in the case where you have not activated
+        a subscription, or you have responded to the subscription with a
+        202-asynchronous response.
 
-        Note that this operation can either be a confirmation, or a rejection, depending on the shape of
-        the payload.
+        Note that this operation can either be a confirmation, or a rejection,
+        depending on the shape of the payload.
 
         Possible payloads:
 
-        - InvoiceConfirm: used to confirm that the invoice data have been successfully posted to the ERP,
-          possibly including a postingError.
+        - InvoiceConfirm: used to confirm that the invoice data have been
+          successfully posted to the ERP, possibly including a postingError.
 
-          - Use of this postingError means that the invoice data are posted, but some secondary content
-            needs amendation in the ERP that cannot be performed from the vic user
-            interface (for example: a problem uploading the posted document).
+          - Use of this postingError means that the invoice data are posted, but
+            some secondary content needs amendation in the ERP that cannot be
+            performed from the vic user interface (for example: a problem
+            uploading the posted document).
 
-        - InvoiceReject: used to communicate that the invoice data have NOT been successfully posted to
-          the ERP, due to invalid data.  This should NOT be used to communicate an error in posting due
-          to a general failure such as a network issue or an availability issue with the ERP, in those
-          or similar cases, a retry should be performed without notifying the vic system.
+        - InvoiceReject: used to communicate that the invoice data have NOT been
+          successfully posted to the ERP, due to invalid data. This should NOT
+          be used to communicate an error in posting due to a general failure
+          such as a network issue or an availability issue with the ERP, in
+          those or similar cases, a retry should be performed without notifying the vic system.
 
         Currently unsupported:
 
-        - InvoiceClearError: the error set in an `InvoiceConfirm` operation should be cleared because the
-          postingError has been resolved in the ERP.  This cannot be used to clear an error due to
-          `InvoiceReject`.
+        - InvoiceClearError: the error set in an `InvoiceConfirm` operation
+          should be cleared because the postingError has been resolved in the
+          ERP. This cannot be used to clear an error due to `InvoiceReject`.
 
         Note that `:id` *must* be internalId for this route.
       summary: Asynchronous reply to invoice post or invoice transfer
@@ -702,7 +730,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
-      description: Use this request to delete data for a single invoice that is stored in Vic.ai
+      description: |
+        Use this request to delete data for a single invoice that is stored in
+        Vic.ai
       summary: Deletes an invoice
       operationId: deleteInvoice
       tags:
@@ -720,7 +750,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /invoice/{id}/process:
+  "/invoice/{id}/process":
     post:
       summary: Start the invoice processing.
       description: |
@@ -762,9 +792,11 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  '/invoice/{id}/document':
+  "/invoice/{id}/document":
     get:
-      description: Use this request to get the document associated with a single invoice that is stored in Vic.ai
+      description: |
+        Use this request to get the document associated with a single invoice
+        that is stored in Vic.ai
       summary: Document for a specific invoice
       operationId: getInvoiceDocument
       tags:
@@ -849,7 +881,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  '/invoice/{id}/lineItems':
+  "/invoice/{id}/lineItems":
     get:
       description: |
         List all of the line items for the invoice.
@@ -885,10 +917,10 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-
-  /trainingInvoices:
+  "/trainingInvoices":
     get:
-      description: Use this request to query the invoice data that are stored in Vic.ai.
+      description: |
+        Use this request to query the invoice data that are stored in Vic.ai.
       summary: List all invoices
       operationId: listTrainingInvoices
       tags:
@@ -916,9 +948,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/trainingInvoice/{id}':
+  "/trainingInvoice/{id}":
     get:
-      description: Use this request to get data for a single training invoice that is stored in Vic.ai
+      description: |
+        Use this request to get data for a single training invoice that is
+        stored in Vic.ai
       summary: Info for a specific invoice
       operationId: getTrainingInvoice
       tags:
@@ -940,20 +974,18 @@ paths:
                 $ref: '#/components/schemas/Error'
     put:
       description: |
-        Use this request to *upsert* training invoice data for one invoice into Vic.ai.
+        Use this request to *upsert* training invoice data for one invoice into
+        Vic.ai.
 
-        For `multipart/form-data` encoded payloads:
-
-        - The request body should contain the invoice object (invoiceData part) as JSON, and
-          corresponding invoice documents as a single pdf file (invoicePayload part) as multipart
-          form data.
+        - The request body should contain the invoice object (invoiceData part)
+          as JSON, and corresponding invoice documents as a single pdf file
+          (`invoicePayload` part) as multipart form data.
 
         - Omitting the invoiceDocument field may only be used for updates.
 
-        You may also encode a `application/json` payload.  This may only be used for updates.
-
-        If the invoice is known by Vic.ai, the externalId supplied will be used to resolve the invoice and
-        perform an update of the data, otherwise, a new invoice will be inserted.
+        If the invoice is known by Vic.ai, the `externalId` supplied will be
+        used to resolve the invoice and perform an update of the data,
+        otherwise, a new invoice will be inserted.
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
       tags:
@@ -1003,7 +1035,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
-      description: Use this request to delete data for a single training invoice that is stored in Vic.ai
+      description: |
+        Use this request to delete data for a single training invoice that is
+        stored in Vic.ai
       summary: Deletes a training invoice
       operationId: deleteTrainingInvoice
       tags:
@@ -1023,9 +1057,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/trainingInvoice/{id}/document':
+  "/trainingInvoice/{id}/document":
     get:
-      description: Use this request to get the document associated with a training invoice that is stored in Vic.ai
+      description: |
+        Use this request to get the document associated with a training invoice
+        that is stored in Vic.ai
       summary: Document for a specific invoice
       operationId: getTrainingInvoiceDocument
       tags:
@@ -1043,9 +1079,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /vatCodes:
+  "/vatCodes":
     get:
-      description: Use this request to query all the vat code data that are stored in Vic.ai.
+      description: |
+        Use this request to query all the vat code data that are stored in
+        Vic.ai.
       summary: List all vat codes
       operationId: listVatCodes
       tags:
@@ -1069,9 +1107,11 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  '/vatCode/{id}':
+  "/vatCode/{id}":
     get:
-      description: Use this request to get data for a single vat code that is stored in Vic.ai
+      description: |
+        Use this request to get data for a single vat code that is stored in
+        Vic.ai
       summary: Info for a specific vat code
       operationId: getVatCode
       tags:
@@ -1098,8 +1138,9 @@ paths:
 
         The request body should contain the vat code object as JSON.
 
-        If the vat code is known by Vic.ai, the id supplied will be used to resolve the vat code and
-        perform an update of the data, otherwise, a new vat code will be inserted.
+        If the vat code is known by Vic.ai, the id supplied will be used to
+        resolve the vat code and perform an update of the data, otherwise, a new
+        vat code will be inserted.
       summary: Upserts a vat code
       operationId: upsertVatCode
       tags:
@@ -1127,7 +1168,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
     delete:
-      description: Use this request to delete data for a single vat code that is stored in Vic.ai
+      description: |
+        Use this request to delete data for a single vat code that is stored in
+        Vic.ai
       summary: Deletes a vat code
       operationId: deleteVatCode
       tags:
@@ -1148,13 +1191,15 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  /subscription:
+  "/subscription":
     put:
       description: |
-        This request is used to configure or modify a new subscription to user and automated actions.
+        This request is used to configure or modify a new subscription to user
+        and automated actions.
 
-        You must supply a callback url and set an access token that Vic.ai can use to authenticate
-        itself in your system.  Notifications of user actions will proceed via the documented schema.
+        You must supply a callback url and set an access token that Vic.ai can
+        use to authenticate itself in your system. Notifications of user actions
+        will proceed via the documented schema.
 
         The callback url must be https.
       summary: Subscribe to callback notifications
@@ -1185,15 +1230,18 @@ paths:
           '{$request.body#/callbackUrl}/vendorNew':
             post:
               description: |
-                This request is sent when a user in Vic.ai adds a new vendor to the system.
+                This request is sent when a user in Vic.ai adds a new vendor to
+                the system.
 
                 Request body contains the vendor object.
 
-                A 201 response indicates that the vendor object has been successfully persisted to the ERP,
-                and it must contain the ERP's vendor object id as the externalId parameter.
+                A 201 response indicates that the vendor object has been
+                successfully persisted to the ERP, and it must contain the ERP's
+                vendor object id as the externalId parameter.
 
-                Any other response will be considered a failure, the vendor object externalId will not be specified,
-                and the error message you specify will be surfaced to the user.
+                Any other response will be considered a failure, the vendor
+                object `externalId` will not be specified, and the error message
+                you specify will be surfaced to the user.
 
                 A 400 response indicates a data validation error.
 
@@ -1241,28 +1289,33 @@ paths:
           '{$request.body#/callbackUrl}/invoicePost':
             post:
               description: |
-                This request is sent when a user in Vic.ai posts an invoice object to the system.
+                This request is sent when a user in Vic.ai posts an invoice
+                object to the system.
 
-                Request body contains the invoice object (invoiceData part) as JSON, and corresponding
-                invoice documents as a pdf file (invoicePayload part) as multipart form data.  This will
-                always be a pdf file.
+                Request body contains the invoice object (`invoiceData` part) as
+                JSON, and corresponding invoice documents as a pdf file
+                (`invoicePayload` part) as multipart form data. This will always
+                be a pdf file.
 
-                A 201 response indicates that the invoice object has been successfully persisted to the
-                ERP, and it must contain the ERP's invoice object id as the externalId
-                parameter.
+                A 201 response indicates that the invoice object has been
+                successfully persisted to the ERP, and it must contain the ERP's
+                invoice object id as the `externalId` parameter.
 
-                A 202 response indicates that the receipt of the invoice object has been acknowledged;
-                an asynchronous update will occur via invoiceConfirm operationId; the supplied 'X-Request-Id'
-                in the request header will be provided as the `X-Request-Id` header for any associated
-                asynchronous updates.
+                A 202 response indicates that the receipt of the invoice object
+                has been acknowledged; an asynchronous update will occur via
+                `invoiceConfirm` and the supplied 'X-Request-Id' in the request
+                header will be provided as the `X-Request-Id` header for any
+                associated asynchronous updates.
 
-                Any other response will be considered a failure, the invoice object externalId will not be specified,
-                and the error message you specify will be surfaced to the user.
+                Any other response will be considered a failure, the invoice
+                object `externalId` will not be specified, and the error message
+                you specify will be surfaced to the user.
 
                 A 400 response indicates a data validation error.
 
-                This callback will timeout after 5 seconds; to prevent inconsistencies, if the request will take
-                longer than 5 seconds, it is appropriate to respond with a 202 response code.
+                This callback will timeout after 5 seconds; to prevent
+                inconsistencies, if the request will take longer than 5 seconds,
+                it is appropriate to respond with a 202 response code.
               parameters:
                 - $ref: '#/components/parameters/RequestId'
               requestBody:
@@ -1308,26 +1361,33 @@ paths:
           '{$request.body#/callbackUrl}/invoiceTransfer':
             post:
               description: |
-                This request is sent when a user in Vic.ai selects and invoice document and *transfers* it to the ERP.
-                Note: there will be no Vic.ai generated invoice data sent with this a *transferred* invoice.
+                This request is sent when a user in Vic.ai selects and invoice
+                document and *transfers* it to the ERP.
+
+                Note: there will be no Vic.ai generated invoice data sent with
+                this a *transferred* invoice.
 
                 Request body contains the invoice document.
 
-                A 201 response indicates that the invoice document has been successfully transferred to the ERP,
-                and it must contain the ERP's invoice document id as the externalId parameter.
+                A 201 response indicates that the invoice document has been
+                successfully transferred to the ERP, and it must contain the
+                ERP's invoice document id as the externalId parameter.
 
-                A 202 response indicates that the receipt of the invoice transfer has been acknowledged;
-                an asynchronous update will occur via invoiceConfirm operationId; the supplied 'X-Request-Id'
-                in the request header will be provided as the `X-Request-Id` header for any associated
-                asynchronous updates.
+                A 202 response indicates that the receipt of the invoice
+                transfer has been acknowledged and an asynchronous update will
+                occur via `invoiceConfirm` operation and the supplied
+                `X-Request-Id` in the request header will be provided as the
+                `X-Request-Id` header for any associated asynchronous updates.
 
-                Any other response will be considered a failure, the invoice object externalId will not be specified,
-                and the error message you specify will be surfaced to the user.
+                Any other response will be considered a failure, the invoice
+                object `externalId` will not be specified, and the error message
+                you specify will be surfaced to the user.
 
                 A 400 response indicates a data validation error.
 
-                This callback will timeout after 5 seconds; to prevent inconsistencies, if the request will take
-                longer than 5 seconds, it is appropriate to respond with a 202 response code.
+                This callback will timeout after 5 seconds and to prevent
+                inconsistencies, if the request will take longer than 5 seconds,
+                it is appropriate to respond with a 202 response code.
               parameters:
                 - $ref: '#/components/parameters/RequestId'
               requestBody:
@@ -1346,7 +1406,7 @@ paths:
                         enum:
                           - OK
                 '202':
-                  description: 'Deferred post, confirmation asynchronous'
+                  description: Deferred post, confirmation asynchronous
                 default:
                   description: unexpected error
                   content:
@@ -1357,16 +1417,20 @@ paths:
           '{$request.body#/callbackUrl}/syncRequest':
             post:
               description: |
-                This request is sent when a user in Vic.ai triggers a sync of all masterdata.
+                This request is sent when a user in Vic.ai triggers a sync of all
+                masterdata.
 
-                In response to this message, you’re expected to post masterdata (vendors, GL accounts, dimensions) into Vic.ai using
-                the respective routes.  You may perform a partial update, determining which data to update using queries.
+                In response to this message, you’re expected to post masterdata
+                (vendors, GL accounts, dimensions) into Vic.ai using the
+                respective routes. You may perform a partial update, determining
+                which data to update using queries.
 
-                The body of the syncRequest contains the requestId; this is a token that should be returned with all upsert
-                actions associated with this syncRequest.
+                The body of the `syncRequest` contains the `X-Request-Id` and
+                this is a  token that should be returned with all upsert actions
+                associated  with this `syncRequest`.
 
-                A 200 response indicates that the request has been acknowledged and informs the user that the sync has been
-                successfully triggered.
+                A 200 response indicates that the request has been acknowledged
+                and informs the user that the sync has been successfully triggered.
               requestBody:
                 required: true
                 content:
@@ -1384,8 +1448,9 @@ paths:
                         $ref: '#/components/schemas/Error'
     delete:
       description: |
-        This request is used to cancel a subscription to user actions.  In conjunction with a post requst, you may use this as a
-        first step to update subscription URLs or authorization tokens.
+        This request is used to cancel a subscription to user actions. In
+        conjunction with a post requst, you may use this as a first step to
+        update subscription URLs or authorization tokens.
       summary: Unsubscribe from callback notifications
       operationId: unsubscribe
       tags:
@@ -1399,9 +1464,10 @@ paths:
                 $ref: '#/components/schemas/UnsubscribeResult'
         default:
           description: unexpected error
-  /costAccounts:
+  "/costAccounts":
     get:
-      description: Use this request to query all the cost accounts for a specific client.
+      description: |
+        Use this request to query all the cost accounts for a specific client.
       summary: List all cost accounts
       operationId: getCostAccounts
       tags:
@@ -1461,7 +1527,7 @@ components:
         Datetime value for incremental updates.
 
         **NOTE**: For external datetimes, the expected format is not in UTC. for
-        vic-internal datetimes (see SinceIsExternal) the format is UTC.
+        vic-internal datetimes (see `SinceIsExternal`) the format is UTC.
       required: false
       schema:
         type: string
@@ -1469,7 +1535,9 @@ components:
     InvoiceStateFilter:
       name: state
       in: query
-      description: selects the state of invoices which are to be searched (defaults to POSTED)
+      description: |
+        selects the state of invoices which are to be searched
+        (defaults to `POSTED`)
       required: false
       schema:
         anyOf:
@@ -1584,14 +1652,14 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: note that internalUpdatedAt is in UTC
+          description: Is in UTC.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does NOT have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     UpsertCommon:
       type: object
@@ -1603,7 +1671,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does NOT have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     HealthCheck:
       type: object
@@ -1635,14 +1703,14 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: note that internalUpdatedAt is in UTC
+          description: Is in UTC.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         number:
           type: string
@@ -1678,7 +1746,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         number:
           type: string
@@ -1729,14 +1797,14 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: note that internalUpdatedAt is in UTC
+          description: Is in UTC.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     DimensionUpsert:
       type: object
@@ -1748,7 +1816,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         name:
           type: string
@@ -2304,7 +2372,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     Invoices:
       type: array
@@ -2424,14 +2492,14 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: note that internalUpdatedAt is in UTC
+          description: Is in UTC.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         code:
           type: string
@@ -2509,7 +2577,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     VendorState:
       enum:
@@ -2566,14 +2634,14 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: note that internalUpdatedAt is in UTC
+          description: Is in UTC.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         name:
           type: string
@@ -2643,7 +2711,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         name:
           type: string
@@ -2779,7 +2847,7 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: note that externalUpdatedAt does NOT have UTC normalization
+          description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
     SubscriptionUpsert:
       type: object
