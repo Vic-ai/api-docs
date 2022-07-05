@@ -1623,12 +1623,27 @@ components:
           format: semver
         company:
           type: string
-    AccountCommon:
+    Account:
       type: object
       required:
-        - number
-        - name
+      - number
+      - name
+      - internalId
+      - internalUpdatedAt
       properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
         number:
           type: string
           format: number
@@ -1645,15 +1660,6 @@ components:
             $ref: '#/components/schemas/ExternalId'
         parentAccountExternalId:
           $ref: '#/components/schemas/ExternalId'
-    Account:
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/AccountCommon'
-      type: object
-      required:
-        - number
-        - name
-      properties:
         requiredDimensionsInternal:
           type: array
           items:
@@ -1661,9 +1667,35 @@ components:
         parentAccountInternalId:
           $ref: '#/components/schemas/InternalId'
     AccountUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/AccountCommon'
+      type: object
+      required:
+      - number
+      - name
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        number:
+          type: string
+          format: number
+        name:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        requiredDimensionsExternal:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+        parentAccountExternalId:
+          $ref: '#/components/schemas/ExternalId'
     Accounts:
       type: array
       items:
