@@ -46,3 +46,14 @@ To view the V1 openapi spec
 ```sh
 open public/vic.api.v1.html
 ```
+
+## Contributing
+
+We are using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
+for commit messages.
+
+Any changes that alter the Open API spec significantly need to have a
+corresponding entry in the `CHANGELOG`.
+
+Feel free to clone and check out a branch and submit a PR for any spelling or
+grammar mistakes.
