@@ -2110,11 +2110,51 @@ components:
         - lineItems
     Invoice:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InvoiceCommon'
-        - $ref: '#/components/schemas/InvoiceRequirable'
-        - $ref: '#/components/schemas/InvoiceFetched'
+      required:
+      - transactionType
+      - refNumber
+      - poNumber
+      - description
+      - currency
+      - language
+      - lineItems
+      - status
       properties:
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        refNumber:
+          description: number that appears on the invoice
+          type: string
+          maxLength: 255
+        poNumber:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 255
+        language:
+          type: string
+          nullable: true
+        issueDate:
+          type: string
+          format: date
+        glDate:
+          type: string
+          format: date
+        dueDate:
+          type: string
+          format: date
+        paymentInfo:
+          anyOf:
+            - $ref: '#/components/schemas/PaymentInfoUS'
+            - $ref: '#/components/schemas/PaymentInfoSE'
+            - $ref: '#/components/schemas/PaymentInfoNO'
+        invoiceInfo:
+          $ref: '#/components/schemas/InvoiceInfoNO'
         source:
           description: Where the invoice originates from.
           type: string
@@ -2153,6 +2193,13 @@ components:
           uniqueItems: true
           items:
             $ref: '#/components/schemas/InvoiceLineItem'
+        postingError:
+          type: string
+        documentUrl:
+          type: string
+          format: url
+        status:
+          $ref: '#/components/schemas/InvoiceState'
     InvoiceConfirm:
       type: object
       required:

@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expand `#/components/schemas/AccountUpsert` to use less inheritance.
 - Expand `#/components/schemas/Dimension` to use less inheritance.
 - Expand `#/components/schemas/DimensionUpsert` to use less inheritance.
+- Expand `#/components/schemas/Invoice` to use less inheritance.
 
 
 ## v0.3.10
