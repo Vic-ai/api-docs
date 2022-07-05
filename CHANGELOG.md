@@ -7,6 +7,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+
+## v0.3.11
+
+### Changed
+- Expand `#/components/schemas/Account` to use less inheritance.
+- Expand `#/components/schemas/AccountUpsert` to use less inheritance.
+- Expand `#/components/schemas/Dimension` to use less inheritance.
+- Expand `#/components/schemas/DimensionUpsert` to use less inheritance.
+- Expand `#/components/schemas/Invoice` to use less inheritance.
+- Expand `#/components/schemas/InvoiceLineItem` to use less inheritance.
+- Expand `#/components/schemas/TrainingInvoice` to use less inheritance.
+- Expand `#/components/schemas/VatCode` to use less inheritance.
+- Expand `#/components/schemas/VatCodeUpsert` to use less inheritance.
+- Expand `#/components/schemas/Vendor` definition to use less inheritance.
+- Expand `#/components/schemas/VendorUpsert` definition to use less inheritance.
+- Expand `#/components/schemas/VendorConfirm` definition to use less inheritance.
+- Expand `#/components/schemas/VendorCallback` definition to use less inheritance.
+
+### Removed
+- Removed `#/components/schemas/AccountCommon`.
+- Removed `#/components/schemas/DimensionCommon`.
+- Removed `#/components/schemas/InvoiceCommon`.
+- Removed `#/components/schemas/InvoiceFetched`.
+- Removed `#/components/schemas/InvoiceRequirable`.
+- Removed `#/components/schemas/InvoiceLineItemCommon`.
+- Removed `#/components/schemas/VatCodeCommon`.
+- Removed `#/components/schemas/VatCodeRequirable`.
+- Removed `#/components/schemas/VendorRequirable`.
+- Removed `#/components/schemas/VendorCommon`.
+
+
 ## v0.3.10
 
 ### Added

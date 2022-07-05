@@ -1623,12 +1623,27 @@ components:
           format: semver
         company:
           type: string
-    AccountCommon:
+    Account:
       type: object
       required:
-        - number
-        - name
+      - number
+      - name
+      - internalId
+      - internalUpdatedAt
       properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
         number:
           type: string
           format: number
@@ -1645,15 +1660,6 @@ components:
             $ref: '#/components/schemas/ExternalId'
         parentAccountExternalId:
           $ref: '#/components/schemas/ExternalId'
-    Account:
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/AccountCommon'
-      type: object
-      required:
-        - number
-        - name
-      properties:
         requiredDimensionsInternal:
           type: array
           items:
@@ -1661,14 +1667,45 @@ components:
         parentAccountInternalId:
           $ref: '#/components/schemas/InternalId'
     AccountUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/AccountCommon'
+      type: object
+      required:
+      - number
+      - name
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        number:
+          type: string
+          format: number
+        name:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        requiredDimensionsExternal:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExternalId'
+        parentAccountExternalId:
+          $ref: '#/components/schemas/ExternalId'
     Accounts:
       type: array
       items:
         $ref: '#/components/schemas/Account'
-    DimensionCommon:
+    Dimension:
+      required:
+      - name
+      - type
+      - internalId
+      - internalUpdatedAt
       properties:
         name:
           type: string
@@ -1680,26 +1717,53 @@ components:
           maxLength: 255
         externalData:
           allOf:
-            - $ref: '#/components/schemas/ExternalData'
+          - $ref: '#/components/schemas/ExternalData'
           nullable: true
         parentDimensionExternalId:
           $ref: '#/components/schemas/ExternalId'
-    Dimension:
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/DimensionCommon'
-      required:
-        - name
-        - type
-      properties:
         displayName:
           type: string
         parentDimensionInternalId:
           $ref: '#/components/schemas/InternalId'
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
     DimensionUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/DimensionCommon'
+      type: object
+      required:
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        name:
+          type: string
+          maxLength: 255
+        type:
+          type: string
+        shortName:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        parentDimensionExternalId:
+          $ref: '#/components/schemas/ExternalId'
     Dimensions:
       type: array
       items:
@@ -1986,8 +2050,17 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateInvoiceLineItem"
-    InvoiceCommon:
+    Invoice:
       type: object
+      required:
+      - transactionType
+      - refNumber
+      - poNumber
+      - description
+      - currency
+      - language
+      - lineItems
+      - status
       properties:
         transactionType:
           $ref: '#/components/schemas/TransactionType'
@@ -2024,33 +2097,6 @@ components:
             - $ref: '#/components/schemas/PaymentInfoNO'
         invoiceInfo:
           $ref: '#/components/schemas/InvoiceInfoNO'
-    InvoiceFetched:
-      required:
-        - status
-      properties:
-        postingError:
-          type: string
-        documentUrl:
-          type: string
-          format: url
-        status:
-          $ref: '#/components/schemas/InvoiceState'
-    InvoiceRequirable:
-      required:
-        - transactionType
-        - refNumber
-        - poNumber
-        - description
-        - currency
-        - language
-        - lineItems
-    Invoice:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/InvoiceCommon'
-        - $ref: '#/components/schemas/InvoiceRequirable'
-        - $ref: '#/components/schemas/InvoiceFetched'
-      properties:
         source:
           description: Where the invoice originates from.
           type: string
@@ -2089,6 +2135,13 @@ components:
           uniqueItems: true
           items:
             $ref: '#/components/schemas/InvoiceLineItem'
+        postingError:
+          type: string
+        documentUrl:
+          type: string
+          format: url
+        status:
+          $ref: '#/components/schemas/InvoiceState'
     InvoiceConfirm:
       type: object
       required:
@@ -2128,13 +2181,51 @@ components:
         - TRANSFERRED
     TrainingInvoice:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/InvoiceCommon'
-        - $ref: '#/components/schemas/InvoiceRequirable'
       required:
-        - vendorExternalId
-        - externalId
+      - currency
+      - description
+      - language
+      - lineItems
+      - poNumber
+      - refNumber
+      - transactionType
+      - vendorExternalId
       properties:
+        transactionType:
+          $ref: '#/components/schemas/TransactionType'
+        refNumber:
+          description: number that appears on the invoice
+          type: string
+          maxLength: 255
+        poNumber:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 255
+        language:
+          type: string
+          nullable: true
+        issueDate:
+          type: string
+          format: date
+        glDate:
+          type: string
+          format: date
+        dueDate:
+          type: string
+          format: date
+        paymentInfo:
+          anyOf:
+          - $ref: '#/components/schemas/PaymentInfoUS'
+          - $ref: '#/components/schemas/PaymentInfoSE'
+          - $ref: '#/components/schemas/PaymentInfoNO'
+        invoiceInfo:
+          $ref: '#/components/schemas/InvoiceInfoNO'
         vendorExternalId:
           $ref: '#/components/schemas/ExternalId'
         lineItems:
@@ -2145,7 +2236,7 @@ components:
             $ref: '#/components/schemas/InvoiceLineItem'
         externalData:
           allOf:
-            - $ref: '#/components/schemas/ExternalData'
+          - $ref: '#/components/schemas/ExternalData'
           nullable: true
     TrainingInvoiceUpsert:
       type: object
@@ -2223,10 +2314,12 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/TrainingInvoice'
-    InvoiceLineItemCommon:
+    InvoiceLineItem:
       type: object
       required:
-        - amount
+      - costAccountExternalId
+      - dimensionsExternalIds
+      - amount
       properties:
         index:
           description: 'position within invoice, if omitted, will be inferred'
@@ -2244,30 +2337,22 @@ components:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
           anyOf:
-            - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-            - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-            - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
-    InvoiceLineItem:
-      type: object
-      allOf:
-        - $ref: '#/components/schemas/InvoiceLineItemCommon'
-      required:
-        - costAccountExternalId
-        - dimensionsExternalIds
-      properties:
+          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
+          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
+          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
         vat:
           oneOf:
           - $ref: "#/components/schemas/LineItemVat"
           nullable: true
         costAccountInternalId:
           allOf:
-            - $ref: '#/components/schemas/InternalId'
+          - $ref: '#/components/schemas/InternalId'
           nullable: true
           deprecated: true
           description: Use `costAccount` instead.
         costAccountExternalId:
           allOf:
-            - $ref: '#/components/schemas/ExternalId'
+          - $ref: '#/components/schemas/ExternalId'
           nullable: true
           deprecated: true
           description: Use `costAccount` instead.
@@ -2329,16 +2414,64 @@ components:
           default: false
     VatCode:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/VatCodeCommon'
-        - $ref: '#/components/schemas/VatCodeRequirable'
+      required:
+        - internalId
+        - internalUpdatedAt
+        - code
+        - description
+      properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        code:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        externalId:
+          type: string
+          maxLength: 255
+        externalUpdatedAt:
+          type: string
+          format: date-time
+        activeStartingAt:
+          type: string
+          format: date-time
+        activeEndingAt:
+          type: string
+          format: date-time
+        rate:
+          type: number
+        remoteData:
+          type: object
+        defaultInvoiceCreditAccount:
+          type: string
+          maxLength: 255
+        vatCreditAccount:
+          type: string
+          maxLength: 255
+        vatDebitAccount:
+          type: string
+          maxLength: 255
     VatCodes:
       type: array
       items:
         $ref: '#/components/schemas/VatCode'
-    VatCodeCommon:
+    VatCodeUpsert:
       type: object
+      required:
+        - externalUpdatedAt
       properties:
         code:
           type: string
@@ -2371,14 +2504,13 @@ components:
         vatDebitAccount:
           type: string
           maxLength: 255
-    VatCodeRequirable:
-      required:
-        - code
-        - description
-    VatCodeUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/VatCodeCommon'
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
     VendorState:
       enum:
         - CONFIRMED
@@ -2395,9 +2527,193 @@ components:
         - PENDING
         - PREDICTED
         - ERRORED
-    VendorCommon:
+    SparseVendor:
       type: object
+      description: A vendor object but sparsely populated.
+      required:
+        - internalId
       properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        externalId:
+          oneOf:
+            - $ref: '#/components/schemas/ExternalId'
+          nullable: true
+        orgNumber:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    Vendor:
+      type: object
+      required:
+        - internalId
+        - internalUpdatedAt
+        - name
+        - email
+        - phone
+        - addressStreet
+        - addressCity
+        - addressState
+        - addressPostalCode
+        - countryCode
+      properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        addressStreet:
+          type: string
+          nullable: true
+        addressCity:
+          type: string
+          nullable: true
+        addressState:
+          type: string
+          nullable: true
+        addressPostalCode:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 3
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          $ref: "#/components/schemas/VendorState"
+        taxInfo:
+          anyOf:
+          - $ref: '#/components/schemas/TaxInfoUS'
+          - $ref: '#/components/schemas/TaxInfoSE'
+          - $ref: '#/components/schemas/TaxInfoNO'
+        defaultPaymentInfo:
+          anyOf:
+          - $ref: '#/components/schemas/PaymentInfoUS'
+          - $ref: '#/components/schemas/PaymentInfoSE'
+          - $ref: '#/components/schemas/PaymentInfoNO'
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        errors:
+          description: The errors that occurred in the external ERP system.
+          items:
+            $ref: "#/components/schemas/VendorRemoteError"
+    Vendors:
+      type: array
+      items:
+        $ref: '#/components/schemas/Vendor'
+    VendorUpsert:
+      type: object
+      required:
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        name:
+          type: string
+          maxLength: 255
+        email:
+          type: string
+          format: email
+          maxLength: 255
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        addressStreet:
+          type: string
+          nullable: true
+        addressCity:
+          type: string
+          nullable: true
+        addressState:
+          type: string
+          nullable: true
+        addressPostalCode:
+          type: string
+          nullable: true
+        countryCode:
+          type: string
+          nullable: true
+        currency:
+          type: string
+          format: ISO-4217
+          maxLength: 3
+        confirmedAt:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          $ref: "#/components/schemas/VendorState"
+        taxInfo:
+          anyOf:
+          - $ref: '#/components/schemas/TaxInfoUS'
+          - $ref: '#/components/schemas/TaxInfoSE'
+          - $ref: '#/components/schemas/TaxInfoNO'
+        defaultPaymentInfo:
+          anyOf:
+          - $ref: '#/components/schemas/PaymentInfoUS'
+          - $ref: '#/components/schemas/PaymentInfoSE'
+          - $ref: '#/components/schemas/PaymentInfoNO'
+        externalData:
+          allOf:
+          - $ref: '#/components/schemas/ExternalData'
+          nullable: true
+        errors:
+          description: The errors that occurred in the external ERP system.
+          items:
+            $ref: "#/components/schemas/VendorRemoteError"
+    VendorCallback:
+      type: object
+      required:
+      - addressCity
+      - addressPostalCode
+      - addressState
+      - addressStreet
+      - countryCode
+      - email
+      - internalId
+      - name
+      - phone
+      properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
         name:
           type: string
           maxLength: 255
@@ -2452,65 +2768,19 @@ components:
           description: The errors that occurred in the external ERP system.
           items:
             $ref: "#/components/schemas/VendorRemoteError"
-    VendorRequirable:
-      required:
-        - name
-        - email
-        - phone
-        - addressStreet
-        - addressCity
-        - addressState
-        - addressPostalCode
-        - countryCode
-    SparseVendor:
-      type: object
-      description: A vendor object but sparsely populated.
-      required:
-      - internalId
-      properties:
-        internalId:
-          $ref: '#/components/schemas/InternalId'
-        externalId:
-          oneOf:
-          - $ref: '#/components/schemas/ExternalId'
-          nullable: true
-        orgNumber:
-          type: string
-          nullable: true
-        countryCode:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-    Vendor:
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/VendorCommon'
-        - $ref: '#/components/schemas/VendorRequirable'
-    Vendors:
-      type: array
-      items:
-        $ref: '#/components/schemas/Vendor'
-    VendorUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/VendorCommon'
-    VendorCallback:
-      allOf:
-        - $ref: '#/components/schemas/VendorCommon'
-        - $ref: '#/components/schemas/VendorRequirable'
-        - type: object
-          required:
-            - internalId
-          properties:
-            internalId:
-              $ref: '#/components/schemas/InternalId'
     VendorConfirm:
-      allOf:
-        - required:
-            - externalId
-        - $ref: '#/components/schemas/UpsertCommon'
+      type: object
+      required:
+      - externalId
+      - externalUpdatedAt
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
     SubscriptionUpsert:
       type: object
       properties:
