@@ -2421,16 +2421,64 @@ components:
           default: false
     VatCode:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/QueryCommon'
-        - $ref: '#/components/schemas/VatCodeCommon'
-        - $ref: '#/components/schemas/VatCodeRequirable'
+      required:
+      - internalId
+      - internalUpdatedAt
+      - code
+      - description
+      properties:
+        internalId:
+          $ref: '#/components/schemas/InternalId'
+        internalUpdatedAt:
+          type: string
+          description: note that internalUpdatedAt is in UTC
+          format: date-time
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
+        code:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+          maxLength: 255
+        externalId:
+          type: string
+          maxLength: 255
+        externalUpdatedAt:
+          type: string
+          format: date-time
+        activeStartingAt:
+          type: string
+          format: date-time
+        activeEndingAt:
+          type: string
+          format: date-time
+        rate:
+          type: number
+        remoteData:
+          type: object
+        defaultInvoiceCreditAccount:
+          type: string
+          maxLength: 255
+        vatCreditAccount:
+          type: string
+          maxLength: 255
+        vatDebitAccount:
+          type: string
+          maxLength: 255
     VatCodes:
       type: array
       items:
         $ref: '#/components/schemas/VatCode'
-    VatCodeCommon:
+    VatCodeUpsert:
       type: object
+      required:
+      - externalUpdatedAt
       properties:
         code:
           type: string
@@ -2463,14 +2511,13 @@ components:
         vatDebitAccount:
           type: string
           maxLength: 255
-    VatCodeRequirable:
-      required:
-        - code
-        - description
-    VatCodeUpsert:
-      allOf:
-        - $ref: '#/components/schemas/UpsertCommon'
-        - $ref: '#/components/schemas/VatCodeCommon'
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: note that externalUpdatedAt does NOT have UTC normalization
+          example: '2021-06-29T17:20:53.154'
     VendorState:
       enum:
         - CONFIRMED
