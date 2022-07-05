@@ -9,17 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.3.11
-
 ### Changed
-- Expand `#/components/schemas/Account` to use less inheritance.
-- Expand `#/components/schemas/AccountUpsert` to use less inheritance.
-- Expand `#/components/schemas/Dimension` to use less inheritance.
-- Expand `#/components/schemas/DimensionUpsert` to use less inheritance.
-- Expand `#/components/schemas/Invoice` to use less inheritance.
-- Expand `#/components/schemas/InvoiceLineItem` to use less inheritance.
-- Expand `#/components/schemas/TrainingInvoice` to use less inheritance.
-- Expand `#/components/schemas/VatCode` to use less inheritance.
-- Expand `#/components/schemas/VatCodeUpsert` to use less inheritance.
+- Expand `#/components/schemas/Account` definition to use less inheritance.
+- Expand `#/components/schemas/AccountUpsert` definition to use less inheritance.
+- Expand `#/components/schemas/Dimension` definition to use less inheritance.
+- Expand `#/components/schemas/DimensionUpsert` definition to use less inheritance.
+- Expand `#/components/schemas/Invoice` definition to use less inheritance.
+- Expand `#/components/schemas/InvoiceLineItem` definition to use less inheritance.
+- Expand `#/components/schemas/TrainingInvoice` definition to use less inheritance.
+- Expand `#/components/schemas/VatCode` definition to use less inheritance.
+- Expand `#/components/schemas/VatCodeUpsert` definition to use less inheritance.
 - Expand `#/components/schemas/Vendor` definition to use less inheritance.
 - Expand `#/components/schemas/VendorUpsert` definition to use less inheritance.
 - Expand `#/components/schemas/VendorConfirm` definition to use less inheritance.
@@ -39,7 +38,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.3.10
-
 ### Added
 - Added `DELETE /v0/invoice/{id}` to delete an invoice.
 
