@@ -705,7 +705,8 @@ paths:
         - name: id
           in: path
           required: true
-          description: the internalId of the invoice which should be confirmed
+          description: |
+            The `internalId` of the invoice which should be confirmed.
           schema:
             type: string
       requestBody:
@@ -881,37 +882,26 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  '/invoice/{id}/confirm':
+  "/invoice/{id}/confirm":
     post:
       description: |
-        Use this request to confirm that an invoice has been posted or transferred to the ERP system,
-        in the case where you have not activated a subscription, or you have responded to the subscription
-        with a 202-asynchronous response.
+        Used to confirm that the invoice data have been successfully posted to
+        the ERP, possibly including a `postingError`.
 
-        Used to confirm that the invoice data have been successfully posted to the ERP, 
-        possibly including a postingError.
-
-          - Use of this postingError means that the invoice data are posted, but some secondary content
-            needs amendation in the ERP that cannot be performed from the vic user
-            interface (for example: a problem uploading the posted document).
-
-        Currently unsupported:
-
-        - InvoiceClearError: the error set in an `InvoiceConfirm` operation should be cleared because the
-          postingError has been resolved in the ERP.  This cannot be used to clear an error due to
-          `InvoiceReject`.
-
-        Note that `:id` *must* be internalId for this route.
+        Use of this `postingError` means that the invoice data are posted, but
+        some secondary content needs amendation in the ERP that cannot be
+        performed from the vic user interface (for example: a problem
+        uploading the posted document).
       summary: Asynchronous reply to invoice post or invoice transfer
       operationId: confirmInvoice
       tags:
         - invoices
       parameters:
-        - $ref: '#/components/parameters/UseSystem'
         - name: id
           in: path
           required: true
-          description: The `internalId` or `externalId` of the invoice which should be confirmed.
+          description: |
+            The `internalId` of the invoice which should be confirmed.
           schema:
             type: string
       requestBody:
@@ -921,7 +911,7 @@ paths:
             schema:
               $ref: '#/components/schemas/InvoiceConfirm'
       responses:
-        '200':
+        "200":
           description: The invoice was confirmed successfully.
           content:
             application/json:
