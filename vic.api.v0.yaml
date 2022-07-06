@@ -892,6 +892,8 @@ paths:
         some secondary content needs amendation in the ERP that cannot be
         performed from the vic user interface (for example: a problem
         uploading the posted document).
+
+        Note: `id` *must* be the `internalId` of the invoice.
       summary: Asynchronous reply to invoice post or invoice transfer
       operationId: confirmInvoice
       tags:
