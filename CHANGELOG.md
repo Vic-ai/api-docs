@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.3.12
+### Added
+- Added `POST /invoice/{id}/confirm` to confirm invoices.
+
 
 ## v0.3.11
 ### Changed

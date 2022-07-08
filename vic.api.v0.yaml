@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.11
+  version: 0.3.12
   contact: {}
   title: Vic.Api
   description: |
@@ -705,7 +705,8 @@ paths:
         - name: id
           in: path
           required: true
-          description: the internalId of the invoice which should be confirmed
+          description: |
+            The `internalId` of the invoice which should be confirmed.
           schema:
             type: string
       requestBody:
@@ -863,6 +864,61 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Invoice"
+        "403":
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Invoice was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Errors with the input are present.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/invoice/{id}/confirm":
+    post:
+      description: |
+        Used to confirm that the invoice data have been successfully posted to
+        the ERP, possibly including a `postingError`.
+
+        Use of this `postingError` means that the invoice data are posted, but
+        some secondary content needs amendation in the ERP that cannot be
+        performed from the vic user interface (for example: a problem
+        uploading the posted document).
+
+        Note: `id` *must* be the `internalId` of the invoice.
+      summary: Asynchronous reply to invoice post or invoice transfer
+      operationId: confirmInvoice
+      tags:
+        - invoices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: |
+            The `internalId` of the invoice which should be confirmed.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceConfirm'
+      responses:
+        "200":
+          description: The invoice was confirmed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
         "403":
           description: Forbidden.
           content:
