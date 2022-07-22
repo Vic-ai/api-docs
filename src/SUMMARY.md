@@ -2,6 +2,7 @@
 
 # References
 
+- [Changelog](CHANGELOG.md)
 - [Authentication](authentication/README.md)
 - [V0](v0/README.md)
   - [Open API Spec](vic.api.v0.html)
