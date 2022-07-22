@@ -55,6 +55,10 @@ To view the V1 openapi spec
 open public/vic.api.v1.html
 ```
 
+## Deployment
+
+The `main` branch is auto deployed when merged into.
+
 ## Contributing
 
 We are using [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/)
