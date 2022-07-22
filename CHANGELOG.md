@@ -7,13 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.3.13
+### Added in V1
+- Added `GET /v1/subscriptions` to list subscriptions.
+- Added `POST /v1/subscriptions` to create a subscription.
+- Added `GET /v1/subscriptions/{id}` to get the details of a subscription.
+- Added `PUT /v1/subscriptions/{id}` to update a subscription.
+- Added `DELETE /v1/subscriptions/{id}` to delete a subscription.
+
+
 ## v0.3.12
-### Added
-- Added `POST /invoice/{id}/confirm` to confirm invoices.
+### Added in V0
+- Added `POST /v0/invoice/{id}/confirm` to confirm invoices.
 
 
 ## v0.3.11
-### Changed
+### Changed in V0
 - Expand `#/components/schemas/Account` definition to use less inheritance.
 - Expand `#/components/schemas/AccountUpsert` definition to use less inheritance.
 - Expand `#/components/schemas/Dimension` definition to use less inheritance.
@@ -28,7 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Expand `#/components/schemas/VendorConfirm` definition to use less inheritance.
 - Expand `#/components/schemas/VendorCallback` definition to use less inheritance.
 
-### Removed
+### Removed in V0
 - Removed `#/components/schemas/AccountCommon`.
 - Removed `#/components/schemas/DimensionCommon`.
 - Removed `#/components/schemas/InvoiceCommon`.
@@ -42,12 +51,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.3.10
-### Added
+### Added in V0
 - Added `DELETE /v0/invoice/{id}` to delete an invoice.
 
 
 ## v0.3.9
-### Added
+### Added in V0
 - Added `bban` to `#/components/schemas/PaymentInfoSE`
 - Added `bban` to `#/components/schemas/PaymentInfoNO`
 - Added `BBAN` to the allowed enum for `defaultMethod` on `#/components/schemas/PaymentInfoSE`
@@ -55,7 +64,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.3.8
-### Added
+### Added in V0
 - Added `source` to `#/components/schemas/Invoice`.
 - Added `vendor` to `#/components/schemas/Invoice`.
 - Added `paymentRef` to `#/components/schemas/Invoice`.
@@ -65,7 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `vat` to `#/components/schemas/InvoiceLineItem`.
 - Added `GET /v0/invoice/{id}/lineItems` to fetch ungrouped line items.
 
-### Changed
+### Changed in V0
 - Marked `kid` as deprecated in `#/components/schemas/InvoiceInfoNO`. The `paymentRef` field on `#/components/schemas/Invoice` should be used instead.
 - Marked `dimensionsInternalIds` as deprecated in `#/components/schemas/InvoiceLineItem`. Use `dimensions` instead.
 - Marked `dimensionsExternalIds` as deprecated in `#/components/schemas/InvoiceLineItem`. Use `dimensions` instead.
@@ -74,44 +83,44 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.3.7
-### Changed
+### Changed in V0
 - Make `vendorExternalId` not required for `#/components/schemas/Invoice`.
 
 
 ## v0.3.6
-### Changed
+### Changed in V0
 - Allow `createInvoice` to have `lineItems` specified.
 
 
 ## v0.3.5
-### Added
+### Added in V0
 - `useSystem` directive to `startProcessingInvoice`
 - `useSystem` directive to `uploadDocumentInvoice`
 
-### Changed
+### Changed in V0
 - `externalId` is no longer required for `createInvoice`.
 
 
 ## v0.3.4
-### Added
+### Added in V0
 - Added ability to filter vendors by `state` for `GET /v0/vendors`.
 
 
 ## v0.3.3
-### Added
+### Added in V0
 - Added `POST /v0/invoices` to begin the creation of an invoice.
 - Added `POST /v0/invoice/{id}/document` to attach a document to an invoice.
 - Added `POST /v0/invoice/{id}/process` to notify Vic that the invoice may now start being processed.
 
-### Removed
+### Removed in V0
 - Removed `application/json` request body from `PUT /v0/trainingInvoice/{id}`. All requests should just be `multipart/form-data`.
 
 
 ## v0.3.0
-## Changed
+## Changed in V0
 - Simplified `Vendor.confirmedAt` field.
 
-## Removed
+## Removed in V0
 - Removed `NullableInternalId`. Replaced with `allOf: ["#/components/schemas/InternalId"]`; followed by a `nullable: true`.
 - Removed `NullableExternalId`. Replaced with `allOf: ["#/components/schemas/ExternalId"]`; followed by a `nullable: true`.
 - Removed `NullableObject`. Replaced with `allOf: ["#/components/schemas/ExternalData"]`; followed by a `nullable: true`.
@@ -121,25 +130,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 
 ## v0.2.14
-### Changed
+### Changed in V0
 - Simplified `InvoiceCommon.invoiceInfo` to reference `InvoiceInfoNO`
 
-### Removed
+### Removed in V0
 - Removed extra `VendorState` definition.
 
 
 ## v0.2.13
-### Added
+### Added in V0
 - `GET /v0/costAccounts` - Ability to get all the `CostAccount` for a company.
 - Added `200` response to `PUT /v0/vendor/{id}` definition when the vendor has
   been updated, and `201` when the vendor has been created.
 
 
 ## v0.2.12
-### Added
+### Added in V0
 - Added `errors` to `#/components/schemas/Vendor` to convey errors that occurred in the ERP system.
 - `POST /v0/vendor/{id}/errors` - Ability to set `errors` on a vendor.
 - `DELETE /v0/vendor/{id}/errors` - Ability to clear `errors` on a vendor.
 
-### Changed
+### Changed in V0
 - `confirmedAt` on `#/components/schemas/Vendor` are allowed to be null.
