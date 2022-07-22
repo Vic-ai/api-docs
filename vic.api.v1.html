@@ -1,0 +1,59 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Vic.AI OpenAPI Documentation</title>
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700|Source+Code+Pro:300,600|Titillium+Web:400,600,700" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.11.1/swagger-ui.css" >
+  <style>
+    html {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+    }
+
+    *,
+    *:before,
+    *:after {
+        box-sizing: inherit;
+    }
+
+    body {
+        margin: 0;
+        background: #fafafa;
+    }
+  </style>
+</head>
+<body>
+
+<div id="swagger-ui"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.11.1/swagger-ui-bundle.js"> </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.11.1/swagger-ui-standalone-preset.js"> </script>
+<script>
+window.onload = function() {
+
+  var spec = {"openapi": "3.0.3", "info": {"version": "0.3.10", "contact": {}, "title": "Vic.Api", "description": "Vic.Api allows you to connect an *ERP* to the Vic.ai product suite.\n"}, "servers": [{"url": "https://api.us.dev.vic.ai/v1", "description": "development server, US"}, {"url": "https://api.no.dev.vic.ai/v1", "description": "development server, NO"}, {"url": "https://api.us.stage.vic.ai/v1", "description": "staging server, US"}, {"url": "https://api.no.stage.vic.ai/v1", "description": "staging server, NO"}, {"url": "https://api.us.vic.ai/v1", "description": "production server, US"}, {"url": "https://api.no.vic.ai/v1", "description": "production server, NO"}], "tags": [{"name": "purchase orders"}], "paths": {}, "components": {"securitySchemes": {"BearerAuth": {"type": "http", "scheme": "bearer"}}, "callbacks": {}, "parameters": {}, "schemas": {}}};
+
+  // Build a system
+  const ui = SwaggerUIBundle({
+    spec: spec,
+    dom_id: '#swagger-ui',
+    deepLinking: true,
+    presets: [
+      SwaggerUIBundle.presets.apis,
+      SwaggerUIStandalonePreset
+    ],
+    plugins: [
+      SwaggerUIBundle.plugins.DownloadUrl
+    ],
+    layout: "StandaloneLayout"
+  })
+
+  window.ui = ui
+}
+</script>
+</body>
+
+</html>
