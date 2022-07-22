@@ -135,6 +135,56 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h1>
+<p>Subscriptions are how Vic is able to notify third party integrations about
+events and updates within the system.</p>
+<p>The functionality of subscriptions in the V1 system are very different than how
+they operate in the V0 system.</p>
+<p>All subscriptions must have a <code>callback_url</code>, <code>access_token</code>, <code>expires_at</code>, and
+a <code>version</code> specified.</p>
+<h2 id="callback-consumption"><a class="header" href="#callback-consumption">Callback Consumption</a></h2>
+<p>The callback url specified is where all events will be sent to via an HTTP
+<code>POST</code> call. The Vic system does not care about the response from the
+<code>callback_url</code> specified. The only response the Vic system cares about is the
+status code not being a <code>5XX</code>.</p>
+<h2 id="callback-retries"><a class="header" href="#callback-retries">Callback Retries</a></h2>
+<p>The callback will be attempted 5 times if the response from the callback system
+if the response status code is a <code>5XX</code>. We will back off exponentially when this
+occurs.</p>
+<h2 id="callback-event-ordering"><a class="header" href="#callback-event-ordering">Callback Event Ordering</a></h2>
+<p>The callback events have no guaranteed ordering at the moment.</p>
+<h2 id="callback-payload-shape"><a class="header" href="#callback-payload-shape">Callback Payload Shape</a></h2>
+<p>The following is an example of a callback event that can be received.</p>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;purchase_order_updated&quot;,
+  &quot;occurred_at&quot;: &quot;2022-06-01T12:00:00Z&quot;,
+  &quot;data&quot;: {
+    &quot;external_id&quot;: null,
+    &quot;internal_id&quot;: &quot;51721bc8-6263-464b-babd-ba754f7fd94b&quot;,
+    &quot;internal_updated_at&quot;: &quot;2022-05-02T12:34:56Z&quot;,
+    &quot;issued_on&quot;: &quot;2022-05-01&quot;,
+    &quot;po_number&quot;: &quot;1234567890&quot;,
+    &quot;deliver_on&quot;: &quot;2022-06-01&quot;,
+    &quot;amount&quot;: &quot;100.00&quot;,
+    &quot;currency_id&quot;: &quot;USD&quot;,
+    &quot;status&quot;: &quot;open&quot;,
+    &quot;description&quot;: &quot;The purchase order description&quot;,
+    &quot;items&quot;: [
+        {
+          &quot;internal_id&quot;: &quot;e6097517-548d-448f-a7f5-bfb656be228f&quot;,
+          &quot;product_number&quot;: &quot;theproductnumber&quot;,
+          &quot;product_description&quot;: &quot;The product description&quot;,
+          &quot;unit_of_measure&quot;: &quot;kg&quot;,
+          &quot;quantity&quot;: &quot;12.3&quot;,
+          &quot;unit_amount&quot;: &quot;1.99&quot;,
+          &quot;line_item_total&quot;: &quot;24.48&quot;,
+          &quot;dimensions&quot;: [
+            {&quot;internal_id&quot;: &quot;12345&quot;, &quot;external_id&quot;: &quot;abc123&quot;}
+          ]
+        }
+    ]
+  }
+}
+</code></pre>
 
                     </main>
 

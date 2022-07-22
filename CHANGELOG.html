@@ -139,13 +139,22 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
-<h2 id="v0312"><a class="header" href="#v0312">v0.3.12</a></h2>
-<h3 id="added"><a class="header" href="#added">Added</a></h3>
+<h2 id="v0313"><a class="header" href="#v0313">v0.3.13</a></h2>
+<h3 id="added-in-v1"><a class="header" href="#added-in-v1">Added in V1</a></h3>
 <ul>
-<li>Added <code>POST /invoice/{id}/confirm</code> to confirm invoices.</li>
+<li>Added <code>GET /v1/subscriptions</code> to list subscriptions.</li>
+<li>Added <code>POST /v1/subscriptions</code> to create a subscription.</li>
+<li>Added <code>GET /v1/subscriptions/{id}</code> to get the details of a subscription.</li>
+<li>Added <code>PUT /v1/subscriptions/{id}</code> to update a subscription.</li>
+<li>Added <code>DELETE /v1/subscriptions/{id}</code> to delete a subscription.</li>
+</ul>
+<h2 id="v0312"><a class="header" href="#v0312">v0.3.12</a></h2>
+<h3 id="added-in-v0"><a class="header" href="#added-in-v0">Added in V0</a></h3>
+<ul>
+<li>Added <code>POST /v0/invoice/{id}/confirm</code> to confirm invoices.</li>
 </ul>
 <h2 id="v0311"><a class="header" href="#v0311">v0.3.11</a></h2>
-<h3 id="changed"><a class="header" href="#changed">Changed</a></h3>
+<h3 id="changed-in-v0"><a class="header" href="#changed-in-v0">Changed in V0</a></h3>
 <ul>
 <li>Expand <code>#/components/schemas/Account</code> definition to use less inheritance.</li>
 <li>Expand <code>#/components/schemas/AccountUpsert</code> definition to use less inheritance.</li>
@@ -161,7 +170,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Expand <code>#/components/schemas/VendorConfirm</code> definition to use less inheritance.</li>
 <li>Expand <code>#/components/schemas/VendorCallback</code> definition to use less inheritance.</li>
 </ul>
-<h3 id="removed"><a class="header" href="#removed">Removed</a></h3>
+<h3 id="removed-in-v0"><a class="header" href="#removed-in-v0">Removed in V0</a></h3>
 <ul>
 <li>Removed <code>#/components/schemas/AccountCommon</code>.</li>
 <li>Removed <code>#/components/schemas/DimensionCommon</code>.</li>
@@ -175,12 +184,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Removed <code>#/components/schemas/VendorCommon</code>.</li>
 </ul>
 <h2 id="v0310"><a class="header" href="#v0310">v0.3.10</a></h2>
-<h3 id="added-1"><a class="header" href="#added-1">Added</a></h3>
+<h3 id="added-in-v0-1"><a class="header" href="#added-in-v0-1">Added in V0</a></h3>
 <ul>
 <li>Added <code>DELETE /v0/invoice/{id}</code> to delete an invoice.</li>
 </ul>
 <h2 id="v039"><a class="header" href="#v039">v0.3.9</a></h2>
-<h3 id="added-2"><a class="header" href="#added-2">Added</a></h3>
+<h3 id="added-in-v0-2"><a class="header" href="#added-in-v0-2">Added in V0</a></h3>
 <ul>
 <li>Added <code>bban</code> to <code>#/components/schemas/PaymentInfoSE</code></li>
 <li>Added <code>bban</code> to <code>#/components/schemas/PaymentInfoNO</code></li>
@@ -188,7 +197,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>BBAN</code> to the allowed enum for <code>defaultMethod</code> on <code>#/components/schemas/PaymentInfoNO</code></li>
 </ul>
 <h2 id="v038"><a class="header" href="#v038">v0.3.8</a></h2>
-<h3 id="added-3"><a class="header" href="#added-3">Added</a></h3>
+<h3 id="added-in-v0-3"><a class="header" href="#added-in-v0-3">Added in V0</a></h3>
 <ul>
 <li>Added <code>source</code> to <code>#/components/schemas/Invoice</code>.</li>
 <li>Added <code>vendor</code> to <code>#/components/schemas/Invoice</code>.</li>
@@ -199,7 +208,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>vat</code> to <code>#/components/schemas/InvoiceLineItem</code>.</li>
 <li>Added <code>GET /v0/invoice/{id}/lineItems</code> to fetch ungrouped line items.</li>
 </ul>
-<h3 id="changed-1"><a class="header" href="#changed-1">Changed</a></h3>
+<h3 id="changed-in-v0-1"><a class="header" href="#changed-in-v0-1">Changed in V0</a></h3>
 <ul>
 <li>Marked <code>kid</code> as deprecated in <code>#/components/schemas/InvoiceInfoNO</code>. The <code>paymentRef</code> field on <code>#/components/schemas/Invoice</code> should be used instead.</li>
 <li>Marked <code>dimensionsInternalIds</code> as deprecated in <code>#/components/schemas/InvoiceLineItem</code>. Use <code>dimensions</code> instead.</li>
@@ -208,47 +217,47 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Marked <code>costAccountExternalId</code> as deprecated in <code>#/components/schemas/InvoiceLineItem</code>. Use <code>costAccount</code> instead.</li>
 </ul>
 <h2 id="v037"><a class="header" href="#v037">v0.3.7</a></h2>
-<h3 id="changed-2"><a class="header" href="#changed-2">Changed</a></h3>
+<h3 id="changed-in-v0-2"><a class="header" href="#changed-in-v0-2">Changed in V0</a></h3>
 <ul>
 <li>Make <code>vendorExternalId</code> not required for <code>#/components/schemas/Invoice</code>.</li>
 </ul>
 <h2 id="v036"><a class="header" href="#v036">v0.3.6</a></h2>
-<h3 id="changed-3"><a class="header" href="#changed-3">Changed</a></h3>
+<h3 id="changed-in-v0-3"><a class="header" href="#changed-in-v0-3">Changed in V0</a></h3>
 <ul>
 <li>Allow <code>createInvoice</code> to have <code>lineItems</code> specified.</li>
 </ul>
 <h2 id="v035"><a class="header" href="#v035">v0.3.5</a></h2>
-<h3 id="added-4"><a class="header" href="#added-4">Added</a></h3>
+<h3 id="added-in-v0-4"><a class="header" href="#added-in-v0-4">Added in V0</a></h3>
 <ul>
 <li><code>useSystem</code> directive to <code>startProcessingInvoice</code></li>
 <li><code>useSystem</code> directive to <code>uploadDocumentInvoice</code></li>
 </ul>
-<h3 id="changed-4"><a class="header" href="#changed-4">Changed</a></h3>
+<h3 id="changed-in-v0-4"><a class="header" href="#changed-in-v0-4">Changed in V0</a></h3>
 <ul>
 <li><code>externalId</code> is no longer required for <code>createInvoice</code>.</li>
 </ul>
 <h2 id="v034"><a class="header" href="#v034">v0.3.4</a></h2>
-<h3 id="added-5"><a class="header" href="#added-5">Added</a></h3>
+<h3 id="added-in-v0-5"><a class="header" href="#added-in-v0-5">Added in V0</a></h3>
 <ul>
 <li>Added ability to filter vendors by <code>state</code> for <code>GET /v0/vendors</code>.</li>
 </ul>
 <h2 id="v033"><a class="header" href="#v033">v0.3.3</a></h2>
-<h3 id="added-6"><a class="header" href="#added-6">Added</a></h3>
+<h3 id="added-in-v0-6"><a class="header" href="#added-in-v0-6">Added in V0</a></h3>
 <ul>
 <li>Added <code>POST /v0/invoices</code> to begin the creation of an invoice.</li>
 <li>Added <code>POST /v0/invoice/{id}/document</code> to attach a document to an invoice.</li>
 <li>Added <code>POST /v0/invoice/{id}/process</code> to notify Vic that the invoice may now start being processed.</li>
 </ul>
-<h3 id="removed-1"><a class="header" href="#removed-1">Removed</a></h3>
+<h3 id="removed-in-v0-1"><a class="header" href="#removed-in-v0-1">Removed in V0</a></h3>
 <ul>
 <li>Removed <code>application/json</code> request body from <code>PUT /v0/trainingInvoice/{id}</code>. All requests should just be <code>multipart/form-data</code>.</li>
 </ul>
 <h2 id="v030"><a class="header" href="#v030">v0.3.0</a></h2>
-<h2 id="changed-5"><a class="header" href="#changed-5">Changed</a></h2>
+<h2 id="changed-in-v0-5"><a class="header" href="#changed-in-v0-5">Changed in V0</a></h2>
 <ul>
 <li>Simplified <code>Vendor.confirmedAt</code> field.</li>
 </ul>
-<h2 id="removed-2"><a class="header" href="#removed-2">Removed</a></h2>
+<h2 id="removed-in-v0-2"><a class="header" href="#removed-in-v0-2">Removed in V0</a></h2>
 <ul>
 <li>Removed <code>NullableInternalId</code>. Replaced with <code>allOf: [&quot;#/components/schemas/InternalId&quot;]</code>; followed by a <code>nullable: true</code>.</li>
 <li>Removed <code>NullableExternalId</code>. Replaced with <code>allOf: [&quot;#/components/schemas/ExternalId&quot;]</code>; followed by a <code>nullable: true</code>.</li>
@@ -258,29 +267,29 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Removed <code>InvoiceInfoSE</code>. No replacement added.</li>
 </ul>
 <h2 id="v0214"><a class="header" href="#v0214">v0.2.14</a></h2>
-<h3 id="changed-6"><a class="header" href="#changed-6">Changed</a></h3>
+<h3 id="changed-in-v0-6"><a class="header" href="#changed-in-v0-6">Changed in V0</a></h3>
 <ul>
 <li>Simplified <code>InvoiceCommon.invoiceInfo</code> to reference <code>InvoiceInfoNO</code></li>
 </ul>
-<h3 id="removed-3"><a class="header" href="#removed-3">Removed</a></h3>
+<h3 id="removed-in-v0-3"><a class="header" href="#removed-in-v0-3">Removed in V0</a></h3>
 <ul>
 <li>Removed extra <code>VendorState</code> definition.</li>
 </ul>
 <h2 id="v0213"><a class="header" href="#v0213">v0.2.13</a></h2>
-<h3 id="added-7"><a class="header" href="#added-7">Added</a></h3>
+<h3 id="added-in-v0-7"><a class="header" href="#added-in-v0-7">Added in V0</a></h3>
 <ul>
 <li><code>GET /v0/costAccounts</code> - Ability to get all the <code>CostAccount</code> for a company.</li>
 <li>Added <code>200</code> response to <code>PUT /v0/vendor/{id}</code> definition when the vendor has
 been updated, and <code>201</code> when the vendor has been created.</li>
 </ul>
 <h2 id="v0212"><a class="header" href="#v0212">v0.2.12</a></h2>
-<h3 id="added-8"><a class="header" href="#added-8">Added</a></h3>
+<h3 id="added-in-v0-8"><a class="header" href="#added-in-v0-8">Added in V0</a></h3>
 <ul>
 <li>Added <code>errors</code> to <code>#/components/schemas/Vendor</code> to convey errors that occurred in the ERP system.</li>
 <li><code>POST /v0/vendor/{id}/errors</code> - Ability to set <code>errors</code> on a vendor.</li>
 <li><code>DELETE /v0/vendor/{id}/errors</code> - Ability to clear <code>errors</code> on a vendor.</li>
 </ul>
-<h3 id="changed-7"><a class="header" href="#changed-7">Changed</a></h3>
+<h3 id="changed-in-v0-7"><a class="header" href="#changed-in-v0-7">Changed in V0</a></h3>
 <ul>
 <li><code>confirmedAt</code> on <code>#/components/schemas/Vendor</code> are allowed to be null.</li>
 </ul>
