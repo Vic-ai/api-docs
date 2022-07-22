@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.10
+  version: 0.3.13
   contact: {}
   title: Vic.Api
   description: |
@@ -22,8 +22,120 @@ servers:
 
 tags:
 - name: purchase orders
+- name: subscriptions
 
-paths: {}
+paths:
+  "/subscriptions":
+    get:
+      operationId: list_subscriptions
+      description: List all subscriptions.
+      tags:
+      - subscriptions
+      responses:
+        "200":
+          description: List all of the subscriptions
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Subscription"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      operationId: create_subscription
+      description: Create a subscription.
+      tags:
+      - subscriptions
+      requestBody:
+        $ref: "#/components/requestBodies/CreateSubscription"
+      responses:
+        "201":
+          description: Subscription was created successfully.
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subscription"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  "/subscriptions/{id}":
+    get:
+      operationId: get_subscription
+      description: Get a single subscription.
+      tags:
+      - subscriptions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: The subscription.
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subscription"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      operationId: update_subscription
+      description: Update a subscription.
+      tags:
+      - subscriptions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateSubscription"
+      responses:
+        "200":
+          description: The updated subscription.
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Subscription"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      operationId: delete_subscription
+      description: |
+        Deletes a subscription.
+
+        This action can not be undone.
+      tags:
+      - subscriptions
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "204":
+          description: Subscription was deleted successfully
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -35,4 +147,139 @@ components:
 
   parameters: {}
 
-  schemas: {}
+  requestBodies:
+    CreateSubscription:
+      description: Create a subscription.
+      content:
+        application/json:
+          schema:
+            required:
+            - access_token
+            - callback_url
+            - expires_at
+            - version
+            properties:
+              access_token:
+                type: string
+              callback_url:
+                $ref: "#/components/schemas/CallbackUrl"
+              expires_at:
+                description: |
+                  The time that the subscription expires at. It *must* be in the
+                  future.
+                type: string
+                format: date-time
+              version:
+                $ref: "#/components/schemas/SubscriptionVersion"
+    UpdateSubscription:
+      description: Update a subscription.
+      content:
+        application/json:
+          schema:
+            properties:
+              access_token:
+                type: string
+              callback_url:
+                $ref: "#/components/schemas/CallbackUrl"
+              expires_at:
+                description: |
+                  The time that the subscription expires at. It *must* be in the
+                  future.
+                type: string
+                format: date-time
+              version:
+                $ref: "#/components/schemas/SubscriptionVersion"
+
+  responses:
+    ErrorResponse:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            required:
+            - errors
+            properties:
+              errors:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Error"
+
+  schemas:
+    CallbackUrl:
+      description: |
+        The url to receive the callback requests.
+
+        It *must* be an `https` url.
+      type: string
+      default: "https://example.com/events"
+    Error:
+      type: object
+      description: |
+        Represents an error within the system. Note that `field` may not always
+        be present, but `message` will always be present.
+
+        For nested fields, the format will be as follows:
+
+        - `purchase_order.line_items`
+        - `purchase_order.line_items.0.product_number`
+      required:
+      - message
+      properties:
+        field:
+          type: string
+          nullable: true
+        message:
+          type: string
+    CreateSubscription:
+      type: object
+      required:
+      - access_token
+      - expires_at
+      - version
+      properties:
+        access_token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        version:
+          $ref: "#/components/schemas/SubscriptionVersion"
+    UpdateSubscription:
+      type: object
+      required:
+      - access_token
+      - expires_at
+      - version
+      properties:
+        access_token:
+          type: string
+        expires_at:
+          type: string
+          format: date-time
+        version:
+          $ref: "#/components/schemas/SubscriptionVersion"
+    SubscriptionVersion:
+      description: The webhook subscription version.
+      enum:
+        - v0
+        - v1
+    Subscription:
+      type: object
+      required:
+      - internal_id
+      - callback_url
+      - access_token
+      - expires_at
+      - version
+      properties:
+        internal_id:
+          type: string
+        access_token:
+          type: string
+        callback_url:
+          $ref: "#/components/schemas/CallbackUrl"
+        expires_at:
+          type: string
+          format: date-time
+        version:
+          $ref: "#/components/schemas/SubscriptionVersion"

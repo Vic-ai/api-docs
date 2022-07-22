@@ -13,6 +13,8 @@ build:
 # Cleans the entire project of generated files.
 clean:
 	rm -rf public
+	rm -f src/vic.api.v0.html
+	rm -f src/vic.api.v1.html
 
 # Runs validations for the openapi specs
 validate:
