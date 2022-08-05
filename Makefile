@@ -5,7 +5,7 @@ setup:
 	pip install -r requirements.txt
 
 # Builds the entire static site documentation.
-build:
+build: validate
 	mdbook build
 	python scripts/openapi-build.py --input-file vic.api.v0.yaml --output-dir public --output-name vic.api.v0
 	python scripts/openapi-build.py --input-file vic.api.v1.yaml --output-dir public --output-name vic.api.v1

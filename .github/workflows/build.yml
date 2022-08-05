@@ -19,8 +19,6 @@ jobs:
 
       - run: make setup
 
-      - run: make validate
-
       - run: make build
 
       - name: Deploy
