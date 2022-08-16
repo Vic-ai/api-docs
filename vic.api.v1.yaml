@@ -333,8 +333,10 @@ components:
       properties:
         internal_id:
           type: string
+          maxLength: 255
         external_id:
           type: string
+          maxLength: 255
     PurchaseOrderStatus:
       enum:
       - open
@@ -346,12 +348,16 @@ components:
       properties:
         internal_id:
           type: string
+          maxLength: 255
         product_number:
           type: string
+          maxLength: 255
         product_description:
           type: string
+          maxLength: 255
         unit_of_measure:
           type: string
+          maxLength: 255
         unit_amount:
           oneOf:
           - $ref: "#/components/schemas/Monetary"
@@ -374,8 +380,10 @@ components:
       properties:
         internal_id:
           type: string
+          maxLength: 255
         external_id:
           type: string
+          maxLength: 255
         internal_updated_at:
           type: string
           format: date-time
@@ -384,6 +392,7 @@ components:
           format: date
         po_number:
           type: string
+          maxLength: 255
         deliver_on:
           type: string
           format: date
@@ -399,6 +408,7 @@ components:
           $ref: "#/components/schemas/PurchaseOrderStatus"
         description:
           type: string
+          maxLength: 255
         items:
           type: array
           items:
@@ -408,12 +418,15 @@ components:
         product_number:
           type: string
           nullable: true
+          maxLength: 255
         product_description:
           type: string
           nullable: true
+          maxLength: 255
         unit_of_measure:
           type: string
           nullable: true
+          maxLength: 255
         quantity:
           type: string
           format: decimal
@@ -437,6 +450,7 @@ components:
         external_id:
           type: string
           nullable: true
+          maxLength: 255
         issued_on:
           type: string
           format: date
@@ -444,6 +458,7 @@ components:
         po_number:
           type: string
           nullable: true
+          maxLength: 255
         deliver_on:
           type: string
           format: date
@@ -459,9 +474,11 @@ components:
         description:
           type: string
           nullable: true
+          maxLength: 255
         requestor:
           type: string
           nullable: true
+          maxLength: 255
         quantity_received:
           type: string
           format: decimal
