@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.13
+  version: 0.3.16
   contact: {}
   title: Vic.Api
   description: |
