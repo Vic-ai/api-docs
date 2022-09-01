@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.3.16
+### Added in V1
+- Added `POST /v1/purchase_orders` to create a purchase order.
+- Added `GET /v1/purchase_orders/:id` to get a specific purchase order.
 ## v0.3.13
 ### Added in V1
 - Added `GET /v1/subscriptions` to list subscriptions.
