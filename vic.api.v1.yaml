@@ -26,13 +26,13 @@ tags:
 
 paths:
   "/purchase_orders":
-    create:
+    post:
       description: Use this request to create a purchase order
       summary: Create a purchase order
       operationId: createPurchaseOrder
       tags:
         - purchase orders
-     requestBody:
+      requestBody:
         required: true
         content:
           application/json:
