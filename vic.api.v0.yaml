@@ -2704,6 +2704,9 @@ components:
           format: email
           maxLength: 255
           nullable: true
+        description:
+          type: string
+          nullable: true
         phone:
           type: string
           nullable: true

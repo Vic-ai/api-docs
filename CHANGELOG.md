@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## v0.3.15
+### V0
+- Added `description` to `#/components/schemas/Vendor`.
+
+
 ## v0.3.14
 ### Added in V1
 - Added `POST /v1/purchase_orders` to create a purchase order.
