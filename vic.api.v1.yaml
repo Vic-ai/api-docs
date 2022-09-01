@@ -25,6 +25,55 @@ tags:
 - name: subscriptions
 
 paths:
+  "/purchase_orders":
+    create:
+      description: Use this request to create a purchase order
+      summary: Create a purchase order
+      operationId: createPurchaseOrder
+      tags:
+        - purchase orders
+     requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePurchaseOrder"
+      responses:
+        '200':
+          description: Purchase order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+          default:
+            description: unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
+  "/purchase_orders/:id"
+    get:
+      description: Use this request to get data for a single purchase order
+      summary: Get a purchase order
+      operationId: getPurchaseOrder
+      tags:
+        - purchase orders
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          description: Purchase order retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+          default:
+            description: unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/Error'
   "/subscriptions":
     get:
       operationId: list_subscriptions
@@ -205,6 +254,13 @@ components:
                   $ref: "#/components/schemas/Error"
 
   schemas:
+    ExternalId:
+      description: |
+        The external id set by the ERP system. It does not have to be a UUID and
+        can be any string desired.
+      type: string
+      example: 21b31bc7-1267-4335-893c-d7fe4706a238
+      maxLength: 255
     CallbackUrl:
       description: |
         The url to receive the callback requests.
@@ -283,3 +339,95 @@ components:
           format: date-time
         version:
           $ref: "#/components/schemas/SubscriptionVersion"
+    CreatePurchaseOrder:
+      type: object
+      required:
+      - status
+      properties:
+        external_id:
+          oneOf:
+            - ref: "#/components/schemas/ExternalId"
+          description: |
+            The external id set by the ERP system. It does not have to be a UUID
+            and can be any string desired.
+          maxLength: 255
+        issued_on:
+          type: string
+          format: date-time
+          description: The date the purchase order was issued.
+        po_number:
+          type: string
+          description: The purchase order number.
+        deliver_on:
+          type: string
+          format: date-time
+          description: The date the purchase order should be delivered.
+        amount:
+          type: decimal
+          description: The total amount of the purchase order.
+        currency_id:
+          type: string
+          description: The currency id of the purchase order. 
+        description:
+          type: string
+          description: The description of the purchase order.
+        requestor:
+          type: string
+          description: The requestor of the purchase order.
+        quantity_received:
+          type: decimal
+          description: The quantity received of the purchase order.
+        created_on:
+          type: string
+          format: date-time
+          description: The date the purchase order was created.
+        status:
+          $ref: "#/components/schemas/Status"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PurchaseOrderLineItem"
+            description: |
+              The line items of the purchase order.
+    Status:
+      enum:
+        - :open
+        - :closed
+    PurchaseOrderLineItem:
+      type: object
+      properties:
+        product_number:
+          type: string
+          description: The product number of the line item.
+        product_description:
+          type: string
+          description: The product description of the line item.
+        unit_of_measure:
+          type: string
+          description: The unit of measure of the line item.
+        quantity:
+          type: decimal
+          description: The quantity of the line item.
+        unit_amount:
+          type: decimal
+          description: The unit amount of the line item.
+        line_item_total:
+          type: decimal
+          description: The line item total of the line item.
+        dimensions:
+          type: array
+          nullable: true
+          items: "#/components/schemas/ReferenceInput"
+    ReferenceInput:
+      type: object
+      description: |
+          A simple input object that just has an internal id and external id.
+          At least one must be present.
+      properties:
+        internal_id:
+          type: string
+          description: The internal id of the object.
+        external_id:
+          type: string
+          description: The external id of the object.
+
