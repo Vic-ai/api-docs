@@ -345,12 +345,7 @@ components:
       - status
       properties:
         external_id:
-          oneOf:
-            - ref: "#/components/schemas/ExternalId"
-          description: |
-            The external id set by the ERP system. It does not have to be a UUID
-            and can be any string desired.
-          maxLength: 255
+          $ref: "#/components/schemas/ExternalId"
         issued_on:
           type: string
           format: date-time
