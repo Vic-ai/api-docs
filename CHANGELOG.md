@@ -8,6 +8,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## v0.3.15
+### V0
+- Added `description` to `#/components/schemas/Vendor`.
+- Added `VendorTaxInfo` to `#/components/schemas/VendorTaxInfo`.
+- Removed `#/components/schemas/TaxInfoUS`. Has been combined to `#/components/schemas/VendorTaxInfo`.
+- Removed `#/components/schemas/TaxInfoSE`. Has been combined to `#/components/schemas/VendorTaxInfo`.
+- Removed `#/components/schemas/TaxInfoNO`. Has been combined to `#/components/schemas/VendorTaxInfo`.
+
+
 ## v0.3.14
 ### Added in V1
 - Added `POST /v1/purchase_orders` to create a purchase order.

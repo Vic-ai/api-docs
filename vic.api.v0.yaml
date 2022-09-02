@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.13
+  version: 0.3.15
   contact: {}
   title: Vic.Api
   description: |
@@ -2704,6 +2704,9 @@ components:
           format: email
           maxLength: 255
           nullable: true
+        description:
+          type: string
+          nullable: true
         phone:
           type: string
           nullable: true
@@ -2733,10 +2736,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-          - $ref: '#/components/schemas/TaxInfoUS'
-          - $ref: '#/components/schemas/TaxInfoSE'
-          - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
           - $ref: '#/components/schemas/PaymentInfoUS'
@@ -2803,10 +2803,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-          - $ref: '#/components/schemas/TaxInfoUS'
-          - $ref: '#/components/schemas/TaxInfoSE'
-          - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
           - $ref: '#/components/schemas/PaymentInfoUS'
@@ -2872,10 +2869,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-            - $ref: '#/components/schemas/TaxInfoUS'
-            - $ref: '#/components/schemas/TaxInfoSE'
-            - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
             - $ref: '#/components/schemas/PaymentInfoUS'
@@ -3044,29 +3038,17 @@ components:
         - INVOICE
         - CREDITNOTE
       default: INVOICE
-    TaxInfoUS:
+    VendorTaxInfo:
       type: object
-      required:
-        - taxId
       properties:
         taxId:
           type: string
+          nullable: true
         is1099vendor:
           type: boolean
-    TaxInfoSE:
-      type: object
-      required:
-        - orgNumber
-      properties:
         orgNumber:
           type: string
-    TaxInfoNO:
-      type: object
-      required:
-        - orgNumber
-      properties:
-        orgNumber:
-          type: string
+          nullable: true
     PaymentInfoUS:
       type: object
       required:
