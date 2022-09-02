@@ -424,6 +424,5 @@ components:
           type: string
           description: The internal id of the object.
         external_id:
-          type: string
-          description: The external id of the object.
+          $ref: "#/components/schemas/ExternalId"
 
