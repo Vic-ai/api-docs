@@ -59,7 +59,15 @@ paths:
       tags:
         - purchase orders
       parameters:
-        - $ref: '#/components/parameters/PathId'
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: use_system
+          in: query
+          schema:
+            $ref: "#/components/schemas/SystemType"
       responses:
         '200':
           description: Purchase order retrieved
@@ -260,6 +268,10 @@ components:
       type: string
       example: 21b31bc7-1267-4335-893c-d7fe4706a238
       maxLength: 255
+    SystemType:
+      enum:
+        - internal
+        - external
     CallbackUrl:
       description: |
         The url to receive the callback requests.
