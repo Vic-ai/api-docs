@@ -416,8 +416,9 @@ components:
     ReferenceInput:
       type: object
       description: |
-          A simple input object that just has an internal id and external id.
-          At least one must be present.
+          A simple input object that just has an `internal_id` and 
+          `external_id`. At least one must be present. If both are provided, 
+          `internal_id` takes priority.
       properties:
         internal_id:
           type: string
