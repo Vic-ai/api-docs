@@ -436,4 +436,16 @@ components:
           description: The internal id of the object.
         external_id:
           $ref: "#/components/schemas/ExternalId"
+    PurchaseOrder:
+      type: object
+      properties:
+        external_id:
+          oneOf:
+            - ref: "#/components/schemas/ExternalId"
+          description: |
+            The external id set by the ERP system. It does not have to be a UUID
+            and can be any string desired.
+          maxLength: 255
+        internalId:
+          type: string
 
