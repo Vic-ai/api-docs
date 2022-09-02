@@ -386,8 +386,8 @@ components:
               The line items of the purchase order.
     Status:
       enum:
-        - :open
-        - :closed
+        - open
+        - closed
     PurchaseOrderLineItem:
       type: object
       properties:
