@@ -60,7 +60,6 @@ paths:
         - purchase orders
       parameters:
         - $ref: '#/components/parameters/PathId'
-        - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           description: Purchase order retrieved
