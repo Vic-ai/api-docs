@@ -184,6 +184,58 @@ paths:
           description: Subscription was deleted successfully
         default:
           $ref: "#/components/responses/ErrorResponse"
+  "/purchase_orders":
+    post:
+      operationId: create_purchase_order
+      description: |
+        Creates a purchase order.
+
+        **Note**: Early access, requires approval from Vic AI to utilize.
+      tags:
+      - purchase orders
+      requestBody:
+        $ref: "#/components/requestBodies/CreatePurchaseOrder"
+      responses:
+        "201":
+          description: The purchase order was created successfully.
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PurchaseOrder"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  "/purchase_orders/{id}":
+    get:
+      operationId: get_purchase_order
+      description: |
+        Get a purchase order.
+
+        **Note**: Early access, requires approval from Vic AI to utilize.
+      tags:
+      - purchase orders
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: The purchase order.
+          content:
+            application/json:
+              schema:
+                required:
+                - data
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PurchaseOrder"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -196,47 +248,24 @@ components:
   parameters: {}
 
   requestBodies:
+    CreatePurchaseOrder:
+      description: Create a purchase order.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreatePurchaseOrder"
     CreateSubscription:
       description: Create a subscription.
       content:
         application/json:
           schema:
-            required:
-            - access_token
-            - callback_url
-            - expires_at
-            - version
-            properties:
-              access_token:
-                type: string
-              callback_url:
-                $ref: "#/components/schemas/CallbackUrl"
-              expires_at:
-                description: |
-                  The time that the subscription expires at. It *must* be in the
-                  future.
-                type: string
-                format: date-time
-              version:
-                $ref: "#/components/schemas/SubscriptionVersion"
+            $ref: "#/components/schemas/CreateSubscription"
     UpdateSubscription:
       description: Update a subscription.
       content:
         application/json:
           schema:
-            properties:
-              access_token:
-                type: string
-              callback_url:
-                $ref: "#/components/schemas/CallbackUrl"
-              expires_at:
-                description: |
-                  The time that the subscription expires at. It *must* be in the
-                  future.
-                type: string
-                format: date-time
-              version:
-                $ref: "#/components/schemas/SubscriptionVersion"
+            $ref: "#/components/schemas/UpdateSubscription"
 
   responses:
     ErrorResponse:
@@ -270,6 +299,14 @@ components:
       enum:
         - internal
         - external
+    Monetary:
+      type: string
+      format: decimal
+    Currency:
+      description: The ISO-4217 currency code.
+      type: string
+      format: ISO-4217
+      maxLength: 3
     CallbackUrl:
       description: |
         The url to receive the callback requests.
@@ -299,26 +336,33 @@ components:
       type: object
       required:
       - access_token
+      - callback_url
       - expires_at
       - version
       properties:
         access_token:
           type: string
+        callback_url:
+          $ref: "#/components/schemas/CallbackUrl"
         expires_at:
+          description: |
+            The time that the subscription expires at. It *must* be in the
+            future.
           type: string
           format: date-time
         version:
           $ref: "#/components/schemas/SubscriptionVersion"
     UpdateSubscription:
       type: object
-      required:
-      - access_token
-      - expires_at
-      - version
       properties:
         access_token:
           type: string
+        callback_url:
+          $ref: "#/components/schemas/CallbackUrl"
         expires_at:
+          description: |
+            The time that the subscription expires at. It *must* be in the
+            future.
           type: string
           format: date-time
         version:
@@ -348,99 +392,169 @@ components:
           format: date-time
         version:
           $ref: "#/components/schemas/SubscriptionVersion"
-    CreatePurchaseOrder:
-      description: The shape of the request to create a purchase order.
+    DimensionRef:
+      type: object
+      description: A reference object to a dimension object.
+      properties:
+        internal_id:
+          type: string
+          maxLength: 255
+        external_id:
+          type: string
+          maxLength: 255
+    PurchaseOrderStatus:
+      enum:
+      - open
+      - closed
+    PurchaseOrderItem:
       type: object
       required:
-        - status
+      - internal_id
       properties:
+        internal_id:
+          type: string
+          maxLength: 255
+        product_number:
+          type: string
+          maxLength: 255
+        product_description:
+          type: string
+          maxLength: 255
+        unit_of_measure:
+          type: string
+          maxLength: 255
+        unit_amount:
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
+        line_item_total:
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
+        dimensions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+    PurchaseOrder:
+      type: object
+      required:
+      - internal_id
+      - internal_updated_at
+      - status
+      - items
+      properties:
+        internal_id:
+          type: string
+          maxLength: 255
         external_id:
-          $ref: "#/components/schemas/ExternalId"
+          type: string
+          maxLength: 255
+        internal_updated_at:
+          type: string
+          format: date-time
         issued_on:
           type: string
-          format: date-time
-          description: The date the purchase order was issued.
+          format: date
         po_number:
           type: string
-          description: The purchase order number.
+          maxLength: 255
         deliver_on:
           type: string
-          format: date-time
-          description: The date the purchase order should be delivered.
+          format: date
         amount:
-          type: number
-          description: The total amount of the purchase order.
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
         currency_id:
-          type: string
-          description: The currency id of the purchase order. 
+          oneOf:
+          - $ref: "#/components/schemas/Currency"
+          nullable: true
+        status:
+          $ref: "#/components/schemas/PurchaseOrderStatus"
         description:
           type: string
-          description: The description of the purchase order.
-        requestor:
-          type: string
-          description: The requestor of the purchase order.
-        quantity_received:
-          type: number
-          description: The quantity received of the purchase order.
-        created_on:
-          type: string
-          format: date-time
-          description: The date the purchase order was created.
-        status:
-          $ref: "#/components/schemas/Status"
+          maxLength: 255
         items:
           type: array
-          description: |
-              The line items of the purchase order.
           items:
-            $ref: "#/components/schemas/PurchaseOrderLineItem"
-            
-    Status:
-      enum:
-        - open
-        - closed
-    PurchaseOrderLineItem:
-      type: object
+            $ref: "#/components/schemas/PurchaseOrderItem"
+    CreatePurchaseOrderItemEmbedded:
       properties:
         product_number:
           type: string
-          description: The product number of the line item.
+          nullable: true
+          maxLength: 255
         product_description:
           type: string
-          description: The product description of the line item.
+          nullable: true
+          maxLength: 255
         unit_of_measure:
           type: string
-          description: The unit of measure of the line item.
+          nullable: true
+          maxLength: 255
         quantity:
-          type: number
-          description: The quantity of the line item.
+          type: string
+          format: decimal
+          nullable: true
         unit_amount:
-          type: number
-          description: The unit amount of the line item.
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
         line_item_total:
-          type: number
-          description: The line item total of the line item.
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
         dimensions:
           type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+    CreatePurchaseOrder:
+      required:
+      - status
+      properties:
+        external_id:
+          type: string
           nullable: true
-          items: 
-            $ref: "#/components/schemas/ReferenceInput"
-    ReferenceInput:
-      type: object
-      description: |
-          A simple input object that just has an `internal_id` and 
-          `external_id`. At least one must be present. If both are provided, 
-          `internal_id` takes priority.
-      properties:
-        internal_id:
-          $ref: "#/components/schemas/InternalId"
-        external_id:
-          $ref: "#/components/schemas/ExternalId"
-    PurchaseOrder:
-      type: object
-      properties:
-        internal_id:
-          $ref: "#/components/schemas/InternalId"
-        external_id:
-          $ref: "#/components/schemas/ExternalId"
-
+          maxLength: 255
+        issued_on:
+          type: string
+          format: date
+          nullable: true
+        po_number:
+          type: string
+          nullable: true
+          maxLength: 255
+        deliver_on:
+          type: string
+          format: date
+          nullable: true
+        amount:
+          oneOf:
+          - $ref: "#/components/schemas/Monetary"
+          nullable: true
+        currency_id:
+          oneOf:
+          - $ref: "#/components/schemas/Currency"
+          nullable: true
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+        requestor:
+          type: string
+          nullable: true
+          maxLength: 255
+        quantity_received:
+          type: string
+          format: decimal
+          nullable: true
+        created_on:
+          type: string
+          format: date
+          nullable: true
+        status:
+          $ref: "#/components/schemas/PurchaseOrderStatus"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreatePurchaseOrderItemEmbedded"

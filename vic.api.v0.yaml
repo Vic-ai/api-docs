@@ -64,7 +64,7 @@ tags:
       - Invoices which have been posted to the ERP system.
 
       By default, access to unposted invoices is restricted.
-  - name: subscription
+  - name: subscriptions
     description: |
       These requests represents a user’s action in the Vic.ai system and
       repsonses to those actions.
@@ -1033,15 +1033,19 @@ paths:
         Use this request to *upsert* training invoice data for one invoice into
         Vic.ai.
 
-        - The request body should contain the invoice object (invoiceData part)
-          as JSON, and corresponding invoice documents as a single pdf file
-          (`invoicePayload` part) as multipart form data.
+        When putting a new invoice into the system, an `invoiceDocument` will be
+        required. If the training invoice already exists, an `invoiceDocument`
+        will not be required.
 
-        - Omitting the invoiceDocument field may only be used for updates.
+        All requests that need to have the `invoiceDocument` updated should have
+        a `multipart/form-data` content type.
+
+        If the training invoice just needs to be updated without a document
+        specified a content type of `application/json` is permitted.
 
         If the invoice is known by Vic.ai, the `externalId` supplied will be
         used to resolve the invoice and perform an update of the data,
-        otherwise, a new invoice will be inserted.
+        otherwise, a new invoice will be created.
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
       tags:
@@ -1283,225 +1287,13 @@ paths:
                 $ref: '#/components/schemas/Error'
       callbacks:
         vendorNew:
-          '{$request.body#/callbackUrl}/vendorNew':
-            post:
-              description: |
-                This request is sent when a user in Vic.ai adds a new vendor to
-                the system.
-
-                Request body contains the vendor object.
-
-                A 201 response indicates that the vendor object has been
-                successfully persisted to the ERP, and it must contain the ERP's
-                vendor object id as the externalId parameter.
-
-                Any other response will be considered a failure, the vendor
-                object `externalId` will not be specified, and the error message
-                you specify will be surfaced to the user.
-
-                A 400 response indicates a data validation error.
-
-                This callback will timeout after 5 seconds.
-              parameters:
-                - $ref: '#/components/parameters/RequestId'
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/VendorCallback'
-              responses:
-                '201':
-                  description: Successful upsert
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/VendorConfirm'
-                '202':
-                  description: Acknowledge receipt
-                  content:
-                    application/json:
-                      schema:
-                        enum:
-                          - OK
-                '4XX':
-                  description: |
-                    Error when posting vendor.  If this is a generic error,
-                    use the `Error` schema; if it's an error reported by the
-                    ERP, use the `VendorError` schema.
-                  content:
-                    application/json:
-                      schema:
-                        oneOf:
-                          - $ref: '#/components/schemas/Error'
-                          - $ref: '#/components/schemas/VendorError'
-                default:
-                  description: unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
+          $ref: "#/components/callbacks/vendorNew"
         invoicePost:
-          '{$request.body#/callbackUrl}/invoicePost':
-            post:
-              description: |
-                This request is sent when a user in Vic.ai posts an invoice
-                object to the system.
-
-                Request body contains the invoice object (`invoiceData` part) as
-                JSON, and corresponding invoice documents as a pdf file
-                (`invoicePayload` part) as multipart form data. This will always
-                be a pdf file.
-
-                A 201 response indicates that the invoice object has been
-                successfully persisted to the ERP, and it must contain the ERP's
-                invoice object id as the `externalId` parameter.
-
-                A 202 response indicates that the receipt of the invoice object
-                has been acknowledged; an asynchronous update will occur via
-                `invoiceConfirm` and the supplied 'X-Request-Id' in the request
-                header will be provided as the `X-Request-Id` header for any
-                associated asynchronous updates.
-
-                Any other response will be considered a failure, the invoice
-                object `externalId` will not be specified, and the error message
-                you specify will be surfaced to the user.
-
-                A 400 response indicates a data validation error.
-
-                This callback will timeout after 5 seconds; to prevent
-                inconsistencies, if the request will take longer than 5 seconds,
-                it is appropriate to respond with a 202 response code.
-              parameters:
-                - $ref: '#/components/parameters/RequestId'
-              requestBody:
-                required: true
-                content:
-                  multipart/form-data:
-                    schema:
-                      type: object
-                      properties:
-                        invoiceData:
-                          $ref: '#/components/schemas/Invoice'
-                        invoiceDocument:
-                          type: string
-                          format: binary
-                    encoding:
-                      invoiceData:
-                        contentType: application/json
-                      invoiceDocument:
-                        contentType: application/pdf
-              responses:
-                '201':
-                  description: Successful upsert
-                  content:
-                    application/json:
-                      schema:
-                        oneOf:
-                          - $ref: '#/components/schemas/InvoiceConfirm'
-                '202':
-                  description: 'Deferred post, confirmation asynchronous'
-                '400':
-                  description: invalid invoice data
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
-                default:
-                  description: unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
+          $ref: "#/components/callbacks/invoicePost"
         invoiceTransfer:
-          '{$request.body#/callbackUrl}/invoiceTransfer':
-            post:
-              description: |
-                This request is sent when a user in Vic.ai selects and invoice
-                document and *transfers* it to the ERP.
-
-                Note: there will be no Vic.ai generated invoice data sent with
-                this a *transferred* invoice.
-
-                Request body contains the invoice document.
-
-                A 201 response indicates that the invoice document has been
-                successfully transferred to the ERP, and it must contain the
-                ERP's invoice document id as the externalId parameter.
-
-                A 202 response indicates that the receipt of the invoice
-                transfer has been acknowledged and an asynchronous update will
-                occur via `invoiceConfirm` operation and the supplied
-                `X-Request-Id` in the request header will be provided as the
-                `X-Request-Id` header for any associated asynchronous updates.
-
-                Any other response will be considered a failure, the invoice
-                object `externalId` will not be specified, and the error message
-                you specify will be surfaced to the user.
-
-                A 400 response indicates a data validation error.
-
-                This callback will timeout after 5 seconds and to prevent
-                inconsistencies, if the request will take longer than 5 seconds,
-                it is appropriate to respond with a 202 response code.
-              parameters:
-                - $ref: '#/components/parameters/RequestId'
-              requestBody:
-                required: true
-                content:
-                  application/pdf:
-                    schema:
-                      type: string
-                      format: binary
-              responses:
-                '201':
-                  description: Successful upsert
-                  content:
-                    application/json:
-                      schema:
-                        enum:
-                          - OK
-                '202':
-                  description: Deferred post, confirmation asynchronous
-                default:
-                  description: unexpected error
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
+          $ref: "#/components/callbacks/invoiceTransfer"
         syncRequest:
-          '{$request.body#/callbackUrl}/syncRequest':
-            post:
-              description: |
-                This request is sent when a user in Vic.ai triggers a sync of all
-                masterdata.
-
-                In response to this message, you’re expected to post masterdata
-                (vendors, GL accounts, dimensions) into Vic.ai using the
-                respective routes. You may perform a partial update, determining
-                which data to update using queries.
-
-                The body of the `syncRequest` contains the `X-Request-Id` and
-                this is a  token that should be returned with all upsert actions
-                associated  with this `syncRequest`.
-
-                A 200 response indicates that the request has been acknowledged
-                and informs the user that the sync has been successfully triggered.
-              requestBody:
-                required: true
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/RequestIdCallback'
-              responses:
-                '200':
-                  description: request acknowleged
-                default:
-                  description: request unservicable
-                  content:
-                    application/json:
-                      schema:
-                        $ref: '#/components/schemas/Error'
+          $ref: "#/components/callbacks/syncRequest"
     delete:
       description: |
         This request is used to cancel a subscription to user actions. In
@@ -1664,6 +1456,244 @@ components:
       schema:
         type: string
         format: uuid
+    SubscriptionToken:
+      in: header
+      name: Authorization
+      description: |
+        The token provided for the `Subscription`.
+
+        The header will appear as follows `Bearer YOURTOKEN`.
+      example: Bearer abc123mysecrettoken456def
+      required: false
+      schema:
+        type: string
+
+  callbacks:
+    vendorNew:
+      "https://mycallbackurl.com/vendorNew":
+        post:
+          description: |
+            This request is sent when a user in Vic.ai adds a new vendor to
+            the system.
+
+            Request body contains the vendor object.
+
+            A 201 response indicates that the vendor object has been
+            successfully persisted to the ERP, and it must contain the ERP's
+            vendor object id as the externalId parameter.
+
+            Any other response will be considered a failure, the vendor
+            object `externalId` will not be specified, and the error message
+            you specify will be surfaced to the user.
+
+            A 400 response indicates a data validation error.
+
+            This callback will timeout after 5 seconds.
+          parameters:
+          - $ref: '#/components/parameters/SubscriptionToken'
+          - $ref: '#/components/parameters/RequestId'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/VendorCallback'
+          responses:
+            "201":
+              description: Successful upsert
+              content:
+                application/json:
+                  schema:
+                    $ref: "#/components/schemas/VendorConfirm"
+            "202":
+              description: Acknowledge receipt
+              content:
+                application/json:
+                  schema:
+                    enum:
+                    - OK
+            "4XX":
+              description: |
+                Error when posting vendor.  If this is a generic error,
+                use the `Error` schema; if it's an error reported by the
+                ERP, use the `VendorError` schema.
+              content:
+                application/json:
+                  schema:
+                    oneOf:
+                    - $ref: '#/components/schemas/Error'
+                    - $ref: '#/components/schemas/VendorError'
+            default:
+              description: unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+    invoicePost:
+      "https://mycallbackurl.com/invoicePost":
+        post:
+          description: |
+            This request is sent when a user in Vic.ai posts an invoice
+            object to the system.
+
+            Request body contains the invoice object (`invoiceData` part) as
+            JSON, and corresponding invoice documents as a pdf file
+            (`invoicePayload` part) as multipart form data. This will always
+            be a pdf file.
+
+            A 201 response indicates that the invoice object has been
+            successfully persisted to the ERP, and it must contain the ERP's
+            invoice object id as the `externalId` parameter.
+
+            A 202 response indicates that the receipt of the invoice object
+            has been acknowledged; an asynchronous update will occur via
+            `invoiceConfirm` and the supplied 'X-Request-Id' in the request
+            header will be provided as the `X-Request-Id` header for any
+            associated asynchronous updates.
+
+            Any other response will be considered a failure, the invoice
+            object `externalId` will not be specified, and the error message
+            you specify will be surfaced to the user.
+
+            A 400 response indicates a data validation error.
+
+            This callback will timeout after 5 seconds; to prevent
+            inconsistencies, if the request will take longer than 5 seconds,
+            it is appropriate to respond with a 202 response code.
+          parameters:
+          - $ref: '#/components/parameters/SubscriptionToken'
+          - $ref: '#/components/parameters/RequestId'
+          requestBody:
+            required: true
+            content:
+              multipart/form-data:
+                schema:
+                  type: object
+                  properties:
+                    invoiceData:
+                      $ref: '#/components/schemas/Invoice'
+                    invoiceDocument:
+                      type: string
+                      format: binary
+                encoding:
+                  invoiceData:
+                    contentType: application/json
+                  invoiceDocument:
+                    contentType: application/pdf
+          responses:
+            "201":
+              description: Successful upsert
+              content:
+                application/json:
+                  schema:
+                    oneOf:
+                    - $ref: "#/components/schemas/InvoiceConfirm"
+            "202":
+              description: "Deferred post, confirmation asynchronous"
+            "400":
+              description: invalid invoice data
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+            default:
+              description: unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+    invoiceTransfer:
+      "https://mycallbackurl.com/invoiceTransfer":
+        post:
+          description: |
+            This request is sent when a user in Vic.ai selects and invoice
+            document and *transfers* it to the ERP.
+
+            Note: there will be no Vic.ai generated invoice data sent with
+            this a *transferred* invoice.
+
+            Request body contains the invoice document.
+
+            A 201 response indicates that the invoice document has been
+            successfully transferred to the ERP, and it must contain the
+            ERP's invoice document id as the externalId parameter.
+
+            A 202 response indicates that the receipt of the invoice
+            transfer has been acknowledged and an asynchronous update will
+            occur via `invoiceConfirm` operation and the supplied
+            `X-Request-Id` in the request header will be provided as the
+            `X-Request-Id` header for any associated asynchronous updates.
+
+            Any other response will be considered a failure, the invoice
+            object `externalId` will not be specified, and the error message
+            you specify will be surfaced to the user.
+
+            A 400 response indicates a data validation error.
+
+            This callback will timeout after 5 seconds and to prevent
+            inconsistencies, if the request will take longer than 5 seconds,
+            it is appropriate to respond with a 202 response code.
+          parameters:
+          - $ref: '#/components/parameters/SubscriptionToken'
+          - $ref: '#/components/parameters/RequestId'
+          requestBody:
+            required: true
+            content:
+              application/pdf:
+                schema:
+                  type: string
+                  format: binary
+          responses:
+            "201":
+              description: Successful upsert
+              content:
+                application/json:
+                  schema:
+                    enum:
+                    - OK
+            "202":
+              description: Deferred post, confirmation asynchronous
+            default:
+              description: Unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
+    syncRequest:
+      "https://mycallbackurl.com/syncRequest":
+        post:
+          description: |
+            This request is sent when a user in Vic.ai triggers a sync of all
+            masterdata.
+
+            In response to this message, you’re expected to post masterdata
+            (vendors, GL accounts, dimensions) into Vic.ai using the
+            respective routes. You may perform a partial update, determining
+            which data to update using queries.
+
+            The body of the `syncRequest` contains the `X-Request-Id` and
+            this is a  token that should be returned with all upsert actions
+            associated  with this `syncRequest`.
+
+            A 200 response indicates that the request has been acknowledged
+            and informs the user that the sync has been successfully triggered.
+          parameters:
+          - $ref: '#/components/parameters/SubscriptionToken'
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/RequestIdCallback"
+          responses:
+            "200":
+              description: Request acknowleged
+            default:
+              description: Request unservicable
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/Error'
 
   schemas:
     InternalId:
@@ -2704,6 +2734,9 @@ components:
           format: email
           maxLength: 255
           nullable: true
+        description:
+          type: string
+          nullable: true
         phone:
           type: string
           nullable: true
@@ -2733,10 +2766,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-          - $ref: '#/components/schemas/TaxInfoUS'
-          - $ref: '#/components/schemas/TaxInfoSE'
-          - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
           - $ref: '#/components/schemas/PaymentInfoUS'
@@ -2803,10 +2833,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-          - $ref: '#/components/schemas/TaxInfoUS'
-          - $ref: '#/components/schemas/TaxInfoSE'
-          - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
           - $ref: '#/components/schemas/PaymentInfoUS'
@@ -2872,10 +2899,7 @@ components:
         state:
           $ref: "#/components/schemas/VendorState"
         taxInfo:
-          anyOf:
-            - $ref: '#/components/schemas/TaxInfoUS'
-            - $ref: '#/components/schemas/TaxInfoSE'
-            - $ref: '#/components/schemas/TaxInfoNO'
+          $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           anyOf:
             - $ref: '#/components/schemas/PaymentInfoUS'
@@ -3044,29 +3068,17 @@ components:
         - INVOICE
         - CREDITNOTE
       default: INVOICE
-    TaxInfoUS:
+    VendorTaxInfo:
       type: object
-      required:
-        - taxId
       properties:
         taxId:
           type: string
+          nullable: true
         is1099vendor:
           type: boolean
-    TaxInfoSE:
-      type: object
-      required:
-        - orgNumber
-      properties:
         orgNumber:
           type: string
-    TaxInfoNO:
-      type: object
-      required:
-        - orgNumber
-      properties:
-        orgNumber:
-          type: string
+          nullable: true
     PaymentInfoUS:
       type: object
       required:
