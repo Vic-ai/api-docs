@@ -262,8 +262,7 @@ components:
       maxLength: 255
     InternalId:
       description: |
-        The internal id set by the Vic API.  Some are integers while others are
-        UUIDs.
+        The internal id set by the Vic API.  Ids may be integers, UUIDs, or sha1.
       type: string
       example: 123245
       maxLength: 255
@@ -339,7 +338,7 @@ components:
       - version
       properties:
         internal_id:
-          type: string
+          $ref: "#/components/schemas/InternalId"
         access_token:
           type: string
         callback_url:
@@ -434,15 +433,14 @@ components:
           `internal_id` takes priority.
       properties:
         internal_id:
-          type: string
-          description: The internal id of the object.
+          $ref: "#/components/schemas/InternalId"
         external_id:
           $ref: "#/components/schemas/ExternalId"
     PurchaseOrder:
       type: object
       properties:
+        internal_id:
+          $ref: "#/components/schemas/InternalId"
         external_id:
           $ref: "#/components/schemas/ExternalId"
-        internalId:
-          type: string
 
