@@ -260,6 +260,13 @@ components:
       type: string
       example: 21b31bc7-1267-4335-893c-d7fe4706a238
       maxLength: 255
+    InternalId:
+      description: |
+        The internal id set by the Vic API.  Some are integers while others are
+        UUIDs.
+      type: string
+      example: 123245
+      maxLength: 255
     SystemType:
       enum:
         - internal
