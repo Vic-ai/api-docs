@@ -384,10 +384,11 @@ components:
           $ref: "#/components/schemas/Status"
         items:
           type: array
+          description: |
+              The line items of the purchase order.
           items:
             $ref: "#/components/schemas/PurchaseOrderLineItem"
-            description: |
-              The line items of the purchase order.
+            
     Status:
       enum:
         - open
