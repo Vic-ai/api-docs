@@ -264,7 +264,7 @@ components:
       description: |
         The internal id set by the Vic API.  Ids may be integers, UUIDs, or sha1.
       type: string
-      example: 123245
+      example: 123245, 21b31bc7-1267-4335-893c-d7fe4706a238
       maxLength: 255
     SystemType:
       enum:
