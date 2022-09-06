@@ -1033,15 +1033,19 @@ paths:
         Use this request to *upsert* training invoice data for one invoice into
         Vic.ai.
 
-        - The request body should contain the invoice object (invoiceData part)
-          as JSON, and corresponding invoice documents as a single pdf file
-          (`invoicePayload` part) as multipart form data.
+        When putting a new invoice into the system, an `invoiceDocument` will be
+        required. If the training invoice already exists, an `invoiceDocument`
+        will not be required.
 
-        - Omitting the invoiceDocument field may only be used for updates.
+        All requests that need to have the `invoiceDocument` updated should have
+        a `multipart/form-data` content type.
+
+        If the training invoice just needs to be updated without a document
+        specified a content type of `application/json` is permitted.
 
         If the invoice is known by Vic.ai, the `externalId` supplied will be
         used to resolve the invoice and perform an update of the data,
-        otherwise, a new invoice will be inserted.
+        otherwise, a new invoice will be created.
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
       tags:
