@@ -135,6 +135,109 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="training-invoices"><a class="header" href="#training-invoices">Training Invoices</a></h1>
+<h2 id="put-v0traininginvoices"><a class="header" href="#put-v0traininginvoices"><a href="../../vic.api.v0.html#/training%20invoices/upsertTrainingInvoice"><code>PUT /v0/trainingInvoices</code></a></a></h2>
+<p>Upserts a training invoice into the Vic.ai system.</p>
+<h3 id="inserting-training-invoice"><a class="header" href="#inserting-training-invoice">Inserting Training Invoice</a></h3>
+<p>When inserting a new training invoice a <code>Content-Type</code> of <code>multipart/form-data</code>
+is required due to the nature of sending a <code>pdf</code>, <code>png</code>, <code>tiff</code>, or <code>gif</code>
+document.</p>
+<p>Two parameters are required for inserting a new training invoice.</p>
+<ul>
+<li><code>invoiceData</code> - The json data that represents the training invoice.</li>
+<li><code>invoiceDocument</code> - The <code>pdf</code>, <code>png</code>, <code>tiff</code>, or <code>gif</code> training invoice document.</li>
+</ul>
+<h4 id="example"><a class="header" href="#example">Example</a></h4>
+<pre><code class="language-bash">curl -X PUT 'https://api.us.stage.vic.ai/v0/trainingInvoice/invoice-123' \
+    --location \
+    --header 'Content-Type: multipart/form-data' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer MYBEARERTOKEN' \
+    --form 'invoiceDocument=@&quot;/path/to/invoice/document.pdf&quot;' \
+    --form 'invoiceData=&quot;{
+        \&quot;externalUpdatedAt\&quot;: \&quot;2022-01-20 04:10:00\&quot;,
+        \&quot;transactionType\&quot;: \&quot;INVOICE\&quot;,
+        \&quot;refNumber\&quot;: \&quot;1000000\&quot;,
+        \&quot;poNumber\&quot;: \&quot;PO123\&quot;,
+        \&quot;description\&quot;: \&quot;The invoice description\&quot;,
+        \&quot;currency\&quot;: \&quot;USD\&quot;,
+        \&quot;language\&quot;: \&quot;EN\&quot;,
+        \&quot;issueDate\&quot;: \&quot;2022-01-20\&quot;,
+        \&quot;glDate\&quot;: \&quot;2022-01-20\&quot;,
+        \&quot;dueDate\&quot;: \&quot;2022-01-20\&quot;,
+        \&quot;paymentInfo\&quot;:{
+            \&quot;bankAccountNum\&quot;:\&quot;1234567890\&quot;
+        },
+        \&quot;vendorExternalId\&quot;: \&quot;vendor-external-id-1\&quot;,
+        \&quot;lineItems\&quot;: [
+            {
+                \&quot;index\&quot;: 0,
+                \&quot;amount\&quot;: 123.53,
+                \&quot;description\&quot;: \&quot;Line item description\&quot;,
+                \&quot;comment\&quot;: \&quot;A quick comment about the line item\&quot;,
+                \&quot;accrual\&quot;:{
+                    \&quot;start\&quot;: \&quot;2022-01-20\&quot;,
+                    \&quot;count\&quot;: 3,
+                    \&quot;unit\&quot;: \&quot;MONTHS\&quot;
+                },
+                \&quot;billable\&quot;: false,
+                \&quot;dimensionsExternalIds\&quot;: [\&quot;dimension-external-id-1\&quot;],
+                \&quot;costAccountExternalId\&quot;: \&quot;cost-account-external-id-1\&quot;
+            }
+        ]
+    }&quot;;type=application/json'
+</code></pre>
+<h3 id="updating-training-invoice"><a class="header" href="#updating-training-invoice">Updating Training Invoice</a></h3>
+<p>When updating a training invoice, the <code>invoiceDocument</code> is no longer required,
+and the <code>Content-Type</code> can be <code>application/json</code></p>
+<p>If the training invoice needs the underlying document updated, use a
+<code>multipart/form-data</code> to accomplish this. It will have the same format as the
+insert described above.</p>
+<p>Some things to note about updating existing invoices.</p>
+<ul>
+<li>The line items passed will be set as the desired state of the invoice.</li>
+<li>Empty list of line items will cause all line items to be deleted.</li>
+<li>Existing line items passed will be matched as best as possible. If they can
+not be matched they will be deleted and replaced with the desired items.</li>
+</ul>
+<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
+<pre><code class="language-bash">curl -X PUT 'https://api.us.stage.vic.ai/v0/trainingInvoice/invoice-123' \
+    --location \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer MYBEARERTOKEN' \
+    --data '{
+        &quot;externalUpdatedAt&quot;: &quot;2022-01-20 04:10:00&quot;,
+        &quot;transactionType&quot;: &quot;INVOICE&quot;,
+        &quot;refNumber&quot;: &quot;1000000&quot;,
+        &quot;poNumber&quot;: &quot;PO123&quot;,
+        &quot;description&quot;: &quot;The invoice description&quot;,
+        &quot;currency&quot;: &quot;USD&quot;,
+        &quot;language&quot;: &quot;EN&quot;,
+        &quot;issueDate&quot;: &quot;2022-01-20&quot;,
+        &quot;glDate&quot;: &quot;2022-01-20&quot;,
+        &quot;dueDate&quot;: &quot;2022-01-20&quot;,
+        &quot;paymentInfo&quot;:{
+            &quot;bankAccountNum&quot;:&quot;1234567890&quot;
+        },
+        &quot;vendorExternalId&quot;: &quot;vendor-external-id-1&quot;,
+        &quot;lineItems&quot;: [
+            {
+                &quot;index&quot;: 0,
+                &quot;amount&quot;: 123.53,
+                &quot;description&quot;: &quot;Line item description&quot;,
+                &quot;comment&quot;: &quot;A quick comment about the line item&quot;,
+                &quot;accrual&quot;:{
+                    &quot;start&quot;: &quot;2022-01-20&quot;,
+                    &quot;count&quot;: 3,
+                    &quot;unit&quot;: &quot;MONTHS&quot;
+                },
+                &quot;billable&quot;: false,
+                &quot;dimensionsExternalIds&quot;: [&quot;dimension-external-id-1&quot;],
+                &quot;costAccountExternalId&quot;: &quot;cost-account-external-id-1&quot;
+            }
+        ]
+    }&quot;'
+</code></pre>
 
                     </main>
 
