@@ -8,6 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## v0.3.16
+### V1
+- Added `POST /v1/purchase_orders` to create a purchase order.
+- Added `GET /v1/purchase_orders/:id` to get a specific purchase order.
+
+
 ## v0.3.15
 ### V0
 - Added `description` to `#/components/schemas/Vendor`.
@@ -31,6 +37,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed in V1
 - Reuse `#/components/schemas/CreateSubscription` for the `#/components/requestBodies/CreateSubscription` definition.
 - Reuse `#/components/schemas/UpdateSubscription` for the `#/components/requestBodies/UpdateSubscription` definition.
+
 
 
 ## v0.3.13

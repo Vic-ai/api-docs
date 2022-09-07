@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.15
+  version: 0.3.16
   contact: {}
   title: Vic.Api
   description: |
@@ -25,6 +25,54 @@ tags:
 - name: subscriptions
 
 paths:
+  "/purchase_orders":
+    post:
+      description: Use this request to create a purchase order
+      summary: Create a purchase order
+      operationId: createPurchaseOrder
+      tags:
+        - purchase orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePurchaseOrder"
+      responses:
+        '200':
+          description: Purchase order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  "/purchase_orders/{id}":
+    get:
+      description: Use this request to get data for a single purchase order
+      summary: Get a purchase order
+      operationId: getPurchaseOrder
+      tags:
+        - purchase orders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: use_system
+          in: query
+          schema:
+            $ref: "#/components/schemas/SystemType"
+      responses:
+        '200':
+          description: Purchase order retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   "/subscriptions":
     get:
       operationId: list_subscriptions
@@ -234,6 +282,24 @@ components:
                   $ref: "#/components/schemas/Error"
 
   schemas:
+    ExternalId:
+      description: |
+        The external id set by the ERP system. It does not have to be a UUID and
+        can be any string desired.
+      type: string
+      example: 21b31bc7-1267-4335-893c-d7fe4706a238
+      maxLength: 255
+    InternalId:
+      description: |
+        The internal id set by the Vic API. The ids provided may be integers, UUIDs, 
+        or a different non numerical value.
+      type: string
+      example: 123245, 21b31bc7-1267-4335-893c-d7fe4706a238
+      maxLength: 255
+    SystemType:
+      enum:
+        - internal
+        - external
     Monetary:
       type: string
       format: decimal
@@ -317,7 +383,7 @@ components:
       - version
       properties:
         internal_id:
-          type: string
+          $ref: "#/components/schemas/InternalId"
         access_token:
           type: string
         callback_url:
