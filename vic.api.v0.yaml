@@ -967,7 +967,7 @@ paths:
               $ref: '#/components/schemas/InvoiceReject'
       responses:
         "200":
-          description: The invoice was confirmed successfully.
+          description: The invoice was rejection error message was acknowledged.
           content:
             application/json:
               schema:
