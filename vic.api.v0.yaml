@@ -2035,6 +2035,7 @@ components:
         count:
           type: integer
           minimum: 0
+          description: The number of `unit` for the payment term.
         unit:
           $ref: "#/components/schemas/PaymentTermUnit"
     LineItemVat:
@@ -2044,38 +2045,65 @@ components:
           type: string
           maxLength: 255
           nullable: true
+          description: |
+            The internal id of the VAT code. If specified, it will take
+            precedence over the `externalId` and `code`.
         externalId:
           type: string
           maxLength: 255
           nullable: true
+          description: |
+            The external id of the VAT code. If specified, it will take
+            precedence over the `code`.
         code:
           type: string
           maxLength: 255
           nullable: true
+          description: The VAT code.
         amount:
           oneOf:
           - $ref: "#/components/schemas/MonetaryValue"
           nullable: true
+          description: |
+            The amount of VAT. If the VAT amount is unknown, this should be left
+            `NULL` or unspecified.
     CreateInvoiceLineItem:
       type: object
       required:
       - amount
       properties:
         index:
-          description: A non-negative integer.
+          description: |
+            A non-negative integer indicating where the line item is in the
+            document. No two line items shall be allowed to have the same index.
+
+            If unspecified, it will be inferred based on its position. If
+            another line item has an index set, and the current line item is
+            left null, it will take the next highest value.
           type: integer
           nullable: true
           minimum: 0
         amount:
-          $ref: "#/components/schemas/MonetaryValue"
+          oneOf:
+          - $ref: "#/components/schemas/MonetaryValue"
+          description: |
+            The line item amount, excluding VAT or any other tax amount.
+
+            If VAT is unknown or the tax amount is unknown, the `vat` field
+            should be left `NULL` or unspecified.
+
+            If the VAT is known, that should be specified in the `vat.amount`
+            field.
         comment:
           type: string
           maxLength: 255
           nullable: true
+          description: The line item comment.
         description:
           type: string
           maxLength: 255
           nullable: true
+          description: The description of the line item.
         billable:
           type: boolean
           nullable: true
@@ -2083,6 +2111,10 @@ components:
           oneOf:
           - $ref: "#/components/schemas/LineItemVat"
           nullable: true
+          description: |
+            The VAT information for the specific line item.
+
+            If this value is unknown, it should be left `NULL` or unspecified.
         costAccount:
           oneOf:
           - $ref: "#/components/schemas/CostAccountInfo"
@@ -2473,7 +2505,13 @@ components:
       - amount
       properties:
         index:
-          description: 'position within invoice, if omitted, will be inferred'
+          description: |
+            A non-negative integer indicating where the line item is in the
+            document. No two line items shall be allowed to have the same index.
+
+            If unspecified, it will be inferred based on its position. If
+            another line item has an index set, and the current line item is
+            left null, it will take the next highest value.
           type: integer
         amount:
           type: number
@@ -2530,18 +2568,35 @@ components:
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
-        - costAccountExternalId
-        - amount
+      - costAccountExternalId
+      - amount
       properties:
         index:
-          description: Position within invoice, if omitted, will be inferred.
+          description: |
+            A non-negative integer indicating where the line item is in the
+            document. No two line items shall be allowed to have the same index.
+
+            If unspecified, it will be inferred based on its position. If
+            another line item has an index set, and the current line item is
+            left null, it will take the next highest value.
           type: integer
+          minimum: 0
         amount:
           type: number
+          description: |
+            The line item amount, excluding VAT or any other tax amount.
+
+            If VAT is unknown or the tax amount is unknown, the
+            `invoiceLineItemInfo` field should be left `NULL` or unspecified.
+
+            If the VAT is known, that should be specified in the `vat.amount`
+            field.
         description:
           type: string
+          description: The line item comment.
         comment:
           type: string
+          description: The description of the line item.
         billable:
           type: boolean
           default: false
@@ -2549,12 +2604,12 @@ components:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
           anyOf:
-            - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-            - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-            - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
+          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
+          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
         costAccountExternalId:
           allOf:
-            - $ref: '#/components/schemas/ExternalId'
+          - $ref: '#/components/schemas/ExternalId'
           nullable: true
         dimensionsExternalIds:
           type: array
