@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## v0.3.17
+### V0
+- Added `GET /v0/subscription` to fetch the currently configued V0 subscription.
+
+
 ## v0.3.16
 ### V1
 - Added `POST /v1/purchase_orders` to create a purchase order.

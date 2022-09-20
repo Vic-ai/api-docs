@@ -1252,6 +1252,25 @@ paths:
               schema:
                 $ref: '#/components/schemas/Error'
   "/subscription":
+    get:
+      description: Get the current status of the subscription that is set.
+      summary: Get subscription info
+      operationId: getSubscription
+      tags:
+        - subscriptions
+      responses:
+        '200':
+          description: The subscription information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SubscriptionUpsert'
+        default:
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       description: |
         This request is used to configure or modify a new subscription to user
@@ -1274,7 +1293,7 @@ paths:
               $ref: '#/components/schemas/SubscriptionUpsert'
       responses:
         '201':
-          description: Successful subscription
+          description: Subscription successfully upserted.
           content:
             application/json:
               schema:
