@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.16
+  version: 0.3.17
   contact: {}
   title: Vic.Api
   description: |
@@ -915,6 +915,59 @@ paths:
       responses:
         "200":
           description: The invoice was confirmed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invoice'
+        "403":
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "404":
+          description: Invoice was not found.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "422":
+          description: Errors with the input are present.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+  "/invoice/{id}/reject":
+    post:
+      description: |
+        Used to communicate that the invoice data have **NOT** been
+        successfully posted to the ERP, due to invalid data. This should **NOT**
+        be used to communicate an error in posting due to a general failure
+        such as a network issue or an availability issue with the ERP, in
+        those or similar cases, a retry should be performed without notifying the vic system.
+
+        Note: `id` *must* be the `internalId` of the invoice.
+      summary: Asynchronous reply to invoice post
+      operationId: rejectInvoice
+      tags:
+        - invoices
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: |
+            The `internalId` of the invoice which should be confirmed.
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InvoiceReject'
+      responses:
+        "200":
+          description: The invoice was rejection error message was acknowledged.
           content:
             application/json:
               schema:
