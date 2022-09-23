@@ -2717,12 +2717,6 @@ components:
         description:
           type: string
           maxLength: 255
-        externalId:
-          type: string
-          maxLength: 255
-        externalUpdatedAt:
-          type: string
-          format: date-time
         activeStartingAt:
           type: string
           format: date-time
@@ -2758,11 +2752,12 @@ components:
           type: string
           maxLength: 255
         externalId:
-          type: string
-          maxLength: 255
+          $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
+          description: Does not have UTC normalization.
+          example: '2021-06-29T17:20:53.154'
         activeStartingAt:
           type: string
           format: date-time
@@ -2782,13 +2777,6 @@ components:
         vatDebitAccount:
           type: string
           maxLength: 255
-        externalId:
-          $ref: '#/components/schemas/ExternalId'
-        externalUpdatedAt:
-          type: string
-          format: date-time
-          description: Does not have UTC normalization.
-          example: '2021-06-29T17:20:53.154'
     VendorState:
       enum:
         - CONFIRMED
