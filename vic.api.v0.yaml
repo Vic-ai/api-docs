@@ -2359,7 +2359,7 @@ components:
         source:
           description: Where the invoice originates from.
           type: string
-          nullable: true  
+          nullable: true
           example: Millum
         internalId:
           type: string
