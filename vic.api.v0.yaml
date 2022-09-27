@@ -2333,6 +2333,10 @@ components:
           type: string
           format: ISO-4217
           maxLength: 255
+        customFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomField'
         language:
           type: string
           nullable: true
@@ -3183,6 +3187,18 @@ components:
         - INVOICE
         - CREDITNOTE
       default: INVOICE
+    CustomField:
+      type: object
+      properties:
+        id:
+          type: string
+          maxLength: 255
+        value:
+          type: string
+          maxLength: 255
+        label:
+          type: string
+          maxLength: 255
     VendorTaxInfo:
       type: object
       properties:
