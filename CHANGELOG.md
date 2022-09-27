@@ -12,7 +12,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### V0
 - Added `POST /v0/invoice/{id}/reject`.
 - Added `GET /v0/subscription` to fetch the currently configued V0 subscription.
-- Added `customFields` to `#/components/schemas/Invoice`.
 
 
 ## v0.3.16
