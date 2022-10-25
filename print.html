@@ -339,6 +339,12 @@ been updated, and <code>201</code> when the vendor has been created.</li>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="v0-2"><a class="header" href="#v0-2">V0</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="open-api-spec"><a class="header" href="#open-api-spec">Open API Spec</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="invoices"><a class="header" href="#invoices">Invoices</a></h1>
+<p>To create an invoice in Vic there are three steps:</p>
+<ol>
+<li>Create the invoice with a POST to /invoices</li>
+<li>Upload the document with a POST to /invoice/{id}/document</li>
+<li>Process the document with a POST to  /invoice/{id}/process</li>
+</ol>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="vendors"><a class="header" href="#vendors">Vendors</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="cost-accounts"><a class="header" href="#cost-accounts">Cost Accounts</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="dimensions"><a class="header" href="#dimensions">Dimensions</a></h1>
