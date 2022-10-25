@@ -25,6 +25,54 @@ tags:
 - name: subscriptions
 
 paths:
+  "/purchase_orders":
+    post:
+      description: Use this request to create a purchase order
+      summary: Create a purchase order
+      operationId: createPurchaseOrder
+      tags:
+        - purchase orders
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreatePurchaseOrder"
+      responses:
+        '200':
+          description: Purchase order created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  "/purchase_orders/{id}":
+    get:
+      description: Use this request to get data for a single purchase order
+      summary: Get a purchase order
+      operationId: getPurchaseOrder
+      tags:
+        - purchase orders
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: use_system
+          in: query
+          schema:
+            $ref: "#/components/schemas/SystemType"
+      responses:
+        '200':
+          description: Purchase order retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PurchaseOrder'
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   "/subscriptions":
     get:
       operationId: list_subscriptions
