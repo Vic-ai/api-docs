@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.17
+  version: 0.3.18
   contact: {}
   title: Vic.Api
   description: |
@@ -1999,6 +1999,10 @@ components:
           maxLength: 255
           nullable: true
         externalId:
+          type: string
+          maxLength: 255
+          nullable: true
+        name:
           type: string
           maxLength: 255
           nullable: true
