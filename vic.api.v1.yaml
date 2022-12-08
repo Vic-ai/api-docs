@@ -403,6 +403,10 @@ components:
         external_id:
           type: string
           maxLength: 255
+        name:
+          type: string
+          maxLength: 255
+          nullable: true
     PurchaseOrderStatus:
       enum:
       - open

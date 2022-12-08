@@ -8,6 +8,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 
+## v0.3.18
+### V0
+- Added `name` to `#/components/schemas/DimensionRef`
+
+
 ## v0.3.17
 ### V0
 - Added `POST /v0/invoice/{id}/reject`.
