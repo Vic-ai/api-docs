@@ -122,7 +122,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
 ```
 
 ```bash
-curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/21 Duis sint pariatur/document?useSystem=INTERNAL' \
+curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/12345/document?useSystem=INTERNAL' \
 --header 'Content-Type: multipart/form-data' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer <Bearer Token>' \
