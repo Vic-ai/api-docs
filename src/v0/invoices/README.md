@@ -48,7 +48,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
     },
     "creditAccount": {
         "internalId": "veniam ut ipsum sunt cillum",
-        "externalId": "qui non"
+        "externalId": "cost-account-external-id"
     },
     "vendor": {
         "internalId": "Duis",
