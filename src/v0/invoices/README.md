@@ -54,7 +54,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
         "internalId": "Duis",
         "externalId": "do culpa",
         "orgNumber": "tempor aliquip ea",
-        "countryCode": "a"
+        "countryCode": "NO"
     },
     "lineItems": [
         {
