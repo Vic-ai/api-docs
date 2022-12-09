@@ -52,7 +52,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
     },
     "vendor": {
         "internalId": "45678",
-        "externalId": "do culpa",
+        "externalId": "vendor-1-external-id",
         "orgNumber": "tempor aliquip ea",
         "countryCode": "NO"
     },
