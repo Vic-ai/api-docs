@@ -29,7 +29,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
     "refNumber": "enim dolore",
     "poNumber": "mollit proident Lorem",
     "description": "sunt cupidatat cillum ut",
-    "currency": "en",
+    "currency": "USD",
     "language": "en",
     "issueDate": "1943-09-10",
     "glDate": "1952-08-16",
