@@ -126,7 +126,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/21 Duis sin
 --header 'Content-Type: multipart/form-data' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer <Bearer Token>' \
---form 'document=@"/Users/grantz/Downloads/api-design.pdf"'
+--form 'document=@"/path/to/document.pdf"'
 ```
 
 
