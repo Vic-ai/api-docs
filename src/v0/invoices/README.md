@@ -81,10 +81,10 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
             },
             "dimensions": [
                 {
-                "externalId": "loc_3"
+                    "externalId": "loc_3"
                 },
                 {
-                "externalId": "dep_9"
+                    "externalId": "dep_9"
                 }
             ]
             }
