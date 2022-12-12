@@ -55,9 +55,6 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
             "comment": "Comment index 0",
             "description": "Invoice line 0 Desc",
             "billable": null,
-            "vat": {
-                "amount":"250"
-            },
             "costAccount": {
                 "number": "22530"
             },
