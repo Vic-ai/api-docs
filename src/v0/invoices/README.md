@@ -38,7 +38,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
             "accountHolderName": "Test Name",
             "accountNumber": "10805655555",
             "routingNumber": "1345435",
-            "bic": "32435"
+            "bic": "BANKGIRO"
         },
         "paymentTerm": {
             "count": 10,
