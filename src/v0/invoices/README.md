@@ -57,16 +57,16 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
             "billable": null,
             "vat": {
                 "amount":"250"
-                },
+            },
             "costAccount": {
                 "number": "22530"
             },
             "dimensions": [
                 {
-                "externalId": "cla_7"
+                    "externalId": "cla_7"
                 },
                 {
-                "externalId": "prod_470"
+                    "externalId": "prod_470"
                 }
             ]
             },
