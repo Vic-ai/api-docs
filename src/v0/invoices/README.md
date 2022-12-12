@@ -66,22 +66,22 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                 ]
             },
             {
-            "amount": "1000",
-            "index": 1,
-            "comment": "Comment index 1",
-            "description": "Invoice line 1 Desc",
-            "billable": null,
-            "costAccount": {
-                "number": "63010"
-            },
-            "dimensions": [
-                {
-                    "externalId": "loc_3"
+                "amount": "1000",
+                "index": 1,
+                "comment": "Comment index 1",
+                "description": "Invoice line 1 Desc",
+                "billable": null,
+                "costAccount": {
+                    "number": "63010"
                 },
-                {
-                    "externalId": "dep_9"
-                }
-            ]
+                "dimensions": [
+                    {
+                        "externalId": "loc_3"
+                    },
+                    {
+                        "externalId": "dep_9"
+                    }
+                ]
             }
         ]
         }'
