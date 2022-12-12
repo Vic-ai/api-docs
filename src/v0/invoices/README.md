@@ -35,10 +35,8 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
         "paymentRef": "1010101010",
         "paymentInfo": {
             "kind": "BBAN",
-            "accountHolderName": "Test Name",
             "accountNumber": "10805655555",
-            "routingNumber": "1345435",
-            "bic": "BANKGIRO"
+            "bic": "32435"
         },
         "paymentTerm": {
             "count": 10,
