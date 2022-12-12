@@ -23,102 +23,73 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer <Bearer Token>' \
     --data-raw '{
-    "transactionType": "INVOICE",
-    "externalId": "21b31bc7-1267-4335-893c-d7fe4706a238",
-    "source": "Millum",
-    "refNumber": "enim dolore",
-    "poNumber": "mollit proident Lorem",
-    "description": "sunt cupidatat cillum ut",
-    "currency": "USD",
-    "language": "en",
-    "issueDate": "1943-09-10",
-    "glDate": "1952-08-16",
-    "dueDate": "2001-10-13",
-    "paymentRef": "occaecat quis amet",
-    "paymentInfo": {
-        "kind": "Ut",
-        "accountHolderName": "est cupidatat eiusmod et",
-        "accountNumber": "aliqua dolor sit ea",
-        "routingNumber": "dolor magna Lorem ex",
-        "bic": "ipsum quis"
-    },
-    "paymentTerm": {
-        "count": 81868646,
-        "unit": "tempor sunt"
-    },
-    "creditAccount": {
-        "internalId": "12345",
-        "externalId": "cost-account-external-id"
-    },
-    "vendor": {
-        "internalId": "45678",
-        "externalId": "vendor-1-external-id",
-        "orgNumber": "tempor aliquip ea",
-        "countryCode": "NO"
-    },
-    "lineItems": [
-        {
-        "amount": "1.00",
-        "index": 68830011,
-        "comment": "Duis voluptate incididunt aute magna",
-        "description": "dolor et",
-        "billable": true,
-        "vat": {
-            "internalId": "occaecat in laboris enim",
-            "externalId": "Lorem",
-            "code": "consectetur",
-            "amount": {
-            "value": "<Error: Too many levels of nesting to fake this schema>"
-            }
+        "transactionType": "INVOICE",
+        "source": "MILLUM",
+        "refNumber": "12345",
+        "poNumber": "PO99999",
+        "description": "Invoice Header Description",
+        "currency": "NOK",
+        "issueDate": "2022-06-08",
+        "glDate": "2022-06-08",
+        "dueDate": "2022-06-18",
+        "paymentRef": "1010101010",
+        "paymentInfo": {
+            "kind": "BBAN",
+            "accountHolderName": "Test Name",
+            "accountNumber": "10805655555",
+            "routingNumber": "1345435",
+            "bic": "32435"
         },
-        "costAccount": {
-            "internalId": "Duis",
-            "externalId": "eiusmod ea d",
-            "number": "veniam exercitation aliquip do"
+        "paymentTerm": {
+            "count": 10,
+            "unit": "DAYS"
         },
-        "dimensions": [
+        "vendor": {
+            "orgNumber": "926858963",
+            "countryCode": "NO"
+        },
+        "lineItems": [
             {
-            "internalId": "aliqua in aute",
-            "externalId": "enim in labore"
+            "amount": "800",
+            "index": 0,
+            "comment": "Comment index 0",
+            "description": "Invoice line 0 Desc",
+            "billable": null,
+            "vat": {
+                "amount":"250"
+                },
+            "costAccount": {
+                "number": "22530"
+            },
+            "dimensions": [
+                {
+                "externalId": "cla_7"
+                },
+                {
+                "externalId": "prod_470"
+                }
+            ]
             },
             {
-            "internalId": "magna sed Lorem",
-            "externalId": "ea magna aliqua eiusmod"
-            }
-        ]
-        },
-        {
-        "amount": "1.00",
-        "index": 63232286,
-        "comment": "id l",
-        "description": "nulla proident in quis et",
-        "billable": false,
-        "vat": {
-            "internalId": "eu qui",
-            "externalId": "pariatur in",
-            "code": "laboris nisi",
-            "amount": {
-            "value": "<Error: Too many levels of nesting to fake this schema>"
-            }
-        },
-        "costAccount": {
-            "internalId": "nostrud ut culpa dolor dolore",
-            "externalId": "adipisicing amet cupidatat ea",
-            "number": "veniam"
-        },
-        "dimensions": [
-            {
-            "internalId": "mollit reprehenderit",
-            "externalId": "sit sunt"
+            "amount": "1000",
+            "index": 1,
+            "comment": "Comment index 1",
+            "description": "Invoice line 1 Desc",
+            "billable": null,
+            "costAccount": {
+                "number": "63010"
             },
-            {
-            "internalId": "est ut adipisicing",
-            "externalId": "cupidatat cillum incididunt nisi"
+            "dimensions": [
+                {
+                "externalId": "loc_3"
+                },
+                {
+                "externalId": "dep_9"
+                }
+            ]
             }
         ]
-        }
-    ]
-    }'
+        }'
 ```
 
 ```bash
