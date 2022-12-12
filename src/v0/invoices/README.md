@@ -48,22 +48,22 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
         },
         "lineItems": [
             {
-            "amount": "800",
-            "index": 0,
-            "comment": "Comment index 0",
-            "description": "Invoice line 0 Desc",
-            "billable": null,
-            "costAccount": {
-                "number": "22530"
-            },
-            "dimensions": [
-                {
-                    "externalId": "cla_7"
+                "amount": "800",
+                "index": 0,
+                "comment": "Comment index 0",
+                "description": "Invoice line 0 Desc",
+                "billable": null,
+                "costAccount": {
+                    "number": "22530"
                 },
-                {
-                    "externalId": "prod_470"
-                }
-            ]
+                "dimensions": [
+                    {
+                        "externalId": "cla_7"
+                    },
+                    {
+                        "externalId": "prod_470"
+                    }
+                ]
             },
             {
             "amount": "1000",
