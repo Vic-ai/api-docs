@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.3.19
+### V0
+- Changed `Account` `number` to only permit the pattern `^\d+$`.
+
 
 ## v0.3.18
 ### V0
