@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.18
+  version: 0.3.19
   contact: {}
   title: Vic.Api
   description: |
@@ -1870,6 +1870,7 @@ components:
         number:
           type: string
           format: number
+          pattern: '^\d+$'
         name:
           type: string
           maxLength: 255
@@ -1906,6 +1907,7 @@ components:
         number:
           type: string
           format: number
+          pattern: '^\d+$'
         name:
           type: string
           maxLength: 255
@@ -2057,6 +2059,7 @@ components:
           description: The cost account's number.
           type: string
           maxLength: 255
+          pattern: '^\d+$'
           nullable: true
     PaymentKind:
       description: The payment kind.
