@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.3.19
+  version: 0.4.0
   contact: {}
   title: Vic.Api
   description: |
@@ -1878,18 +1878,6 @@ components:
           allOf:
             - $ref: '#/components/schemas/ExternalData'
           nullable: true
-        requiredDimensionsExternal:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalId'
-        parentAccountExternalId:
-          $ref: '#/components/schemas/ExternalId'
-        requiredDimensionsInternal:
-          type: array
-          items:
-            $ref: '#/components/schemas/InternalId'
-        parentAccountInternalId:
-          $ref: '#/components/schemas/InternalId'
     AccountUpsert:
       type: object
       required:
@@ -1915,12 +1903,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
-        requiredDimensionsExternal:
-          type: array
-          items:
-            $ref: '#/components/schemas/ExternalId'
-        parentAccountExternalId:
-          $ref: '#/components/schemas/ExternalId'
     Accounts:
       type: array
       items:
@@ -1944,12 +1926,8 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
-        parentDimensionExternalId:
-          $ref: '#/components/schemas/ExternalId'
         displayName:
           type: string
-        parentDimensionInternalId:
-          $ref: '#/components/schemas/InternalId'
         internalId:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
@@ -1987,8 +1965,6 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
-        parentDimensionExternalId:
-          $ref: '#/components/schemas/ExternalId'
     Dimensions:
       type: array
       items:
