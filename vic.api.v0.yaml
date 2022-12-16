@@ -1776,7 +1776,7 @@ components:
     ExternalId:
       description: |
         The external id set by the ERP system. It does not have to be a UUID and
-        can be any string desired.
+        can be any non empty string desired.
       type: string
       example: 21b31bc7-1267-4335-893c-d7fe4706a238
       maxLength: 255
