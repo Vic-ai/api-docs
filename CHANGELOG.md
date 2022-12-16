@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.4.0
+### V0
+- Removed `requiredDimensionsExternal` from `#/components/schemas/Account`. This field was never supported.
+- Removed `parentAccountExternalId` from `#/components/schemas/Account`. This field was never supported.
+- Removed `requiredDimensionsInternal` from `#/components/schemas/Account`. This field was never supported.
+- Removed `parentAccountInternalId` from `#/components/schemas/Account`. This field was never supported.
+- Removed `requiredDimensionsExternal` from `#/components/schemas/AccountUpsert`. This field was never supported.
+- Removed `parentAccountExternalId` from `#/components/schemas/AccountUpsert`. This field was never supported.
+- Removed `parentDimensionExternalId` from `#/components/schemas/Dimension`. This field was never supported.
+- Removed `parentDimensionInternalId` from `#/components/schemas/Dimension`. This field was never supported.
+- Removed `parentDimensionExternalId` from `#/components/schemas/DimensionUpsert`. This field was never supported.
+
+
 ## v0.3.19
 ### V0
 - Changed `Account` `number` to only permit the pattern `^\d+$`.
