@@ -454,6 +454,8 @@ components:
         external_id:
           type: string
           maxLength: 255
+        vendor_id:
+          type: integer
         internal_updated_at:
           type: string
           format: date-time
