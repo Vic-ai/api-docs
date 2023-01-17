@@ -275,12 +275,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted dimension
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "201":
+          $ref: "#/components/responses/DimensionDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /vendors:
@@ -3209,6 +3205,12 @@ components:
             $ref: "#/components/schemas/Dimension"
     DimensionUpdatedResponse:
       description: Dimension was updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionDeletedResponse:
+      description: Dimension was deleted successfully.
       content:
         application/json:
           schema:
