@@ -964,12 +964,8 @@ paths:
       tags:
         - subscriptions
       responses:
-        '200':
-          description: The subscription information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SubscriptionUpsert'
+        "200":
+          $ref: "#/components/responses/SubscriptionResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     put:
@@ -3251,3 +3247,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/VatCode"
+    SubscriptionResponse:
+      description: The subscription information
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubscriptionUpsert"
