@@ -856,12 +856,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '201':
-          description: Information from deleted training invoice
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "201":
+          $ref: "#/components/responses/TrainingInvoiceDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}/document:
@@ -3235,6 +3231,12 @@ components:
             $ref: "#/components/schemas/TrainingInvoice"
     TrainingInvoiceUpsertedResponse:
       description: Training invoice was successfully upserted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceDeletedResponse:
+      description: Training invoice was successfully deleted.
       content:
         application/json:
           schema:
