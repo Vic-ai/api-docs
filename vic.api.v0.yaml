@@ -872,10 +872,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '200':
-          description: Expected response for a valid training invoice
-          content:
-            application/pdf: {}
+        "200":
+          $ref: "#/components/responses/TrainingInvoiceDocumentResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /vatCodes:
@@ -3241,3 +3239,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceDocumentResponse:
+      description: The document attached to the training invoice.
+      content:
+        application/pdf: {}
