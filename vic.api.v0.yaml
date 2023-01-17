@@ -638,11 +638,7 @@ paths:
                   nullable: false
       responses:
         "200":
-          description: Document was uploaded successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Invoice"
+          $ref: "#/components/responses/InvoiceResponse"
         "403":
           $ref: "#/components/responses/ForbiddenResponse"
         "404":
