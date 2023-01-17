@@ -749,14 +749,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: The ungrouped line items for the invoice.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InvoiceLineItem'
+        "200":
+          $ref: "#/components/responses/InvoiceLineItemsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /trainingInvoices:
@@ -3231,3 +3225,11 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Invoice"
+    InvoiceLineItemsResponse:
+      description: The ungrouped line items for the invoice.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceLineItem"
