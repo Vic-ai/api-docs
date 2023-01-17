@@ -259,18 +259,10 @@ paths:
             schema:
               $ref: '#/components/schemas/DimensionUpsert'
       responses:
-        '200':
-          description: Dimension was updated successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
-        '201':
-          description: Dimension was created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "200":
+          $ref: "#/components/responses/DimensionUpdatedResponse"
+        "201":
+          $ref: "#/components/responses/DimensionCreatedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
@@ -3205,6 +3197,18 @@ components:
             $ref: "#/components/schemas/Dimensions"
     DimensionResponse:
       description: A dimension.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionCreatedResponse:
+      description: Dimension was created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionUpdatedResponse:
+      description: Dimension was updated successfully.
       content:
         application/json:
           schema:
