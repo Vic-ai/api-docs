@@ -130,17 +130,8 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of accounts
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Accounts'
+        "200":
+          $ref: "#/components/responses/AccountsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /account/{id}:
@@ -3197,3 +3188,14 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/HealthCheck"
+    AccountsResponse:
+      description: A paged array of accounts
+      headers:
+        x-next:
+          description: A link to the next page of responses
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Accounts"
