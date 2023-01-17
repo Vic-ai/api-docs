@@ -308,17 +308,8 @@ paths:
           schema:
             $ref: "#/components/schemas/VendorStateFilter"
       responses:
-        '200':
-          description: A paged array of vendors
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendors'
+        "200":
+          $ref: "#/components/responses/VendorsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}:
@@ -3215,3 +3206,14 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Dimension"
+    VendorsResponse:
+      description: A paged array of vendors
+      headers:
+        x-next:
+          description: A link to the next page of responses
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendors"
