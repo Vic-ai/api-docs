@@ -572,11 +572,7 @@ paths:
             type: string
       responses:
         "202":
-          description: Invoice has started processing.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Invoice"
+          $ref: "#/components/responses/InvoiceResponse"
         "403":
           $ref: "#/components/responses/ForbiddenResponse"
         "404":
