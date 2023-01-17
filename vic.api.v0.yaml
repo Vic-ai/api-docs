@@ -841,12 +841,8 @@ paths:
                     schema:
                       type: string
       responses:
-        '201':
-          description: Successful upsert
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "201":
+          $ref: "#/components/responses/TrainingInvoiceUpsertedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
@@ -3233,6 +3229,12 @@ components:
             $ref: "#/components/schemas/TrainingInvoices"
     TrainingInvoiceResponse:
       description: A single training invoice.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceUpsertedResponse:
+      description: Training invoice was successfully upserted.
       content:
         application/json:
           schema:
