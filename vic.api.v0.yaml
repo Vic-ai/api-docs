@@ -989,12 +989,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SubscriptionUpsert'
       responses:
-        '201':
-          description: Subscription successfully upserted.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SubscriptionUpsert'
+        "201":
+          $ref: "#/components/responses/SubscriptionUpsertedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
       callbacks:
@@ -3249,6 +3245,12 @@ components:
             $ref: "#/components/schemas/VatCode"
     SubscriptionResponse:
       description: The subscription information
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubscriptionUpsert"
+    SubscriptionUpsertedResponse:
+      description: Subscription successfully upserted.
       content:
         application/json:
           schema:
