@@ -892,12 +892,8 @@ paths:
         - $ref: '#/components/parameters/SortOrder'
         - $ref: '#/components/parameters/VatCodeFilter'
       responses:
-        '200':
-          description: An array of vat codes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCodes'
+        "200":
+          $ref: "#/components/responses/VatCodesResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /vatCode/{id}:
@@ -3243,3 +3239,9 @@ components:
       description: The document attached to the training invoice.
       content:
         application/pdf: {}
+    VatCodesResponse:
+      description: An array of vat codes
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCodes"
