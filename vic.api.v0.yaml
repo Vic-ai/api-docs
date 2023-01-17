@@ -229,12 +229,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "200":
+          $ref: "#/components/responses/DimensionResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     put:
@@ -3207,3 +3203,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Dimensions"
+    DimensionResponse:
+      description: A dimension.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
