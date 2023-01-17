@@ -212,17 +212,8 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of dimensions
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimensions'
+        "200":
+          $ref: "#/components/responses/DimensionsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /dimension/{id}:
@@ -3205,3 +3196,14 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Account"
+    DimensionsResponse:
+      description: A paged array of dimensions
+      headers:
+        x-next:
+          description: A link to the next page of responses
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimensions"
