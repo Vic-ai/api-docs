@@ -679,11 +679,7 @@ paths:
               $ref: '#/components/schemas/InvoiceConfirm'
       responses:
         "200":
-          description: The invoice was confirmed successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+          $ref: "#/components/responses/InvoiceConfirmedResponse"
         "403":
           $ref: "#/components/responses/ForbiddenResponse"
         "404":
@@ -3227,3 +3223,9 @@ components:
           schema:
             type: string
             format: binary
+    InvoiceConfirmedResponse:
+      description: The invoice was confirmed successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
