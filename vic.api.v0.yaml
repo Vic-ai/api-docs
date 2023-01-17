@@ -147,12 +147,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
+        "200":
+          $ref: "#/components/responses/AccountResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     put:
@@ -3199,3 +3195,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Accounts"
+    AccountResponse:
+      description: Shows the account.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Account"
