@@ -373,12 +373,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted vendor
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "201":
+          $ref: "#/components/responses/VendorDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}/errors:
@@ -3219,6 +3215,12 @@ components:
             $ref: "#/components/schemas/Vendor"
     VendorUpdatedResponse:
       description: Vendor was successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorDeletedResponse:
+      description: Vendor was successfully deleted.
       content:
         application/json:
           schema:
