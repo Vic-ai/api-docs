@@ -549,8 +549,8 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/Comment'
       responses:
-        '204':
-          description: Invoice was successfully deleted.
+        "204":
+          $ref: "#/components/responses/InvoiceDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/process:
@@ -3231,3 +3231,5 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Invoice"
+    InvoiceDeletedResponse:
+      description: Invoice was successfully deleted.
