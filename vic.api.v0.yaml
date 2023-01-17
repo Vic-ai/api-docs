@@ -99,12 +99,8 @@ paths:
             schema:
               $ref: '#/components/schemas/GetTokenInput'
       responses:
-        '200':
-          description: Successful access token request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetTokenResult'
+        "200":
+          $ref: "#/components/responses/TokenCreatedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /healthCheck:
@@ -3193,3 +3189,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+    TokenCreatedResponse:
+      description: Successful access token request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetTokenResult"
