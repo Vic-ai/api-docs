@@ -413,12 +413,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
       responses:
-        '200':
-          description: Vendor errors were cleared.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorRemoteErrorsClearedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /invoices:
@@ -3223,6 +3219,12 @@ components:
             $ref: "#/components/schemas/Vendor"
     VendorRemoteErrorsUpdatedResponse:
       description: Vendor errors were successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorRemoteErrorsClearedResponse:
+      description: Vendor errors were successfully cleared.
       content:
         application/json:
           schema:
