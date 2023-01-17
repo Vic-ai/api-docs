@@ -1040,6 +1040,12 @@ components:
       type: http
       scheme: bearer
 
+  headers:
+    NextPageToken:
+      description: A link to the next page of responses
+      schema:
+        type: string
+
   parameters:
     PathId:
       name: id
@@ -3019,9 +3025,7 @@ components:
       description: A paged array of accounts
       headers:
         x-next:
-          description: A link to the next page of responses
-          schema:
-            type: string
+          $ref: "#/components/headers/NextPageToken"
       content:
         application/json:
           schema:
@@ -3048,9 +3052,7 @@ components:
       description: A paged array of dimensions
       headers:
         x-next:
-          description: A link to the next page of responses
-          schema:
-            type: string
+          $ref: "#/components/headers/NextPageToken"
       content:
         application/json:
           schema:
@@ -3083,9 +3085,7 @@ components:
       description: A paged array of vendors
       headers:
         x-next:
-          description: A link to the next page of responses
-          schema:
-            type: string
+          $ref: "#/components/headers/NextPageToken"
       content:
         application/json:
           schema:
@@ -3130,9 +3130,7 @@ components:
       description: A paged array of invoices
       headers:
         x-next:
-          description: A link to the next page of responses
-          schema:
-            type: string
+          $ref: "#/components/headers/NextPageToken"
       content:
         application/json:
           schema:
@@ -3182,9 +3180,7 @@ components:
       description: A paged array of training invoices.
       headers:
         x-next:
-          description: A link to the next page of responses.
-          schema:
-            type: string
+          $ref: "#/components/headers/NextPageToken"
       content:
         application/json:
           schema:
