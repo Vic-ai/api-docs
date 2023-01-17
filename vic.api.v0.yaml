@@ -323,12 +323,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     put:
@@ -3217,3 +3213,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Vendors"
+    VendorResponse:
+      description: A single vendor.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
