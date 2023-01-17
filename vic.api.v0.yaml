@@ -936,12 +936,8 @@ paths:
             schema:
               $ref: '#/components/schemas/VatCodeUpsert'
       responses:
-        '201':
-          description: Successful upsert
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCode'
+        "201":
+          $ref: "#/components/responses/VatCodeUpsertedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
@@ -3243,6 +3239,12 @@ components:
             $ref: "#/components/schemas/VatCodes"
     VatCodeResponse:
       description: A single vat code.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCode"
+    VatCodeUpsertedResponse:
+      description: Vat code upserted successfully.
       content:
         application/json:
           schema:
