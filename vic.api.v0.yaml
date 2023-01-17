@@ -952,12 +952,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted vat code
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCode'
+        "201":
+          $ref: "#/components/responses/VatCodeDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /subscription:
@@ -3245,6 +3241,12 @@ components:
             $ref: "#/components/schemas/VatCode"
     VatCodeUpsertedResponse:
       description: Vat code upserted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCode"
+    VatCodeDeletedResponse:
+      description: Vat code deleted successfully.
       content:
         application/json:
           schema:
