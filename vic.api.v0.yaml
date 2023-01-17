@@ -111,12 +111,8 @@ paths:
       tags:
         - general
       responses:
-        '200':
-          description: Successful health check response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthCheck'
+        "200":
+          $ref: "#/components/responses/HealthyResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /accounts:
@@ -3195,3 +3191,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/GetTokenResult"
+    HealthyResponse:
+      description: Successful health check response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HealthCheck"
