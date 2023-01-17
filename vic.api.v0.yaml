@@ -106,11 +106,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetTokenResult'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /healthCheck:
     get:
       description: Use this request to obtain a health check statement.
@@ -126,11 +122,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HealthCheck'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /accounts:
     get:
       description: |
@@ -158,11 +150,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Accounts'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /account/{id}:
     get:
       description: |
@@ -183,11 +171,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* GL account data for one GL account into
@@ -221,11 +205,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single account that is stored in
@@ -245,11 +225,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Account'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /dimensions:
     get:
       description: |
@@ -277,11 +253,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dimensions'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /dimension/{id}:
     get:
       description: |
@@ -302,11 +274,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dimension'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* dimensions data for one dimension into
@@ -346,11 +314,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dimension'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: Use this request to delete data for a single dimension that is stored in Vic.ai
       summary: Deletes a dimension
@@ -368,11 +332,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Dimension'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendors:
     get:
       description: Use this request to query the vendor data that are stored in Vic.ai.
@@ -414,11 +374,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendors'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}:
     get:
       description: Use this request to get data for a single vendor that is stored in Vic.ai.
@@ -437,11 +393,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendor'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Updates or inserts a vendor into the Vic.ai system.
@@ -483,11 +435,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendor'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single vendor that is stored in
@@ -507,11 +455,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendor'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}/errors:
     post:
       description: |
@@ -541,11 +485,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendor'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       summary: Clears errors on the Vendor.
       description: Used to clear errors that have been fixed in the ERP system.
@@ -563,11 +503,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Vendor'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /invoices:
     get:
       description: |
@@ -596,11 +532,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Invoices'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     post:
       summary: Create an invoice.
       description: |
@@ -622,23 +554,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/Invoice"
         "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Input was invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}:
     get:
       description: |
@@ -659,11 +581,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Invoice'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       description: |
         Use this request to indicate that an invoice has been posted or
@@ -725,11 +643,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Invoice'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single invoice that is stored in
@@ -746,11 +660,7 @@ paths:
         '204':
           description: Invoice was successfully deleted.
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/process:
     post:
       summary: Start the invoice processing.
@@ -776,23 +686,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/Invoice"
         "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Invoice failed to start processing.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/document:
     get:
       description: |
@@ -819,11 +719,7 @@ paths:
                 type: string
                 format: binary
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     post:
       summary: Upload document invoice
       description: |
@@ -865,23 +761,13 @@ paths:
               schema:
                 $ref: "#/components/schemas/Invoice"
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/confirm:
     post:
       description: |
@@ -920,23 +806,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Invoice'
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/reject:
     post:
       description: |
@@ -973,23 +849,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/Invoice'
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/lineItems:
     get:
       description: |
@@ -1021,11 +887,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/InvoiceLineItem'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoices:
     get:
       description: |
@@ -1052,11 +914,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TrainingInvoices'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}:
     get:
       description: |
@@ -1076,11 +934,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TrainingInvoice'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* training invoice data for one invoice into
@@ -1142,11 +996,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TrainingInvoice'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single training invoice that is
@@ -1165,11 +1015,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TrainingInvoice'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}/document:
     get:
       description: |
@@ -1187,11 +1033,7 @@ paths:
           content:
             application/pdf: {}
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vatCodes:
     get:
       description: |
@@ -1215,11 +1057,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VatCodes'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vatCode/{id}:
     get:
       description: |
@@ -1240,11 +1078,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VatCode'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* vat code into Vic.ai.
@@ -1275,11 +1109,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VatCode'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single vat code that is stored in
@@ -1299,11 +1129,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/VatCode'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /subscription:
     get:
       description: Get the current status of the subscription that is set.
@@ -1319,11 +1145,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SubscriptionUpsert'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         This request is used to configure or modify a new subscription to user
@@ -1352,11 +1174,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SubscriptionUpsert'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
       callbacks:
         vendorNew:
           $ref: "#/components/callbacks/vendorNew"
@@ -1383,7 +1201,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/UnsubscribeResult'
         default:
-          description: unexpected error
+          $ref: "#/components/responses/ErrorResponse"
   /costAccounts:
     get:
       description: |
@@ -1405,11 +1223,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CostAccounts'
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     BearerAuth:
@@ -3348,3 +3162,34 @@ components:
     UnsubscribeResult:
       enum:
         - OK
+  responses:
+    UnauthorizedResponse:
+      description: The request was unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ForbiddenResponse:
+      description: The request was forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ResourceNotFoundResponse:
+      description: Resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    UnprocessableEntityResponse:
+      description: Errors with the input are present.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ErrorResponse:
+      description: An unexpected error has occurred. Check the body for more details.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
