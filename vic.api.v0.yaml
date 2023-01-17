@@ -1030,12 +1030,8 @@ paths:
         - $ref: '#/components/parameters/SinceFilter'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: An array of cost accounts
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CostAccounts'
+        "200":
+          $ref: "#/components/responses/CostAccountsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
 components:
@@ -3257,3 +3253,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/UnsubscribeResult"
+    CostAccountsResponse:
+      description: An array of cost accounts
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CostAccounts"
