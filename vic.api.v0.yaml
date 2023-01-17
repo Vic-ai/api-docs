@@ -399,12 +399,8 @@ paths:
             schema:
               $ref: '#/components/schemas/SetVendorRemoteErrors'
       responses:
-        '200':
-          description: Successful vendor error report
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorRemoteErrorsUpdatedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
@@ -3221,6 +3217,12 @@ components:
             $ref: "#/components/schemas/Vendor"
     VendorDeletedResponse:
       description: Vendor was successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorRemoteErrorsUpdatedResponse:
+      description: Vendor errors were successfully updated.
       content:
         application/json:
           schema:
