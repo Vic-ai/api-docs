@@ -718,11 +718,7 @@ paths:
               $ref: '#/components/schemas/InvoiceReject'
       responses:
         "200":
-          description: The invoice was rejection error message was acknowledged.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+          $ref: "#/components/responses/InvoiceRejectedResponse"
         "403":
           $ref: "#/components/responses/ForbiddenResponse"
         "404":
@@ -3225,6 +3221,12 @@ components:
             format: binary
     InvoiceConfirmedResponse:
       description: The invoice was confirmed successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    InvoiceRejectedResponse:
+      description: The invoice was rejection error message was acknowledged.
       content:
         application/json:
           schema:
