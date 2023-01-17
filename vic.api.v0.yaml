@@ -355,18 +355,10 @@ paths:
             schema:
               $ref: '#/components/schemas/VendorUpsert'
       responses:
-        '200':
-          description: Vendor was successfully updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
-        '201':
-          description: Vendor was successfully inserted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorUpdatedResponse"
+        "201":
+          $ref: "#/components/responses/VendorCreatedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
@@ -3215,6 +3207,18 @@ components:
             $ref: "#/components/schemas/Vendors"
     VendorResponse:
       description: A single vendor.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorCreatedResponse:
+      description: Vendor was successfully created.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorUpdatedResponse:
+      description: Vendor was successfully updated.
       content:
         application/json:
           schema:
