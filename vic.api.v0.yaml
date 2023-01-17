@@ -1012,12 +1012,8 @@ paths:
       tags:
         - subscriptions
       responses:
-        '201':
-          description: Successful deletion
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnsubscribeResult'
+        "201":
+          $ref: "#/components/responses/SubscriptionDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /costAccounts:
@@ -3255,3 +3251,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/SubscriptionUpsert"
+    SubscriptionDeletedResponse:
+      description: Subscription successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UnsubscribeResult"
