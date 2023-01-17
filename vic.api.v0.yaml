@@ -783,12 +783,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "200":
+          $ref: "#/components/responses/TrainingInvoiceResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     put:
@@ -3235,3 +3231,9 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/TrainingInvoices"
+    TrainingInvoiceResponse:
+      description: A single training invoice.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
