@@ -599,13 +599,8 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
+        "200":
+          $ref: "#/components/responses/InvoiceDocumentResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     post:
@@ -3229,3 +3224,10 @@ components:
             $ref: "#/components/schemas/Invoice"
     InvoiceDeletedResponse:
       description: Invoice was successfully deleted.
+    InvoiceDocumentResponse:
+      description: The invoice's document.
+      content:
+        application/pdf:
+          schema:
+            type: string
+            format: binary
