@@ -433,17 +433,8 @@ paths:
         - $ref: '#/components/parameters/SortOrder'
         - $ref: '#/components/parameters/InvoiceStateFilter'
       responses:
-        '200':
-          description: A paged array of invoices
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoices'
+        "200":
+          $ref: "#/components/responses/InvoicesResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     post:
@@ -3229,3 +3220,14 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Vendor"
+    InvoicesResponse:
+      description: A paged array of invoices
+      headers:
+        x-next:
+          description: A link to the next page of responses
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoices"
