@@ -767,17 +767,8 @@ paths:
         - $ref: '#/components/parameters/SinceFilter'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of invoices
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoices'
+        "200":
+          $ref: "#/components/responses/TrainingInvoicesResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}:
@@ -3233,3 +3224,14 @@ components:
             type: array
             items:
               $ref: "#/components/schemas/InvoiceLineItem"
+    TrainingInvoicesResponse:
+      description: A paged array of training invoices.
+      headers:
+        x-next:
+          description: A link to the next page of responses.
+          schema:
+            type: string
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoices"
