@@ -193,12 +193,8 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information for deleted account
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
+        "201":
+          $ref: "#/components/responses/AccountDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /dimensions:
@@ -3199,6 +3195,12 @@ components:
             $ref: "#/components/schemas/Account"
     AccountUpsertedResponse:
       description: Account was upserted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Account"
+    AccountDeletedResponse:
+      description: Information for deleted account
       content:
         application/json:
           schema:
