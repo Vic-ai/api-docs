@@ -532,12 +532,8 @@ paths:
                 - $ref: '#/components/schemas/InvoiceConfirm'
                 - $ref: '#/components/schemas/InvoiceReject'
       responses:
-        '201':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+        "201":
+          $ref: "#/components/responses/InvoiceResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
