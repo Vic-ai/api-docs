@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.4.0
+  version: 0.5.0
   contact: {}
   title: Vic.Api
   description: |
@@ -291,7 +291,7 @@ components:
       maxLength: 255
     InternalId:
       description: |
-        The internal id set by the Vic API. The ids provided may be integers, UUIDs, 
+        The internal id set by the Vic API. The ids provided may be integers, UUIDs,
         or a different non numerical value.
       type: string
       example: 123245, 21b31bc7-1267-4335-893c-d7fe4706a238
