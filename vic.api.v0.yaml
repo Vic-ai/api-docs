@@ -84,7 +84,7 @@ tags:
       assign to invoice line items.
 
 paths:
-  "/token":
+  /token:
     post:
       description: Use this request to obtain an authorization token
       summary: Token service
@@ -111,7 +111,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/healthCheck":
+  /healthCheck:
     get:
       description: Use this request to obtain a health check statement.
       summary: Health check
@@ -131,7 +131,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/accounts":
+  /accounts:
     get:
       description: |
         Use this request to query the GL account data that are stored in Vic.ai.
@@ -163,7 +163,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/account/{id}":
+  /account/{id}:
     get:
       description: |
         Use this request to get data for a single GL account that is stored in
@@ -250,7 +250,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/dimensions":
+  /dimensions:
     get:
       description: |
         Use this request to query the dimensions data that are stored in Vic.ai.
@@ -282,7 +282,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/dimension/{id}":
+  /dimension/{id}:
     get:
       description: |
         Use this request to get data for a single dimension that is stored in
@@ -373,7 +373,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/vendors":
+  /vendors:
     get:
       description: Use this request to query the vendor data that are stored in Vic.ai.
       summary: List all vendors
@@ -419,7 +419,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/vendor/{id}":
+  /vendor/{id}:
     get:
       description: Use this request to get data for a single vendor that is stored in Vic.ai.
       summary: Info for a specific vendor
@@ -512,7 +512,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/vendor/{id}/errors":
+  /vendor/{id}/errors:
     post:
       description: |
         Use this post to report vendor update failure errors back to Vic.ai.
@@ -568,7 +568,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/invoices":
+  /invoices:
     get:
       description: |
         Use this request to query the invoice data that are stored in Vic.ai.
@@ -639,7 +639,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/invoice/{id}":
+  /invoice/{id}:
     get:
       description: |
         Use this request to get data for a single invoice that is stored in
@@ -751,7 +751,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/invoice/{id}/process":
+  /invoice/{id}/process:
     post:
       summary: Start the invoice processing.
       description: |
@@ -793,7 +793,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/invoice/{id}/document":
+  /invoice/{id}/document:
     get:
       description: |
         Use this request to get the document associated with a single invoice
@@ -882,7 +882,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/invoice/{id}/confirm":
+  /invoice/{id}/confirm:
     post:
       description: |
         Used to confirm that the invoice data have been successfully posted to
@@ -937,7 +937,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/invoice/{id}/reject":
+  /invoice/{id}/reject:
     post:
       description: |
         Used to communicate that the invoice data have **NOT** been
@@ -990,7 +990,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-  "/invoice/{id}/lineItems":
+  /invoice/{id}/lineItems:
     get:
       description: |
         List all of the line items for the invoice.
@@ -1026,7 +1026,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/trainingInvoices":
+  /trainingInvoices:
     get:
       description: |
         Use this request to query the invoice data that are stored in Vic.ai.
@@ -1057,7 +1057,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/trainingInvoice/{id}":
+  /trainingInvoice/{id}:
     get:
       description: |
         Use this request to get data for a single training invoice that is
@@ -1170,7 +1170,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/trainingInvoice/{id}/document":
+  /trainingInvoice/{id}/document:
     get:
       description: |
         Use this request to get the document associated with a training invoice
@@ -1192,7 +1192,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/vatCodes":
+  /vatCodes:
     get:
       description: |
         Use this request to query all the vat code data that are stored in
@@ -1220,7 +1220,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/vatCode/{id}":
+  /vatCode/{id}:
     get:
       description: |
         Use this request to get data for a single vat code that is stored in
@@ -1304,7 +1304,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
-  "/subscription":
+  /subscription:
     get:
       description: Get the current status of the subscription that is set.
       summary: Get subscription info
@@ -1384,7 +1384,7 @@ paths:
                 $ref: '#/components/schemas/UnsubscribeResult'
         default:
           description: unexpected error
-  "/costAccounts":
+  /costAccounts:
     get:
       description: |
         Use this request to query all the cost accounts for a specific client.
