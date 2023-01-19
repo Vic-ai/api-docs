@@ -2,7 +2,6 @@ all: build
 
 # Installs all of the necessary python requirements.
 setup:
-	pip install -r requirements.txt
 	npm install
 
 # Builds the entire static site documentation.
@@ -19,6 +18,5 @@ clean:
 
 # Runs validations for the openapi specs
 validate:
-	python -m openapi_spec_validator vic.api.v1.yaml
-	python -m openapi_spec_validator vic.api.v0.yaml
 	npx swagger-cli validate vic.api.v0.yaml
+	npx swagger-cli validate vic.api.v1.yaml
