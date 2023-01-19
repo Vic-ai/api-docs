@@ -25,7 +25,7 @@ tags:
 - name: subscriptions
 
 paths:
-  "/purchase_orders":
+  /purchase_orders:
     post:
       description: Use this request to create a purchase order
       summary: Create a purchase order
@@ -47,7 +47,7 @@ paths:
                 $ref: '#/components/schemas/PurchaseOrder'
         default:
           $ref: "#/components/responses/ErrorResponse"
-  "/purchase_orders/{id}":
+  /purchase_orders/{id}:
     get:
       description: Use this request to get data for a single purchase order
       summary: Get a purchase order
@@ -73,7 +73,7 @@ paths:
                 $ref: '#/components/schemas/PurchaseOrder'
         default:
           $ref: "#/components/responses/ErrorResponse"
-  "/subscriptions":
+  /subscriptions:
     get:
       operationId: list_subscriptions
       description: List all subscriptions.
@@ -114,7 +114,7 @@ paths:
                     $ref: "#/components/schemas/Subscription"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  "/subscriptions/{id}":
+  /subscriptions/{id}:
     get:
       operationId: get_subscription
       description: Get a single subscription.
@@ -182,58 +182,6 @@ paths:
       responses:
         "204":
           description: Subscription was deleted successfully
-        default:
-          $ref: "#/components/responses/ErrorResponse"
-  "/purchase_orders":
-    post:
-      operationId: create_purchase_order
-      description: |
-        Creates a purchase order.
-
-        **Note**: Early access, requires approval from Vic AI to utilize.
-      tags:
-      - purchase orders
-      requestBody:
-        $ref: "#/components/requestBodies/CreatePurchaseOrder"
-      responses:
-        "201":
-          description: The purchase order was created successfully.
-          content:
-            application/json:
-              schema:
-                required:
-                - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/PurchaseOrder"
-        default:
-          $ref: "#/components/responses/ErrorResponse"
-  "/purchase_orders/{id}":
-    get:
-      operationId: get_purchase_order
-      description: |
-        Get a purchase order.
-
-        **Note**: Early access, requires approval from Vic AI to utilize.
-      tags:
-      - purchase orders
-      parameters:
-      - name: id
-        in: path
-        required: true
-        schema:
-          type: string
-      responses:
-        "200":
-          description: The purchase order.
-          content:
-            application/json:
-              schema:
-                required:
-                - data
-                properties:
-                  data:
-                    $ref: "#/components/schemas/PurchaseOrder"
         default:
           $ref: "#/components/responses/ErrorResponse"
 
