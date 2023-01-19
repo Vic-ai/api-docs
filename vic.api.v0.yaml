@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.5.0
+  version: 0.6.0
   contact: {}
   title: Vic.Api
   description: |
@@ -99,18 +99,10 @@ paths:
             schema:
               $ref: '#/components/schemas/GetTokenInput'
       responses:
-        '200':
-          description: Successful access token request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/GetTokenResult'
+        "200":
+          $ref: "#/components/responses/TokenCreatedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /healthCheck:
     get:
       description: Use this request to obtain a health check statement.
@@ -119,18 +111,10 @@ paths:
       tags:
         - general
       responses:
-        '200':
-          description: Successful health check response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/HealthCheck'
+        "200":
+          $ref: "#/components/responses/HealthyResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /accounts:
     get:
       description: |
@@ -146,23 +130,10 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of accounts
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Accounts'
+        "200":
+          $ref: "#/components/responses/AccountsResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /account/{id}:
     get:
       description: |
@@ -176,18 +147,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
+        "200":
+          $ref: "#/components/responses/AccountResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* GL account data for one GL account into
@@ -214,18 +177,10 @@ paths:
             schema:
               $ref: '#/components/schemas/AccountUpsert'
       responses:
-        '201':
-          description: Successful upsert
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
+        "201":
+          $ref: "#/components/responses/AccountUpsertedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single account that is stored in
@@ -238,18 +193,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information for deleted account
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Account'
+        "201":
+          $ref: "#/components/responses/AccountDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /dimensions:
     get:
       description: |
@@ -265,23 +212,10 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of dimensions
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimensions'
+        "200":
+          $ref: "#/components/responses/DimensionsResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /dimension/{id}:
     get:
       description: |
@@ -295,18 +229,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "200":
+          $ref: "#/components/responses/DimensionResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* dimensions data for one dimension into
@@ -333,24 +259,12 @@ paths:
             schema:
               $ref: '#/components/schemas/DimensionUpsert'
       responses:
-        '200':
-          description: Dimension was updated successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
-        '201':
-          description: Dimension was created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "200":
+          $ref: "#/components/responses/DimensionUpdatedResponse"
+        "201":
+          $ref: "#/components/responses/DimensionCreatedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: Use this request to delete data for a single dimension that is stored in Vic.ai
       summary: Deletes a dimension
@@ -361,18 +275,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted dimension
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Dimension'
+        "201":
+          $ref: "#/components/responses/DimensionDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendors:
     get:
       description: Use this request to query the vendor data that are stored in Vic.ai.
@@ -402,23 +308,10 @@ paths:
           schema:
             $ref: "#/components/schemas/VendorStateFilter"
       responses:
-        '200':
-          description: A paged array of vendors
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendors'
+        "200":
+          $ref: "#/components/responses/VendorsResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}:
     get:
       description: Use this request to get data for a single vendor that is stored in Vic.ai.
@@ -430,18 +323,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Updates or inserts a vendor into the Vic.ai system.
@@ -470,24 +355,12 @@ paths:
             schema:
               $ref: '#/components/schemas/VendorUpsert'
       responses:
-        '200':
-          description: Vendor was successfully updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
-        '201':
-          description: Vendor was successfully inserted
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorUpdatedResponse"
+        "201":
+          $ref: "#/components/responses/VendorCreatedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single vendor that is stored in
@@ -500,18 +373,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted vendor
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "201":
+          $ref: "#/components/responses/VendorDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vendor/{id}/errors:
     post:
       description: |
@@ -534,18 +399,10 @@ paths:
             schema:
               $ref: '#/components/schemas/SetVendorRemoteErrors'
       responses:
-        '200':
-          description: Successful vendor error report
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorRemoteErrorsUpdatedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       summary: Clears errors on the Vendor.
       description: Used to clear errors that have been fixed in the ERP system.
@@ -556,18 +413,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
       responses:
-        '200':
-          description: Vendor errors were cleared.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Vendor'
+        "200":
+          $ref: "#/components/responses/VendorRemoteErrorsClearedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /invoices:
     get:
       description: |
@@ -584,23 +433,10 @@ paths:
         - $ref: '#/components/parameters/SortOrder'
         - $ref: '#/components/parameters/InvoiceStateFilter'
       responses:
-        '200':
-          description: A paged array of invoices
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoices'
+        "200":
+          $ref: "#/components/responses/InvoicesResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     post:
       summary: Create an invoice.
       description: |
@@ -616,29 +452,15 @@ paths:
               $ref: "#/components/schemas/CreateInvoice"
       responses:
         "201":
-          description: Invoice was created successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Invoice"
+          $ref: "#/components/responses/InvoiceCreatedResponse"
         "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Not Found
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Input was invalid.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}:
     get:
       description: |
@@ -652,18 +474,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+        "200":
+          $ref: "#/components/responses/InvoiceResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     patch:
       description: |
         Use this request to indicate that an invoice has been posted or
@@ -718,18 +532,10 @@ paths:
                 - $ref: '#/components/schemas/InvoiceConfirm'
                 - $ref: '#/components/schemas/InvoiceReject'
       responses:
-        '201':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+        "201":
+          $ref: "#/components/responses/InvoiceResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single invoice that is stored in
@@ -743,14 +549,10 @@ paths:
         - $ref: '#/components/parameters/UseSystem'
         - $ref: '#/components/parameters/Comment'
       responses:
-        '204':
-          description: Invoice was successfully deleted.
+        "204":
+          $ref: "#/components/responses/InvoiceDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/process:
     post:
       summary: Start the invoice processing.
@@ -770,29 +572,15 @@ paths:
             type: string
       responses:
         "202":
-          description: Invoice has started processing.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Invoice"
+          $ref: "#/components/responses/InvoiceResponse"
         "403":
-          description: Forbidden
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Invoice failed to start processing.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/document:
     get:
       description: |
@@ -811,19 +599,10 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/pdf:
-              schema:
-                type: string
-                format: binary
+        "200":
+          $ref: "#/components/responses/InvoiceDocumentResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     post:
       summary: Upload document invoice
       description: |
@@ -859,29 +638,15 @@ paths:
                   nullable: false
       responses:
         "200":
-          description: Document was uploaded successfully.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Invoice"
+          $ref: "#/components/responses/InvoiceResponse"
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/confirm:
     post:
       description: |
@@ -914,29 +679,15 @@ paths:
               $ref: '#/components/schemas/InvoiceConfirm'
       responses:
         "200":
-          description: The invoice was confirmed successfully.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+          $ref: "#/components/responses/InvoiceConfirmedResponse"
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/reject:
     post:
       description: |
@@ -967,29 +718,15 @@ paths:
               $ref: '#/components/schemas/InvoiceReject'
       responses:
         "200":
-          description: The invoice was rejection error message was acknowledged.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Invoice'
+          $ref: "#/components/responses/InvoiceRejectedResponse"
         "403":
-          description: Forbidden.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ForbiddenResponse"
         "404":
-          description: Invoice was not found.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/ResourceNotFoundResponse"
         "422":
-          description: Errors with the input are present.
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /invoice/{id}/lineItems:
     get:
       description: |
@@ -1012,20 +749,10 @@ paths:
           schema:
             type: string
       responses:
-        '200':
-          description: The ungrouped line items for the invoice.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/InvoiceLineItem'
+        "200":
+          $ref: "#/components/responses/InvoiceLineItemsResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoices:
     get:
       description: |
@@ -1040,23 +767,10 @@ paths:
         - $ref: '#/components/parameters/SinceFilter'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: A paged array of invoices
-          headers:
-            x-next:
-              description: A link to the next page of responses
-              schema:
-                type: string
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoices'
+        "200":
+          $ref: "#/components/responses/TrainingInvoicesResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}:
     get:
       description: |
@@ -1069,18 +783,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "200":
+          $ref: "#/components/responses/TrainingInvoiceResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* training invoice data for one invoice into
@@ -1135,18 +841,10 @@ paths:
                     schema:
                       type: string
       responses:
-        '201':
-          description: Successful upsert
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "201":
+          $ref: "#/components/responses/TrainingInvoiceUpsertedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single training invoice that is
@@ -1158,18 +856,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '201':
-          description: Information from deleted training invoice
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TrainingInvoice'
+        "201":
+          $ref: "#/components/responses/TrainingInvoiceDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /trainingInvoice/{id}/document:
     get:
       description: |
@@ -1182,16 +872,10 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
-        '200':
-          description: Expected response for a valid training invoice
-          content:
-            application/pdf: {}
+        "200":
+          $ref: "#/components/responses/TrainingInvoiceDocumentResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vatCodes:
     get:
       description: |
@@ -1208,18 +892,10 @@ paths:
         - $ref: '#/components/parameters/SortOrder'
         - $ref: '#/components/parameters/VatCodeFilter'
       responses:
-        '200':
-          description: An array of vat codes
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCodes'
+        "200":
+          $ref: "#/components/responses/VatCodesResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /vatCode/{id}:
     get:
       description: |
@@ -1233,18 +909,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '200':
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCode'
+        "200":
+          $ref: "#/components/responses/VatCodeResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         Use this request to *upsert* vat code into Vic.ai.
@@ -1268,18 +936,10 @@ paths:
             schema:
               $ref: '#/components/schemas/VatCodeUpsert'
       responses:
-        '201':
-          description: Successful upsert
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCode'
+        "201":
+          $ref: "#/components/responses/VatCodeUpsertedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     delete:
       description: |
         Use this request to delete data for a single vat code that is stored in
@@ -1292,18 +952,10 @@ paths:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
-        '201':
-          description: Information from deleted vat code
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/VatCode'
+        "201":
+          $ref: "#/components/responses/VatCodeDeletedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
   /subscription:
     get:
       description: Get the current status of the subscription that is set.
@@ -1312,18 +964,10 @@ paths:
       tags:
         - subscriptions
       responses:
-        '200':
-          description: The subscription information
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SubscriptionUpsert'
+        "200":
+          $ref: "#/components/responses/SubscriptionResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
         This request is used to configure or modify a new subscription to user
@@ -1345,18 +989,10 @@ paths:
             schema:
               $ref: '#/components/schemas/SubscriptionUpsert'
       responses:
-        '201':
-          description: Subscription successfully upserted.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/SubscriptionUpsert'
+        "201":
+          $ref: "#/components/responses/SubscriptionUpsertedResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
       callbacks:
         vendorNew:
           $ref: "#/components/callbacks/vendorNew"
@@ -1376,14 +1012,10 @@ paths:
       tags:
         - subscriptions
       responses:
-        '201':
-          description: Successful deletion
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UnsubscribeResult'
+        "201":
+          $ref: "#/components/responses/SubscriptionDeletedResponse"
         default:
-          description: unexpected error
+          $ref: "#/components/responses/ErrorResponse"
   /costAccounts:
     get:
       description: |
@@ -1398,23 +1030,21 @@ paths:
         - $ref: '#/components/parameters/SinceFilter'
         - $ref: '#/components/parameters/SortOrder'
       responses:
-        '200':
-          description: An array of cost accounts
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CostAccounts'
+        "200":
+          $ref: "#/components/responses/CostAccountsResponse"
         default:
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
+
+  headers:
+    NextPageToken:
+      description: A link to the next page of responses
+      schema:
+        type: string
 
   parameters:
     PathId:
@@ -3348,3 +2978,280 @@ components:
     UnsubscribeResult:
       enum:
         - OK
+  responses:
+    UnauthorizedResponse:
+      description: The request was unauthorized.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ForbiddenResponse:
+      description: The request was forbidden.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ResourceNotFoundResponse:
+      description: Resource was not found.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    UnprocessableEntityResponse:
+      description: Errors with the input are present.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    ErrorResponse:
+      description: An unexpected error has occurred. Check the body for more details.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    TokenCreatedResponse:
+      description: Successful access token request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/GetTokenResult"
+    HealthyResponse:
+      description: Successful health check response
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/HealthCheck"
+    AccountsResponse:
+      description: A paged array of accounts
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Accounts"
+    AccountResponse:
+      description: Shows the account.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Account"
+    AccountUpsertedResponse:
+      description: Account was upserted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Account"
+    AccountDeletedResponse:
+      description: Information for deleted account
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Account"
+    DimensionsResponse:
+      description: A paged array of dimensions
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimensions"
+    DimensionResponse:
+      description: A dimension.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionCreatedResponse:
+      description: Dimension was created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionUpdatedResponse:
+      description: Dimension was updated successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    DimensionDeletedResponse:
+      description: Dimension was deleted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Dimension"
+    VendorsResponse:
+      description: A paged array of vendors
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendors"
+    VendorResponse:
+      description: A single vendor.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorCreatedResponse:
+      description: Vendor was successfully created.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorUpdatedResponse:
+      description: Vendor was successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorDeletedResponse:
+      description: Vendor was successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorRemoteErrorsUpdatedResponse:
+      description: Vendor errors were successfully updated.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    VendorRemoteErrorsClearedResponse:
+      description: Vendor errors were successfully cleared.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Vendor"
+    InvoicesResponse:
+      description: A paged array of invoices
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoices"
+    InvoiceCreatedResponse:
+      description: Invoice was created successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    InvoiceResponse:
+      description: A single invoice.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    InvoiceDeletedResponse:
+      description: Invoice was successfully deleted.
+    InvoiceDocumentResponse:
+      description: The invoice's document.
+      content:
+        application/pdf:
+          schema:
+            type: string
+            format: binary
+    InvoiceConfirmedResponse:
+      description: The invoice was confirmed successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    InvoiceRejectedResponse:
+      description: The invoice was rejection error message was acknowledged.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Invoice"
+    InvoiceLineItemsResponse:
+      description: The ungrouped line items for the invoice.
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "#/components/schemas/InvoiceLineItem"
+    TrainingInvoicesResponse:
+      description: A paged array of training invoices.
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoices"
+    TrainingInvoiceResponse:
+      description: A single training invoice.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceUpsertedResponse:
+      description: Training invoice was successfully upserted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceDeletedResponse:
+      description: Training invoice was successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/TrainingInvoice"
+    TrainingInvoiceDocumentResponse:
+      description: The document attached to the training invoice.
+      content:
+        application/pdf: {}
+    VatCodesResponse:
+      description: An array of vat codes
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCodes"
+    VatCodeResponse:
+      description: A single vat code.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCode"
+    VatCodeUpsertedResponse:
+      description: Vat code upserted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCode"
+    VatCodeDeletedResponse:
+      description: Vat code deleted successfully.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VatCode"
+    SubscriptionResponse:
+      description: The subscription information
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubscriptionUpsert"
+    SubscriptionUpsertedResponse:
+      description: Subscription successfully upserted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/SubscriptionUpsert"
+    SubscriptionDeletedResponse:
+      description: Subscription successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UnsubscribeResult"
+    CostAccountsResponse:
+      description: An array of cost accounts
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CostAccounts"

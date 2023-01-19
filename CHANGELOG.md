@@ -7,6 +7,49 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.6.0
+### V0
+- Lift all error responses to the `#/components/responses` section.
+- Replace `obtainToken` response with `#/components/responses/TokenCreatedResponse`
+- Replace `healthCheck` response with `#/components/responses/HealthyResponse`
+- Replace `listAccounts` response with `#/components/responses/AccountsResponse`
+- Replace `getAccount` response with `#/components/responses/AccountResponse`
+- Replace `upsertAccount` response with `#/components/responses/AccountUpsertedResponse`
+- Replace `deleteAccount` response with `#/components/responses/AccountDeletedResponse`
+- Replace `listDimensions` response with `#/components/responses/DimensionsResponse`
+- Replace `getDimension` response with `#/components/responses/DimensionResponse`
+- Replace `upsertDimension` response with `#/components/responses/DimensionCreatedResponse` and `#/components/responses/DimensionUpdatedResponse`
+- Replace `deleteDimension` response with `#/components/responses/DimensionDeletedResponse`
+- Replace `listVendors` response with `#/components/responses/VendorsResponse`
+- Replace `getVendor` response with `#/components/responses/VendorResponse`
+- Replace `upsertVendor` response with `#/components/responses/VendorCreatedResponse` and `#/components/responses/VendorUpdatedResponse`
+- Replace `deleteVendor` response with `#/components/responses/VendorDeletedResponse`
+- Replace `setVendorRemoteErrors` response with `#/components/responses/VendorRemoteErrorsUpdatedResponse`
+- Replace `clearVendorRemoteErrors` response with `#/components/responses/VendorRemoteErrorsClearedResponse`
+- Replace `listInvoices` response with `#/components/responses/InvoicesResponse`
+- Replace `createInvoice` response with `#/components/responses/InvoiceCreatedResponse`
+- Replace `getInvoice` response with `#/components/responses/InvoiceResponse`
+- Replace `ackInvoice` response with `#/components/responses/InvoiceResponse`
+- Replace `deleteInvoice` response with `#/components/responses/InvoiceDeletedResponse`
+- Replace `startProcessingInvoice` response with `#/components/responses/InvoiceResponse`
+- Replace `getInvoiceDocument` response with `#/components/responses/InvoiceDocumentResponse`
+- Replace `confirmInvoice` response with `#/components/responses/InvoiceConfirmedResponse`
+- Replace `rejectInvoice` response with `#/components/responses/InvoiceRejectedResponse`
+- Replace `getInvoicelineItems` response with `#/components/responses/InvoiceLineItemsResponse`
+- Replace `listTrainingInvoices` response with `#/components/responses/TrainingInvoicesResponse`
+- Replace `upsertTrainingInvoice` response with `#/components/responses/TrainingInvoiceUpsertedResponse`
+- Replace `deleteTrainingInvoice` response with `#/components/responses/TrainingInvoiceDeletedResponse`
+- Replace `getTrainingInvoiceDocument` response with `#/components/responses/TrainingInvoiceDocumentResponse`
+- Replace `listVatCodes` response with `#/components/responses/VatCodesResponse`
+- Replace `getVatCode` response with `#/components/responses/VatCodeResponse`
+- Replace `upsertVatCode` response with `#/components/responses/VatCodeUpsertedResponse`
+- Replace `deleteVatCode` response with `#/components/responses/VatCodeDeletedResponse`
+- Replace `getSubscription` response with `#/components/responses/SubscriptionResponse`
+- Replace `subscribe` response with `#/components/responses/SubscriptionUpsertedResponse`
+- Replace `unsubscribe` response with `#/components/responses/SubscriptionDeletedResponse`
+- Replace `getCostAccounts` response with `#/components/responses/CostAccountsResponse`
+
+
 ## v0.5.0
 ### V0
 - Replace `dimensions` ref to `#/components/schemas/Dimension`.
