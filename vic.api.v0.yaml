@@ -38,46 +38,47 @@ servers:
     description: 'production server, NO'
 
 tags:
-  - name: accounts
+  - name: Accounts
     description: |
       GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
       order to be associated with an invoice line item, key data about the
       account must be stored in Vic.ai.  These operations allow querying and
       manipulation of these GL account data.
-  - name: auth
+  - name: Auth
     description: |
       Authorization-related routes.  These passthrough to our third-party
       authorization system.
-  - name: dimensions
+  - name: CostAccounts
+  - name: Dimensions
     description: |
       Dimensions are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with invoice line items, that Vic.ai can
       automatically assign to invoice line items. These operations allow
       querying and manipulation of the dimension data.
-  - name: general
+  - name: General
     description: |
       General requests on the state of the Vic.ai system
-  - name: invoices
+  - name: Invoices
     description: |
       These routes give you read-only access to two types of invoices:
       - Invoices which have not yet been posted to the ERP system.
       - Invoices which have been posted to the ERP system.
 
       By default, access to unposted invoices is restricted.
-  - name: subscriptions
+  - name: Subscriptions
     description: |
       These requests represents a user’s action in the Vic.ai system and
       repsonses to those actions.
-  - name: training invoices
+  - name: TrainingInvoices
     description: |
       Invoices that are being used to train Vic.ai's machine learning system.
-  - name: vendors
+  - name: Vendors
     description: |
       Vendors are part of your *ERP* **Masterdata**, and represent companies
       that produce invoices.  In order to be associated with an invoice, key
       data about the vendor must be stored in Vic.ai. These operations allow
       querying and manipulation of the vendor data.
-  - name: vat codes
+  - name: VatCodes
     description: |
       In some regions, Vat Codes are part of your *ERP* **Masterdata**, that
       represent timeboxed VAT codes and VAT values that Vic.ai can automatically
@@ -90,7 +91,7 @@ paths:
       summary: Token service
       operationId: obtainToken
       tags:
-        - auth
+        - Auth
       security: []
       requestBody:
         required: true
@@ -109,7 +110,7 @@ paths:
       summary: Health check
       operationId: healthCheck
       tags:
-        - general
+        - General
       responses:
         "200":
           $ref: "#/components/responses/HealthyResponse"
@@ -122,7 +123,7 @@ paths:
       summary: List all accounts
       operationId: listAccounts
       tags:
-        - accounts
+        - Accounts
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -142,7 +143,7 @@ paths:
       summary: Info for a specific account
       operationId: getAccount
       tags:
-        - accounts
+        - Accounts
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -165,7 +166,7 @@ paths:
       summary: Upserts an account
       operationId: upsertAccount
       tags:
-        - accounts
+        - Accounts
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -188,7 +189,7 @@ paths:
       summary: Deletes an account
       operationId: deleteAccount
       tags:
-        - accounts
+        - Accounts
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -204,7 +205,7 @@ paths:
       summary: List all dimensions
       operationId: listDimensions
       tags:
-        - dimensions
+        - Dimensions
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -224,7 +225,7 @@ paths:
       summary: Info for a specific dimension
       operationId: getDimension
       tags:
-        - dimensions
+        - Dimensions
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -247,7 +248,7 @@ paths:
       summary: Upserts a dimension
       operationId: upsertDimension
       tags:
-        - dimensions
+        - Dimensions
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -270,7 +271,7 @@ paths:
       summary: Deletes a dimension
       operationId: deleteDimension
       tags:
-        - dimensions
+        - Dimensions
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -285,7 +286,7 @@ paths:
       summary: List all vendors
       operationId: listVendors
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -318,7 +319,7 @@ paths:
       summary: Info for a specific vendor
       operationId: getVendor
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -343,7 +344,7 @@ paths:
       summary: Upserts a vendor
       operationId: upsertVendor
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -368,7 +369,7 @@ paths:
       summary: Deletes a vendor
       operationId: deleteVendor
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -388,7 +389,7 @@ paths:
       summary: Completes the response callback cycle resulting from a 202
       operationId: setVendorRemoteErrors
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
@@ -408,7 +409,7 @@ paths:
       description: Used to clear errors that have been fixed in the ERP system.
       operationId: clearVendorRemoteErrors
       tags:
-        - vendors
+        - Vendors
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
@@ -424,7 +425,7 @@ paths:
       summary: List all invoices
       operationId: listInvoices
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -443,7 +444,7 @@ paths:
         Creates an invoice within the Vic system.
       operationId: createInvoice
       tags:
-        - invoices
+        - Invoices
       requestBody:
         required: true
         content:
@@ -469,7 +470,7 @@ paths:
       summary: Info for a specific invoice
       operationId: getInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -514,7 +515,7 @@ paths:
       summary: Asynchronous reply to invoice post or invoice transfer
       operationId: ackInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - name: id
           in: path
@@ -543,7 +544,7 @@ paths:
       summary: Deletes an invoice
       operationId: deleteInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -561,7 +562,7 @@ paths:
         is called, it may not be called again.
       operationId: startProcessingInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/UseSystem'
         - name: id
@@ -589,7 +590,7 @@ paths:
       summary: Document for a specific invoice
       operationId: getInvoiceDocument
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/UseSystem'
         - name: id
@@ -614,7 +615,7 @@ paths:
           changed.
       operationId: uploadDocumentInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/UseSystem'
         - name: id
@@ -662,7 +663,7 @@ paths:
       summary: Asynchronous reply to invoice post or invoice transfer
       operationId: confirmInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - name: id
           in: path
@@ -701,7 +702,7 @@ paths:
       summary: Asynchronous reply to invoice post
       operationId: rejectInvoice
       tags:
-        - invoices
+        - Invoices
       parameters:
         - name: id
           in: path
@@ -738,8 +739,7 @@ paths:
       summary: line items for a specific invoice
       operationId: getInvoicelineItems
       tags:
-        - invoices
-        - lineItems
+        - Invoices
       parameters:
         - $ref: '#/components/parameters/UseSystem'
         - name: id
@@ -760,7 +760,7 @@ paths:
       summary: List all invoices
       operationId: listTrainingInvoices
       tags:
-        - training invoices
+        - TrainingInvoices
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -779,7 +779,7 @@ paths:
       summary: Info for a specific invoice
       operationId: getTrainingInvoice
       tags:
-        - training invoices
+        - TrainingInvoices
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -808,7 +808,7 @@ paths:
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
       tags:
-        - training invoices
+        - TrainingInvoices
       parameters:
         - $ref: '#/components/parameters/PathId'
       requestBody:
@@ -852,7 +852,7 @@ paths:
       summary: Deletes a training invoice
       operationId: deleteTrainingInvoice
       tags:
-        - training invoices
+        - TrainingInvoices
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -868,7 +868,7 @@ paths:
       summary: Document for a specific invoice
       operationId: getTrainingInvoiceDocument
       tags:
-        - training invoices
+        - TrainingInvoices
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -884,7 +884,7 @@ paths:
       summary: List all vat codes
       operationId: listVatCodes
       tags:
-        - vat codes
+        - VatCodes
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -904,7 +904,7 @@ paths:
       summary: Info for a specific vat code
       operationId: getVatCode
       tags:
-        - vat codes
+        - VatCodes
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -925,7 +925,7 @@ paths:
       summary: Upserts a vat code
       operationId: upsertVatCode
       tags:
-        - vat codes
+        - VatCodes
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -947,7 +947,7 @@ paths:
       summary: Deletes a vat code
       operationId: deleteVatCode
       tags:
-        - vat codes
+        - VatCodes
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -962,7 +962,7 @@ paths:
       summary: Get subscription info
       operationId: getSubscription
       tags:
-        - subscriptions
+        - Subscriptions
       responses:
         "200":
           $ref: "#/components/responses/SubscriptionResponse"
@@ -981,7 +981,7 @@ paths:
       summary: Subscribe to callback notifications
       operationId: subscribe
       tags:
-        - subscriptions
+        - Subscriptions
       requestBody:
         required: true
         content:
@@ -1227,7 +1227,7 @@ paths:
       summary: Unsubscribe from callback notifications
       operationId: unsubscribe
       tags:
-        - subscriptions
+        - Subscriptions
       responses:
         "201":
           $ref: "#/components/responses/SubscriptionDeletedResponse"
@@ -1240,7 +1240,7 @@ paths:
       summary: List all cost accounts
       operationId: getCostAccounts
       tags:
-        - cost accounts
+        - CostAccounts
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
