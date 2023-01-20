@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/vendors/index.html"><strong aria-hidden="true">3.3.</strong> Vendors</a></li><li class="chapter-item expanded "><a href="v0/cost_accounts/index.html"><strong aria-hidden="true">3.4.</strong> Cost Accounts</a></li><li class="chapter-item expanded "><a href="v0/dimensions/index.html"><strong aria-hidden="true">3.5.</strong> Dimensions</a></li><li class="chapter-item expanded "><a href="v0/vat_codes/index.html"><strong aria-hidden="true">3.6.</strong> VAT Codes</a></li><li class="chapter-item expanded "><a href="v0/subscriptions/index.html"><strong aria-hidden="true">3.7.</strong> Subscriptions</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.8.</strong> Training Invoices</a></li></ol></li><li class="chapter-item expanded "><a href="v1/index.html"><strong aria-hidden="true">4.</strong> V1</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v1.html"><strong aria-hidden="true">4.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v1/purchase_orders/index.html"><strong aria-hidden="true">4.2.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="v1/subscriptions/index.html"><strong aria-hidden="true">4.3.</strong> Subscriptions</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -508,11 +508,6 @@ been updated, and <code>201</code> when the vendor has been created.</li>
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="vendors"><a class="header" href="#vendors">Vendors</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="cost-accounts"><a class="header" href="#cost-accounts">Cost Accounts</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="dimensions"><a class="header" href="#dimensions">Dimensions</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="vat-codes"><a class="header" href="#vat-codes">VAT Codes</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="training-invoices"><a class="header" href="#training-invoices">Training Invoices</a></h1>
 <h2 id="put-v0traininginvoices"><a class="header" href="#put-v0traininginvoices"><a href="v0/training_invoices/../../vic.api.v0.html#/training%20invoices/upsertTrainingInvoice"><code>PUT /v0/trainingInvoices</code></a></a></h2>
 <p>Upserts a training invoice into the Vic.ai system.</p>
@@ -616,62 +611,6 @@ not be matched they will be deleted and replaced with the desired items.</li>
             }
         ]
     }&quot;'
-</code></pre>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="v1-1"><a class="header" href="#v1-1">V1</a></h1>
-<p>This is the version 1 of the Vic Api. Note there are dramatic changes from the
-previous version <a href="v1//v0/index.html">V0</a>.</p>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="open-api-spec-1"><a class="header" href="#open-api-spec-1">Open API Spec</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="purchase-orders"><a class="header" href="#purchase-orders">Purchase Orders</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="subscriptions-1"><a class="header" href="#subscriptions-1">Subscriptions</a></h1>
-<p>Subscriptions are how Vic is able to notify third party integrations about
-events and updates within the system.</p>
-<p>The functionality of subscriptions in the V1 system are very different than how
-they operate in the V0 system.</p>
-<p>All subscriptions must have a <code>callback_url</code>, <code>access_token</code>, <code>expires_at</code>, and
-a <code>version</code> specified.</p>
-<h2 id="callback-consumption"><a class="header" href="#callback-consumption">Callback Consumption</a></h2>
-<p>The callback url specified is where all events will be sent to via an HTTP
-<code>POST</code> call. The Vic system does not care about the response from the
-<code>callback_url</code> specified. The only response the Vic system cares about is the
-status code not being a <code>5XX</code>.</p>
-<h2 id="callback-retries"><a class="header" href="#callback-retries">Callback Retries</a></h2>
-<p>The callback will be attempted 5 times if the response from the callback system
-if the response status code is a <code>5XX</code>. We will back off exponentially when this
-occurs.</p>
-<h2 id="callback-event-ordering"><a class="header" href="#callback-event-ordering">Callback Event Ordering</a></h2>
-<p>The callback events have no guaranteed ordering at the moment.</p>
-<h2 id="callback-payload-shape"><a class="header" href="#callback-payload-shape">Callback Payload Shape</a></h2>
-<p>The following is an example of a callback event that can be received.</p>
-<pre><code class="language-json">{
-  &quot;event&quot;: &quot;purchase_order_updated&quot;,
-  &quot;occurred_at&quot;: &quot;2022-06-01T12:00:00Z&quot;,
-  &quot;data&quot;: {
-    &quot;external_id&quot;: null,
-    &quot;internal_id&quot;: &quot;51721bc8-6263-464b-babd-ba754f7fd94b&quot;,
-    &quot;internal_updated_at&quot;: &quot;2022-05-02T12:34:56Z&quot;,
-    &quot;issued_on&quot;: &quot;2022-05-01&quot;,
-    &quot;po_number&quot;: &quot;1234567890&quot;,
-    &quot;deliver_on&quot;: &quot;2022-06-01&quot;,
-    &quot;amount&quot;: &quot;100.00&quot;,
-    &quot;currency_id&quot;: &quot;USD&quot;,
-    &quot;status&quot;: &quot;open&quot;,
-    &quot;description&quot;: &quot;The purchase order description&quot;,
-    &quot;items&quot;: [
-        {
-          &quot;internal_id&quot;: &quot;e6097517-548d-448f-a7f5-bfb656be228f&quot;,
-          &quot;product_number&quot;: &quot;theproductnumber&quot;,
-          &quot;product_description&quot;: &quot;The product description&quot;,
-          &quot;unit_of_measure&quot;: &quot;kg&quot;,
-          &quot;quantity&quot;: &quot;12.3&quot;,
-          &quot;unit_amount&quot;: &quot;1.99&quot;,
-          &quot;line_item_total&quot;: &quot;24.48&quot;,
-          &quot;dimensions&quot;: [
-            {&quot;internal_id&quot;: &quot;12345&quot;, &quot;external_id&quot;: &quot;abc123&quot;}
-          ]
-        }
-    ]
-  }
-}
 </code></pre>
 
                     </main>
