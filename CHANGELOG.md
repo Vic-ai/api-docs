@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.6.1
+### V0
+- Add `#/components/schemas/PaymentInfoMethod` enum.
+- Add `#/components/schemas/InternationalBankAccount` object.
+- Allow `bic` and `iban` to be nullable on `#/components/schemas/InternationalBankAccount`.
+- Fold `#/components/schemas/PaymentInfoUS`, `#/components/schemas/PaymentInfoNO`, and `#/components/schemas/PaymentInfoSE` into a single `#/components/schemas/PaymentInfo` definition.
+- Allow most `#/components/schemas/PaymentInfo` fields to be nullable.
+- Fold `#/components/schemas/InvoiceLineItemInfoUS`, `#/components/schemas/InvoiceLineItemInfoSE`, and `#/components/schemas/InvoiceLineItemInfoNO` into `#/components/schemas/InvoiceLineItemInfo`.
+- Allow `#/components/schemas/InvoiceLineItemInfo` fields to be nullable.
+- Allow `invoiceLineItemInfo` on `#/components/schemas/TrainingInvoiceLineItemUpsert` to be nullable.
+- Allow `invoiceLineItemInfo` on `#/components/schemas/InvoiceLineItem` to be nullable.
+
+
 ## v0.6.0
 ### V0
 - Lift all error responses to the `#/components/responses` section.
