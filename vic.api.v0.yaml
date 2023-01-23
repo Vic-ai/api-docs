@@ -2195,10 +2195,9 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          anyOf:
-          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+          allOf:
+            - $ref: "#/components/schemas/InvoiceLineItemInfo"
+          nullable: true
         vat:
           oneOf:
           - $ref: "#/components/schemas/LineItemVat"
@@ -2273,10 +2272,9 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          anyOf:
-          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+          allOf:
+            - $ref: "#/components/schemas/InvoiceLineItemInfo"
+          nullable: true
         costAccountExternalId:
           allOf:
           - $ref: '#/components/schemas/ExternalId'
@@ -2858,27 +2856,15 @@ components:
           type: string
         creditAccountInternalId:
           type: string
-    InvoiceLineItemInfoUS: {}
-    InvoiceLineItemInfoSE:
+    InvoiceLineItemInfo:
       type: object
-      required:
-        - vatCode
-        - vatAmount
       properties:
         vatCode:
           type: string
+          nullable: true
         vatAmount:
           type: number
-    InvoiceLineItemInfoNO:
-      type: object
-      required:
-        - vatCode
-        - vatAmount
-      properties:
-        vatCode:
-          type: string
-        vatAmount:
-          type: number
+          nullable: true
     RequestIdCallback:
       type: object
       required:
