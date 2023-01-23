@@ -2761,7 +2761,12 @@ components:
           format: date
         count:
           type: integer
-          minimum: 1
+          nullable: true
+          description: |
+            The number of units from the `start`. The system _may_ have this field as
+            `null` due to incomplete information or a user has cleared the information.
+            However, when specifying the `count` to the api, it is required to be
+            greater than `1`.
         unit:
           $ref: "#/components/schemas/AccrualTermUnit"
     TransactionType:
