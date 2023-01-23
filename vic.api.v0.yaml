@@ -2826,21 +2826,30 @@ components:
         bankAccountNum:
           type: string
           maxLength: 255
+          nullable: true
         bankCode:
           type: string
+          nullable: true
         paymentTerm:
-          $ref: "#/components/schemas/PaymentTerm"
+          allOf:
+            - $ref: "#/components/schemas/PaymentTerm"
+          nullable: true
         bankGiro:
           type: string
           maxLength: 255
+          nullable: true
         plusGiro:
           type: string
           maxLength: 255
+          nullable: true
         bban:
           type: string
           maxLength: 255
+          nullable: true
         internationalBankAccount:
-          $ref: "#/components/schemas/InternationalBankAccount"
+          allOf:
+            - $ref: "#/components/schemas/InternationalBankAccount"
+          nullable: true
         defaultMethod:
           $ref: "#/components/schemas/PaymentInfoMethod"
     InvoiceInfoNO:
