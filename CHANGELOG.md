@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Allow `#/components/schemas/InvoiceLineItemInfo` fields to be nullable.
 - Allow `invoiceLineItemInfo` on `#/components/schemas/TrainingInvoiceLineItemUpsert` to be nullable.
 - Allow `invoiceLineItemInfo` on `#/components/schemas/InvoiceLineItem` to be nullable.
+- Remove required fields from `#/components/schemas/Dimension`.
 
 
 ## v0.6.0

@@ -1528,11 +1528,7 @@ components:
       items:
         $ref: '#/components/schemas/Account'
     Dimension:
-      required:
-      - name
-      - type
-      - internalId
-      - internalUpdatedAt
+      type: object
       properties:
         name:
           type: string
@@ -1544,23 +1540,23 @@ components:
           maxLength: 255
         externalData:
           allOf:
-          - $ref: '#/components/schemas/ExternalData'
+            - $ref: "#/components/schemas/ExternalData"
           nullable: true
         displayName:
           type: string
         internalId:
-          $ref: '#/components/schemas/InternalId'
+          $ref: "#/components/schemas/InternalId"
         internalUpdatedAt:
           type: string
           description: Is in UTC.
           format: date-time
         externalId:
-          $ref: '#/components/schemas/ExternalId'
+          $ref: "#/components/schemas/ExternalId"
         externalUpdatedAt:
           type: string
           format: date-time
           description: Does not have UTC normalization.
-          example: '2021-06-29T17:20:53.154'
+          example: "2021-06-29T17:20:53.154"
     DimensionUpsert:
       type: object
       required:
