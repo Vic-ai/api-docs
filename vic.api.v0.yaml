@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.6.0
+  version: 0.6.1
   contact: {}
   title: Vic.Api
   description: |
@@ -1528,11 +1528,7 @@ components:
       items:
         $ref: '#/components/schemas/Account'
     Dimension:
-      required:
-      - name
-      - type
-      - internalId
-      - internalUpdatedAt
+      type: object
       properties:
         name:
           type: string
@@ -1544,23 +1540,23 @@ components:
           maxLength: 255
         externalData:
           allOf:
-          - $ref: '#/components/schemas/ExternalData'
+            - $ref: "#/components/schemas/ExternalData"
           nullable: true
         displayName:
           type: string
         internalId:
-          $ref: '#/components/schemas/InternalId'
+          $ref: "#/components/schemas/InternalId"
         internalUpdatedAt:
           type: string
           description: Is in UTC.
           format: date-time
         externalId:
-          $ref: '#/components/schemas/ExternalId'
+          $ref: "#/components/schemas/ExternalId"
         externalUpdatedAt:
           type: string
           format: date-time
           description: Does not have UTC normalization.
-          example: '2021-06-29T17:20:53.154'
+          example: "2021-06-29T17:20:53.154"
     DimensionUpsert:
       type: object
       required:
@@ -1953,10 +1949,7 @@ components:
           type: string
           format: date
         paymentInfo:
-          anyOf:
-            - $ref: '#/components/schemas/PaymentInfoUS'
-            - $ref: '#/components/schemas/PaymentInfoSE'
-            - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: '#/components/schemas/PaymentInfo'
         invoiceInfo:
           $ref: '#/components/schemas/InvoiceInfoNO'
         source:
@@ -2082,10 +2075,7 @@ components:
           type: string
           format: date
         paymentInfo:
-          anyOf:
-          - $ref: '#/components/schemas/PaymentInfoUS'
-          - $ref: '#/components/schemas/PaymentInfoSE'
-          - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: "#/components/schemas/PaymentInfo"
         invoiceInfo:
           $ref: '#/components/schemas/InvoiceInfoNO'
         vendorExternalId:
@@ -2141,10 +2131,7 @@ components:
           format: date
           nullable: true
         paymentInfo:
-          anyOf:
-            - $ref: '#/components/schemas/PaymentInfoUS'
-            - $ref: '#/components/schemas/PaymentInfoSE'
-            - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: "#/components/schemas/PaymentInfo"
         invoiceInfo:
           $ref: '#/components/schemas/InvoiceInfoNO'
         vendorExternalId:
@@ -2204,10 +2191,9 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          anyOf:
-          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+          allOf:
+            - $ref: "#/components/schemas/InvoiceLineItemInfo"
+          nullable: true
         vat:
           oneOf:
           - $ref: "#/components/schemas/LineItemVat"
@@ -2282,10 +2268,9 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          anyOf:
-          - $ref: '#/components/schemas/InvoiceLineItemInfoUS'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoSE'
-          - $ref: '#/components/schemas/InvoiceLineItemInfoNO'
+          allOf:
+            - $ref: "#/components/schemas/InvoiceLineItemInfo"
+          nullable: true
         costAccountExternalId:
           allOf:
           - $ref: '#/components/schemas/ExternalId'
@@ -2490,10 +2475,7 @@ components:
         taxInfo:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
-          anyOf:
-          - $ref: '#/components/schemas/PaymentInfoUS'
-          - $ref: '#/components/schemas/PaymentInfoSE'
-          - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: "#/components/schemas/PaymentInfo"
         externalData:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
@@ -2557,10 +2539,7 @@ components:
         taxInfo:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
-          anyOf:
-          - $ref: '#/components/schemas/PaymentInfoUS'
-          - $ref: '#/components/schemas/PaymentInfoSE'
-          - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: "#/components/schemas/PaymentInfo"
         externalData:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
@@ -2623,10 +2602,7 @@ components:
         taxInfo:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
-          anyOf:
-            - $ref: '#/components/schemas/PaymentInfoUS'
-            - $ref: '#/components/schemas/PaymentInfoSE'
-            - $ref: '#/components/schemas/PaymentInfoNO'
+          $ref: "#/components/schemas/PaymentInfo"
         externalData:
           allOf:
             - $ref: '#/components/schemas/ExternalData'
@@ -2781,7 +2757,12 @@ components:
           format: date
         count:
           type: integer
-          minimum: 1
+          nullable: true
+          description: |
+            The number of units from the `start`. The system _may_ have this field as
+            `null` due to incomplete information or a user has cleared the information.
+            However, when specifying the `count` to the api, it is required to be
+            greater than `1`.
         unit:
           $ref: "#/components/schemas/AccrualTermUnit"
     TransactionType:
@@ -2813,87 +2794,60 @@ components:
         orgNumber:
           type: string
           nullable: true
-    PaymentInfoUS:
+    InternationalBankAccount:
       type: object
-      required:
-        - bankAccountNum
-        - bankCode
+      properties:
+        iban:
+          type: string
+          maxLength: 255
+          nullable: true
+        bic:
+          type: string
+          maxLength: 255
+          nullable: true
+    PaymentInfoMethod:
+      description: |
+        The payment method to be used.
+
+        Note: `BANKACCOUNT` is equivalent to `ACH` in the Web UI.
+      enum:
+        - BANKACCOUNT
+        - BANKGIRO
+        - PLUSGIRO
+        - IBAN
+        - BBAN
+    PaymentInfo:
+      type: object
       properties:
         bankAccountNum:
           type: string
           maxLength: 255
+          nullable: true
         bankCode:
           type: string
+          nullable: true
         paymentTerm:
-          $ref: '#/components/schemas/PaymentTerm'
-    PaymentInfoSE:
-      type: object
-      properties:
-        bankAccountNum:
-          type: string
-          maxLength: 255
+          allOf:
+            - $ref: "#/components/schemas/PaymentTerm"
+          nullable: true
         bankGiro:
           type: string
           maxLength: 255
+          nullable: true
         plusGiro:
           type: string
           maxLength: 255
+          nullable: true
         bban:
           type: string
           maxLength: 255
+          nullable: true
         internationalBankAccount:
-          type: object
-          required:
-            - iban
-            - bic
-          properties:
-            iban:
-              type: string
-              maxLength: 255
-            bic:
-              type: string
-              maxLength: 255
+          allOf:
+            - $ref: "#/components/schemas/InternationalBankAccount"
+          nullable: true
         defaultMethod:
-          enum:
-            - BANKACCOUNT
-            - BANKGIRO
-            - PLUSGIRO
-            - IBAN
-            - BBAN
-    PaymentInfoNO:
-      type: object
-      properties:
-        bankAccountNum:
-          type: string
-          maxLength: 255
-        bankGiro:
-          type: string
-          maxLength: 255
-        plusGiro:
-          type: string
-          maxLength: 255
-        bban:
-          type: string
-          maxLength: 255
-        internationalBankAccount:
-          type: object
-          required:
-            - iban
-            - bic
-          properties:
-            iban:
-              type: string
-              maxLength: 255
-            bic:
-              type: string
-              maxLength: 255
-        defaultMethod:
-          enum:
-            - BANKACCOUNT
-            - BANKGIRO
-            - PLUSGIRO
-            - IBAN
-            - BBAN
+          $ref: "#/components/schemas/PaymentInfoMethod"
     InvoiceInfoNO:
       type: object
       required:
@@ -2912,27 +2866,15 @@ components:
           type: string
         creditAccountInternalId:
           type: string
-    InvoiceLineItemInfoUS: {}
-    InvoiceLineItemInfoSE:
+    InvoiceLineItemInfo:
       type: object
-      required:
-        - vatCode
-        - vatAmount
       properties:
         vatCode:
           type: string
+          nullable: true
         vatAmount:
           type: number
-    InvoiceLineItemInfoNO:
-      type: object
-      required:
-        - vatCode
-        - vatAmount
-      properties:
-        vatCode:
-          type: string
-        vatAmount:
-          type: number
+          nullable: true
     RequestIdCallback:
       type: object
       required:
