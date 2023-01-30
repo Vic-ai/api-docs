@@ -1803,8 +1803,8 @@ components:
           nullable: true
           maxLength: 255
         countryCode:
-          oneOf:
-          - $ref: "#/components/schemas/CountryCode"
+          allOf:
+            - $ref: "#/components/schemas/CountryCode"
           description: The country code of the vendor
           nullable: true
     CreateInvoice:
