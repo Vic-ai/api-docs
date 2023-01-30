@@ -1417,37 +1417,6 @@ components:
     ExternalData:
       description: A free form json object that is stored with the record.
       type: object
-    QueryCommon:
-      type: object
-      required:
-        - internalId
-        - internalUpdatedAt
-      properties:
-        internalId:
-          $ref: '#/components/schemas/InternalId'
-        internalUpdatedAt:
-          type: string
-          description: Is in UTC.
-          format: date-time
-        externalId:
-          $ref: '#/components/schemas/ExternalId'
-        externalUpdatedAt:
-          type: string
-          format: date-time
-          description: Does NOT have UTC normalization.
-          example: '2021-06-29T17:20:53.154'
-    UpsertCommon:
-      type: object
-      required:
-        - externalUpdatedAt
-      properties:
-        externalId:
-          $ref: '#/components/schemas/ExternalId'
-        externalUpdatedAt:
-          type: string
-          format: date-time
-          description: Does NOT have UTC normalization.
-          example: '2021-06-29T17:20:53.154'
     HealthCheck:
       type: object
       required:
