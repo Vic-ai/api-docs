@@ -1408,9 +1408,11 @@ components:
       maxLength: 2
     MonetaryValue:
       description: |
-        The monetary value as a string. A float should not be used. Our api will
-        accept a float, but for best results, please use a string with the
-        proper decimal precision.
+        The monetary value as a string.
+
+        A float **should not** be used. The api will accept a float and it will be
+        transformed into a monetary value, but for best results please use a string
+        with the proper decimal precision.
       type: string
       format: decimal
       example: "1.00"
