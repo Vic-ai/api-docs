@@ -1406,6 +1406,7 @@ components:
       type: string
       format: ISO-3166
       maxLength: 2
+      example: "US"
     MonetaryValue:
       description: |
         The monetary value as a string.
