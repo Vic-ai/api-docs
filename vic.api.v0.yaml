@@ -2012,6 +2012,7 @@ components:
         reason:
           type: string
     InvoiceState:
+      type: string
       enum:
         - NOT_READY
         - IN_APPROVALS
@@ -2355,10 +2356,12 @@ components:
           type: string
           maxLength: 255
     VendorState:
+      type: string
       enum:
         - CONFIRMED
         - UNCONFIRMED
     VendorStateFilter:
+      type: string
       description: |
         - `PENDING` - The vendor is not confirmed, has no errors, and was
           not predicted. It is pending to be confirmed.
@@ -2713,6 +2716,7 @@ components:
         message:
           $ref: '#/components/schemas/ErrorString'
     PaymentTermUnit:
+      type: string
       description: The payment term units supported.
       enum:
         - DAYS
@@ -2728,6 +2732,7 @@ components:
         unit:
           $ref: "#/components/schemas/PaymentTermUnit"
     AccrualTermUnit:
+      type: string
       description: The accrual term units supported.
       enum:
         - MONTHS
@@ -2751,6 +2756,7 @@ components:
         unit:
           $ref: "#/components/schemas/AccrualTermUnit"
     TransactionType:
+      type: string
       description: The type of invoice transaction.
       enum:
         - INVOICE
@@ -2791,6 +2797,7 @@ components:
           maxLength: 255
           nullable: true
     PaymentInfoMethod:
+      type: string
       description: |
         The payment method to be used.
 
