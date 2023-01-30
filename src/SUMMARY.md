@@ -8,3 +8,4 @@
   - [Open API Spec](vic.api.v0.html)
   - [Invoices](v0/invoices/README.md)
   - [Training Invoices](v0/training_invoices/README.md)
+  - [Purchase Orders](v0/purchase_orders/README.md)

@@ -65,6 +65,7 @@ tags:
       - Invoices which have been posted to the ERP system.
 
       By default, access to unposted invoices is restricted.
+  - name: PurchaseOrders
   - name: Subscriptions
     description: |
       These requests represents a user’s action in the Vic.ai system and
@@ -1251,6 +1252,106 @@ paths:
           $ref: "#/components/responses/CostAccountsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /purchaseOrders:
+    post:
+      description: |
+        Create a purchase order.
+
+        Once the purchase order is created and no longer needs further alterations. You
+        will need to call `processPurchaseOrder`.
+      summary: Create a purchase order
+      operationId: createPurchaseOrder
+      tags:
+        - PurchaseOrders
+      requestBody:
+        $ref: "#/components/requestBodies/CreatePurchaseOrderRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/PurchaseOrderResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /purchaseOrders/{purchaseOrderId}:
+    get:
+      description: Get a purchase order.
+      summary: Get a purcahse order
+      operationId: getPurchaseOrder
+      tags:
+        - PurchaseOrders
+      parameters:
+        - name: purchaseOrderId
+          in: path
+          required: true
+          description: The internal id of the purchase order.
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/PurchaseOrderResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: Delete a purchase order.
+      summary: Delete a purchase order
+      operationId: deletePurchaseOrder
+      tags:
+        - PurchaseOrders
+      parameters:
+        - name: purchaseOrderId
+          in: path
+          required: true
+          description: The internal id of the purchase order.
+          schema:
+            type: string
+      responses:
+        "204":
+          $ref: "#/components/responses/PurchaseOrderDeletedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /purchaseOrders/{purchaseOrderId}/process:
+    post:
+      description: |
+        When the purchase order modifications are completed use this operation to let
+        Vic know that it is ready to be processed.
+
+        Once a purchase order is being processed, it can not be modified until
+        completed.
+      summary: Process the purchase order
+      operationId: processPurchaseOrder
+      tags:
+        - PurchaseOrders
+      parameters:
+        - name: purchaseOrderId
+          in: path
+          required: true
+          description: The internal id of the purchase order.
+          schema:
+            type: string
+      responses:
+        "200":
+          $ref: "#/components/responses/PurchaseOrderResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+
 components:
   securitySchemes:
     BearerAuth:
@@ -1889,6 +1990,92 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateInvoiceLineItem"
+    CreatePurchaseOrder:
+      required:
+        - poNumber
+        - amount
+      properties:
+        externalId:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: The id of the purchase order within the ERP system.
+        issuedOn:
+          type: string
+          format: date
+          nullable: true
+          description: When the purchase order was issued.
+        poNumber:
+          type: string
+          maxLength: 255
+          example: "12003400"
+          description: The purchase order number. This is used to match against invoices.
+        deliverOn:
+          type: string
+          format: date
+          nullable: true
+        amount:
+          $ref: "#/components/schemas/MonetaryValue"
+        currencyId:
+          allOf:
+            - $ref: "#/components/schemas/Currency"
+          description: The currency that the purchase order is in.
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: The description of the purchase order.
+        requestor:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: The person or entity who requested the purchase order.
+        createdOn:
+          type: string
+          format: date
+          nullable: true
+          description: When the purchase order was created.
+        vendor:
+          allOf:
+            - $ref: "#/components/schemas/VendorRef"
+          nullable: true
+          description: The vendor of the purchase order.
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreatePurchaseOrderItem"
+    CreatePurchaseOrderItem:
+      type: object
+      required:
+        - productNumber
+        - quantity
+        - unitAmount
+        - lineItemTotal
+      properties:
+        productNumber:
+          type: string
+          maxLength: 255
+        productDescription:
+          type: string
+          nullable: true
+          maxLength: 255
+        unitOfMeasure:
+          type: string
+          nullable: true
+          example: "kg"
+          maxLength: 255
+        quantity:
+          type: string
+          format: decimal
+          example: "12.3"
+        unitAmount:
+          $ref: "#/components/schemas/MonetaryValue"
+        lineItemTotal:
+          $ref: "#/components/schemas/MonetaryValue"
+        dimensions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
     Invoice:
       type: object
       required:
@@ -2020,6 +2207,91 @@ components:
         - READY_FOR_TRANSFER
         - POSTED
         - TRANSFERRED
+    PurchaseOrderStatus:
+      type: string
+      description: The status of the purchase order.
+      enum:
+        - open
+        - closed
+      default: open
+    PurchaseOrderItem:
+      type: object
+      required:
+        - internalId
+      properties:
+        internalId:
+          type: string
+          maxLength: 255
+        productNumber:
+          type: string
+          maxLength: 255
+        productDescription:
+          type: string
+          maxLength: 255
+        unitOfMeasure:
+          type: string
+          maxLength: 255
+        quantity:
+          type: string
+          format: decimal
+          example: "1.0"
+        unitAmount:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+        lineItemTotal:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+        dimensions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+    PurchaseOrder:
+      type: object
+      required:
+        - internalId
+        - internalUpdatedAt
+        - status
+        - items
+      properties:
+        internalId:
+          type: string
+          maxLength: 255
+        externalId:
+          type: string
+          maxLength: 255
+        vendor:
+          $ref: "#/components/schemas/Vendor"
+        internalUpdatedAt:
+          type: string
+          format: date-time
+        issuedOn:
+          type: string
+          format: date
+        poNumber:
+          type: string
+          maxLength: 255
+        deliverOn:
+          type: string
+          format: date
+        amount:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+        currencyId:
+          allOf:
+            - $ref: "#/components/schemas/Currency"
+          nullable: true
+        status:
+          $ref: "#/components/schemas/PurchaseOrderStatus"
+        description:
+          type: string
+          maxLength: 255
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/PurchaseOrderItem"
     TrainingInvoice:
       type: object
       required:
@@ -2902,13 +3174,16 @@ components:
     UnsubscribeResult:
       enum:
         - OK
-  responses:
-    UnauthorizedResponse:
-      description: The request was unauthorized.
+
+  requestBodies:
+    CreatePurchaseOrderRequest:
+      description: Create a purchase order.
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Error"
+            $ref: "#/components/schemas/CreatePurchaseOrder"
+
+  responses:
     ForbiddenResponse:
       description: The request was forbidden.
       content:
@@ -3179,3 +3454,11 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CostAccounts"
+    PurchaseOrderResponse:
+      description: The purchase order.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PurchaseOrder"
+    PurchaseOrderDeletedResponse:
+      description: Purchase order was successfully deleted.
