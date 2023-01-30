@@ -1565,6 +1565,13 @@ components:
         $ref: '#/components/schemas/Dimension'
     DimensionRef:
       type: object
+      description: |
+        A reference to a dimension within vic.
+
+        The `internalId` takes precedence over `externalId` and `externalId` takes
+        precedence over `name`.
+
+        If two dimensions exist with the same `name`, then an error will be returned.
       properties:
         internalId:
           type: string
