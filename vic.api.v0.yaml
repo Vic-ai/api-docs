@@ -1764,7 +1764,7 @@ components:
           nullable: true
           items:
             $ref: "#/components/schemas/DimensionRef"
-    CreateInvoiceVendor:
+    VendorRef:
       type: object
       properties:
         internalId:
@@ -1866,7 +1866,7 @@ components:
           nullable: true
         vendor:
           oneOf:
-          - $ref: "#/components/schemas/CreateInvoiceVendor"
+          - $ref: "#/components/schemas/VendorRef"
           description: The vendor information that the invoice is from.
           nullable: true
         lineItems:
