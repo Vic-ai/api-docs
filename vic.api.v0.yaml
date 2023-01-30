@@ -1407,6 +1407,12 @@ components:
       format: ISO-3166
       maxLength: 2
       example: "US"
+    Currency:
+      description: The ISO-4217 currency code.
+      type: string
+      format: ISO-4217
+      maxLength: 3
+      example: "USD"
     MonetaryValue:
       description: |
         The monetary value as a string.
