@@ -2040,7 +2040,7 @@ components:
             - $ref: "#/components/schemas/VendorRef"
           nullable: true
           description: The vendor of the purchase order.
-        items:
+        lineItems:
           type: array
           items:
             $ref: "#/components/schemas/CreatePurchaseOrderItem"
@@ -2253,7 +2253,7 @@ components:
         - internalId
         - internalUpdatedAt
         - status
-        - items
+        - lineItems
       properties:
         internalId:
           type: string
@@ -2288,7 +2288,7 @@ components:
         description:
           type: string
           maxLength: 255
-        items:
+        lineItems:
           type: array
           items:
             $ref: "#/components/schemas/PurchaseOrderItem"
