@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Invoices - Vic API Documentation</title>
+        <title>Purchase Orders - Vic API Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -80,7 +80,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../../v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../../v0/invoices/index.html" class="active"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../../v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../../v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/purchase_orders/index.html" class="active"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -141,110 +141,88 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="invoices"><a class="header" href="#invoices">Invoices</a></h1>
-<h2 id="post-v0invoices"><a class="header" href="#post-v0invoices"><a href="../../vic.api.v0.html#/Invoices/createInvoice"><code>POST /v0/invoices</code></a></a></h2>
-<h2 id="post-v0invoicesiddocument"><a class="header" href="#post-v0invoicesiddocument"><a href="../../vic.api.v0.html#/Invoices/uploadDocumentInvoice"><code>POST /v0/invoices/{id}/document</code></a></a></h2>
-<h2 id="post-v0invoicesidprocess"><a class="header" href="#post-v0invoicesidprocess"><a href="../../vic.api.v0.html#/Invoices/startProcessingInvoice"><code>POST /v0/invoices/{id}/process</code></a></a></h2>
-<p>Create an invoice in the Vic.ai system.</p>
-<h2 id="creating-invoice"><a class="header" href="#creating-invoice">Creating Invoice</a></h2>
-<p>When creating an invoice, there are three steps to follow:</p>
-<ol>
-<li>Create the invoice with a POST to <code>/invoices</code></li>
-<li>Upload the document with a POST to <code>/invoice/{id}/document</code></li>
-<li>Process the document with a POST to <code>/invoice/{id}/process</code></li>
-</ol>
-<p>You can make the id the internal id (from vic.ai) or the external id (from your system).</p>
+                        <h1 id="purchase-orders"><a class="header" href="#purchase-orders">Purchase Orders</a></h1>
+<h2 id="post-v0purchaseorders"><a class="header" href="#post-v0purchaseorders"><a href="../../vic.api.v0.html#/PurchaseOrders/createPurchaseOrder"><code>POST /v0/purchaseOrders</code></a></a></h2>
+<p>Creates a purchase order in the Vic.ai system.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
-<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
     --data-raw '{
-        &quot;transactionType&quot;: &quot;INVOICE&quot;,
-        &quot;source&quot;: &quot;MILLUM&quot;,
-        &quot;refNumber&quot;: &quot;12345&quot;,
-        &quot;poNumber&quot;: &quot;PO99999&quot;,
-        &quot;description&quot;: &quot;Invoice Header Description&quot;,
-        &quot;currency&quot;: &quot;NOK&quot;,
-        &quot;issueDate&quot;: &quot;2022-06-08&quot;,
-        &quot;glDate&quot;: &quot;2022-06-08&quot;,
-        &quot;dueDate&quot;: &quot;2022-06-18&quot;,
-        &quot;paymentRef&quot;: &quot;1010101010&quot;,
-        &quot;paymentInfo&quot;: {
-            &quot;kind&quot;: &quot;BBAN&quot;,
-            &quot;accountNumber&quot;: &quot;10805655555&quot;,
-            &quot;bic&quot;: &quot;32435&quot;
-        },
-        &quot;paymentTerm&quot;: {
-            &quot;count&quot;: 10,
-            &quot;unit&quot;: &quot;DAYS&quot;
-        },
+        &quot;amount&quot;: &quot;1.00&quot;,
+        &quot;createdOn&quot;: &quot;2022-06-01&quot;,
+        &quot;deliverOn&quot;: &quot;2022-07-01&quot;,
+        &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;poNumber&quot;: &quot;abc123&quot;,
+        &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
+        &quot;description&quot;: &quot;A purchase order&quot;,
+        &quot;externalId&quot;: &quot;po-1&quot;,
         &quot;vendor&quot;: {
-            &quot;orgNumber&quot;: &quot;926858963&quot;,
-            &quot;countryCode&quot;: &quot;NO&quot;
+            &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
         },
-        &quot;lineItems&quot;: [
+        &quot;items&quot;: [
             {
-                &quot;amount&quot;: &quot;800&quot;,
-                &quot;index&quot;: 0,
-                &quot;comment&quot;: &quot;Comment index 0&quot;,
-                &quot;description&quot;: &quot;Invoice line 0 Desc&quot;,
-                &quot;billable&quot;: null,
-                &quot;costAccount&quot;: {
-                    &quot;number&quot;: &quot;22530&quot;
-                },
+                &quot;productNumber&quot;: &quot;11111&quot;,
+                &quot;productDescription&quot;: &quot;Some widget&quot;,
+                &quot;unitOfMeasure&quot;: null,
+                &quot;quantity&quot;: &quot;12.3&quot;,
+                &quot;quantityReceived&quot;: &quot;13.0&quot;,
+                &quot;unitAmount&quot;: &quot;3.50&quot;,
+                &quot;lineItemTotal&quot;: &quot;45.50&quot;,
                 &quot;dimensions&quot;: [
-                    {
-                        &quot;externalId&quot;: &quot;cla_7&quot;
-                    },
-                    {
-                        &quot;externalId&quot;: &quot;prod_470&quot;
-                    }
+                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
                 ]
             },
             {
-                &quot;amount&quot;: &quot;1000&quot;,
-                &quot;index&quot;: 1,
-                &quot;comment&quot;: &quot;Comment index 1&quot;,
-                &quot;description&quot;: &quot;Invoice line 1 Desc&quot;,
-                &quot;billable&quot;: null,
-                &quot;costAccount&quot;: {
-                    &quot;number&quot;: &quot;63010&quot;
-                },
+                &quot;productNumber&quot;: &quot;22222&quot;,
+                &quot;productDescription&quot;: &quot;A different widget&quot;,
+                &quot;unitOfMeasure&quot;: null,
+                &quot;quantity&quot;: &quot;1.0&quot;,
+                &quot;quantityReceived&quot;: &quot;1.0&quot;,
+                &quot;unitAmount&quot;: &quot;3.50&quot;,
+                &quot;lineItemTotal&quot;: &quot;3.50&quot;,
                 &quot;dimensions&quot;: [
-                    {
-                        &quot;externalId&quot;: &quot;loc_3&quot;
-                    },
-                    {
-                        &quot;externalId&quot;: &quot;dep_9&quot;
-                    }
+                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
                 ]
             }
         ]
-        }'
+    }'
 </code></pre>
-<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/12345/document?useSystem=INTERNAL' \
---header 'Content-Type: multipart/form-data' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer &lt;Bearer Token&gt;' \
---form 'document=@&quot;/path/to/document.pdf&quot;'
+<h2 id="get-v0purchaseorderspurchaseorderid"><a class="header" href="#get-v0purchaseorderspurchaseorderid"><a href="../../vic.api.v0.html#/PurchaseOrders/getPurchaseOrder"><code>GET /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<p>Fetch a purchase order in the Vic.ai system.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
-<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/21/process?useSystem=INTERNAL' \
---header 'Accept: application/json' \
---header 'Authorization: Bearer &lt;Bearer Token&gt;'
+<h2 id="delete-v0purchaseorderspurchaseorderid"><a class="header" href="#delete-v0purchaseorderspurchaseorderid"><a href="../../vic.api.v0.html#/PurchaseOrders/deletePurchaseOrder"><code>DELETE /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<p>Deletes a purchase order from the Vic.ai system.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
+<pre><code class="language-bash">curl --location --request DELETE 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<h2 id="post-v0purchaseorderspurchaseorderidprocess"><a class="header" href="#post-v0purchaseorderspurchaseorderidprocess"><a href="../../vic.api.v0.html#/PurchaseOrders/processPurchaseOrder"><code>POST /v0/purchaseOrders/{purchaseOrderId}/process</code></a></a></h2>
+<p>Start the matching process for the purchase order.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8/process' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../vic.api.v0.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../v0/training_invoices/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../v0/training_invoices/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -252,13 +230,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../vic.api.v0.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../v0/training_invoices/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../v0/training_invoices/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

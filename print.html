@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -149,8 +149,20 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
-<h2 id="v061"><a class="header" href="#v061">v0.6.1</a></h2>
+<h2 id="v070"><a class="header" href="#v070">v0.7.0</a></h2>
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
+<ul>
+<li>Remove unused <code>#/components/schemas/QueryCommon</code>.</li>
+<li>Remove unused <code>#/components/schemas/UpsertCommon</code>.</li>
+<li>Rename <code>#/components/schemas/CreateInvoiceVendor</code> to <code>#/components/schemas/VendorRef</code>.</li>
+<li>Add <code>#/components/schemas/Currency</code> to represent ISO-4217 codes.</li>
+<li>Add <code>POST /v0/purchaseOrders</code> to create purchase orders.</li>
+<li>Add <code>GET /v0/purchaseOrders/{purchaseOrderId}</code> to get a purchase order.</li>
+<li>Add <code>POST /v0/purchaseOrders/{purchaseOrderId}/process</code> to start the matching process.</li>
+<li>Add <code>DELETE /v0/purchaseOrders/{purchaseOrderId}</code> to delete purchase orders.</li>
+</ul>
+<h2 id="v061"><a class="header" href="#v061">v0.6.1</a></h2>
+<h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
 <ul>
 <li>Add <code>#/components/schemas/PaymentInfoMethod</code> enum.</li>
 <li>Add <code>#/components/schemas/InternationalBankAccount</code> object.</li>
@@ -164,7 +176,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Remove required fields from <code>#/components/schemas/Dimension</code>.</li>
 </ul>
 <h2 id="v060"><a class="header" href="#v060">v0.6.0</a></h2>
-<h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
+<h3 id="v0-2"><a class="header" href="#v0-2">V0</a></h3>
 <ul>
 <li>Lift all error responses to the <code>#/components/responses</code> section.</li>
 <li>Replace <code>obtainToken</code> response with <code>#/components/responses/TokenCreatedResponse</code></li>
@@ -207,12 +219,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Replace <code>getCostAccounts</code> response with <code>#/components/responses/CostAccountsResponse</code></li>
 </ul>
 <h2 id="v050"><a class="header" href="#v050">v0.5.0</a></h2>
-<h3 id="v0-2"><a class="header" href="#v0-2">V0</a></h3>
+<h3 id="v0-3"><a class="header" href="#v0-3">V0</a></h3>
 <ul>
 <li>Replace <code>dimensions</code> ref to <code>#/components/schemas/Dimension</code>.</li>
 </ul>
 <h2 id="v040"><a class="header" href="#v040">v0.4.0</a></h2>
-<h3 id="v0-3"><a class="header" href="#v0-3">V0</a></h3>
+<h3 id="v0-4"><a class="header" href="#v0-4">V0</a></h3>
 <ul>
 <li>Removed <code>requiredDimensionsExternal</code> from <code>#/components/schemas/Account</code>. This field was never supported.</li>
 <li>Removed <code>parentAccountExternalId</code> from <code>#/components/schemas/Account</code>. This field was never supported.</li>
@@ -225,17 +237,17 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Removed <code>parentDimensionExternalId</code> from <code>#/components/schemas/DimensionUpsert</code>. This field was never supported.</li>
 </ul>
 <h2 id="v0319"><a class="header" href="#v0319">v0.3.19</a></h2>
-<h3 id="v0-4"><a class="header" href="#v0-4">V0</a></h3>
+<h3 id="v0-5"><a class="header" href="#v0-5">V0</a></h3>
 <ul>
 <li>Changed <code>Account</code> <code>number</code> to only permit the pattern <code>^\d+$</code>.</li>
 </ul>
 <h2 id="v0318"><a class="header" href="#v0318">v0.3.18</a></h2>
-<h3 id="v0-5"><a class="header" href="#v0-5">V0</a></h3>
+<h3 id="v0-6"><a class="header" href="#v0-6">V0</a></h3>
 <ul>
 <li>Added <code>name</code> to <code>#/components/schemas/DimensionRef</code></li>
 </ul>
 <h2 id="v0317"><a class="header" href="#v0317">v0.3.17</a></h2>
-<h3 id="v0-6"><a class="header" href="#v0-6">V0</a></h3>
+<h3 id="v0-7"><a class="header" href="#v0-7">V0</a></h3>
 <ul>
 <li>Added <code>POST /v0/invoice/{id}/reject</code>.</li>
 <li>Added <code>GET /v0/subscription</code> to fetch the currently configued V0 subscription.</li>
@@ -248,7 +260,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>GET /v1/purchase_orders/:id</code> to get a specific purchase order.</li>
 </ul>
 <h2 id="v0315"><a class="header" href="#v0315">v0.3.15</a></h2>
-<h3 id="v0-7"><a class="header" href="#v0-7">V0</a></h3>
+<h3 id="v0-8"><a class="header" href="#v0-8">V0</a></h3>
 <ul>
 <li>Added <code>description</code> to <code>#/components/schemas/Vendor</code>.</li>
 <li>Added <code>VendorTaxInfo</code> to <code>#/components/schemas/VendorTaxInfo</code>.</li>
@@ -428,12 +440,12 @@ been updated, and <code>201</code> when the vendor has been created.</li>
 <li><code>confirmedAt</code> on <code>#/components/schemas/Vendor</code> are allowed to be null.</li>
 </ul>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="authentication"><a class="header" href="#authentication">Authentication</a></h1>
-<div style="break-before: page; page-break-before: always;"></div><h1 id="v0-8"><a class="header" href="#v0-8">V0</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="v0-9"><a class="header" href="#v0-9">V0</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="open-api-spec"><a class="header" href="#open-api-spec">Open API Spec</a></h1>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="invoices"><a class="header" href="#invoices">Invoices</a></h1>
-<h2 id="post-v0invoices"><a class="header" href="#post-v0invoices"><a href="v0/invoices/../../vic.api.v0.html#/invoices/createInvoice"><code>POST /v0/invoices</code></a></a></h2>
-<h2 id="post-v0invoicesiddocument"><a class="header" href="#post-v0invoicesiddocument"><a href="v0/invoices/../../vic.api.v0.html#/invoices/uploadDocumentInvoice"><code>POST /v0/invoices/{id}/document</code></a></a></h2>
-<h2 id="post-v0invoicesidprocess"><a class="header" href="#post-v0invoicesidprocess"><a href="v0/invoices/../../vic.api.v0.html#/invoices/startProcessingInvoice"><code>POST /v0/invoices/{id}/process</code></a></a></h2>
+<h2 id="post-v0invoices"><a class="header" href="#post-v0invoices"><a href="v0/invoices/../../vic.api.v0.html#/Invoices/createInvoice"><code>POST /v0/invoices</code></a></a></h2>
+<h2 id="post-v0invoicesiddocument"><a class="header" href="#post-v0invoicesiddocument"><a href="v0/invoices/../../vic.api.v0.html#/Invoices/uploadDocumentInvoice"><code>POST /v0/invoices/{id}/document</code></a></a></h2>
+<h2 id="post-v0invoicesidprocess"><a class="header" href="#post-v0invoicesidprocess"><a href="v0/invoices/../../vic.api.v0.html#/Invoices/startProcessingInvoice"><code>POST /v0/invoices/{id}/process</code></a></a></h2>
 <p>Create an invoice in the Vic.ai system.</p>
 <h2 id="creating-invoice"><a class="header" href="#creating-invoice">Creating Invoice</a></h2>
 <p>When creating an invoice, there are three steps to follow:</p>
@@ -523,7 +535,7 @@ been updated, and <code>201</code> when the vendor has been created.</li>
 --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
 <div style="break-before: page; page-break-before: always;"></div><h1 id="training-invoices"><a class="header" href="#training-invoices">Training Invoices</a></h1>
-<h2 id="put-v0traininginvoices"><a class="header" href="#put-v0traininginvoices"><a href="v0/training_invoices/../../vic.api.v0.html#/training%20invoices/upsertTrainingInvoice"><code>PUT /v0/trainingInvoices</code></a></a></h2>
+<h2 id="put-v0traininginvoices"><a class="header" href="#put-v0traininginvoices"><a href="v0/training_invoices/../../vic.api.v0.html#/TrainingInvoices/upsertTrainingInvoice"><code>PUT /v0/trainingInvoices</code></a></a></h2>
 <p>Upserts a training invoice into the Vic.ai system.</p>
 <h3 id="inserting-training-invoice"><a class="header" href="#inserting-training-invoice">Inserting Training Invoice</a></h3>
 <p>When inserting a new training invoice a <code>Content-Type</code> of <code>multipart/form-data</code>
@@ -625,6 +637,79 @@ not be matched they will be deleted and replaced with the desired items.</li>
             }
         ]
     }&quot;'
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="purchase-orders"><a class="header" href="#purchase-orders">Purchase Orders</a></h1>
+<h2 id="post-v0purchaseorders"><a class="header" href="#post-v0purchaseorders"><a href="v0/purchase_orders/../../vic.api.v0.html#/PurchaseOrders/createPurchaseOrder"><code>POST /v0/purchaseOrders</code></a></a></h2>
+<p>Creates a purchase order in the Vic.ai system.</p>
+<h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+        &quot;amount&quot;: &quot;1.00&quot;,
+        &quot;createdOn&quot;: &quot;2022-06-01&quot;,
+        &quot;deliverOn&quot;: &quot;2022-07-01&quot;,
+        &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;poNumber&quot;: &quot;abc123&quot;,
+        &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
+        &quot;description&quot;: &quot;A purchase order&quot;,
+        &quot;externalId&quot;: &quot;po-1&quot;,
+        &quot;vendor&quot;: {
+            &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
+        },
+        &quot;items&quot;: [
+            {
+                &quot;productNumber&quot;: &quot;11111&quot;,
+                &quot;productDescription&quot;: &quot;Some widget&quot;,
+                &quot;unitOfMeasure&quot;: null,
+                &quot;quantity&quot;: &quot;12.3&quot;,
+                &quot;quantityReceived&quot;: &quot;13.0&quot;,
+                &quot;unitAmount&quot;: &quot;3.50&quot;,
+                &quot;lineItemTotal&quot;: &quot;45.50&quot;,
+                &quot;dimensions&quot;: [
+                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+                ]
+            },
+            {
+                &quot;productNumber&quot;: &quot;22222&quot;,
+                &quot;productDescription&quot;: &quot;A different widget&quot;,
+                &quot;unitOfMeasure&quot;: null,
+                &quot;quantity&quot;: &quot;1.0&quot;,
+                &quot;quantityReceived&quot;: &quot;1.0&quot;,
+                &quot;unitAmount&quot;: &quot;3.50&quot;,
+                &quot;lineItemTotal&quot;: &quot;3.50&quot;,
+                &quot;dimensions&quot;: [
+                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+                ]
+            }
+        ]
+    }'
+</code></pre>
+<h2 id="get-v0purchaseorderspurchaseorderid"><a class="header" href="#get-v0purchaseorderspurchaseorderid"><a href="v0/purchase_orders/../../vic.api.v0.html#/PurchaseOrders/getPurchaseOrder"><code>GET /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<p>Fetch a purchase order in the Vic.ai system.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-4"><a class="header" href="#example-4">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<h2 id="delete-v0purchaseorderspurchaseorderid"><a class="header" href="#delete-v0purchaseorderspurchaseorderid"><a href="v0/purchase_orders/../../vic.api.v0.html#/PurchaseOrders/deletePurchaseOrder"><code>DELETE /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<p>Deletes a purchase order from the Vic.ai system.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-5"><a class="header" href="#example-5">Example</a></h3>
+<pre><code class="language-bash">curl --location --request DELETE 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<h2 id="post-v0purchaseorderspurchaseorderidprocess"><a class="header" href="#post-v0purchaseorderspurchaseorderidprocess"><a href="v0/purchase_orders/../../vic.api.v0.html#/PurchaseOrders/processPurchaseOrder"><code>POST /v0/purchaseOrders/{purchaseOrderId}/process</code></a></a></h2>
+<p>Start the matching process for the purchase order.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8/process' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
 
                     </main>
