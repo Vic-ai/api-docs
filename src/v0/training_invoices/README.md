@@ -1,6 +1,6 @@
 # Training Invoices
 
-## [`PUT /v0/trainingInvoices`](../../vic.api.v0.html#/training%20invoices/upsertTrainingInvoice)
+## [`PUT /v0/trainingInvoices`](../../vic.api.v0.html#/TrainingInvoices/upsertTrainingInvoice)
 
 Upserts a training invoice into the Vic.ai system.
 

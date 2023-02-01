@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.7.0
+### V0
+- Remove unused `#/components/schemas/QueryCommon`.
+- Remove unused `#/components/schemas/UpsertCommon`.
+- Rename `#/components/schemas/CreateInvoiceVendor` to `#/components/schemas/VendorRef`.
+- Add `#/components/schemas/Currency` to represent ISO-4217 codes.
+- Add `POST /v0/purchaseOrders` to create purchase orders.
+- Add `GET /v0/purchaseOrders/{purchaseOrderId}` to get a purchase order.
+- Add `POST /v0/purchaseOrders/{purchaseOrderId}/process` to start the matching process.
+- Add `DELETE /v0/purchaseOrders/{purchaseOrderId}` to delete purchase orders.
+
+
 ## v0.6.1
 ### V0
 - Add `#/components/schemas/PaymentInfoMethod` enum.

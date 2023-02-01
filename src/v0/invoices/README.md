@@ -1,8 +1,8 @@
 # Invoices
 
-## [`POST /v0/invoices`](../../vic.api.v0.html#/invoices/createInvoice)
-## [`POST /v0/invoices/{id}/document`](../../vic.api.v0.html#/invoices/uploadDocumentInvoice)
-## [`POST /v0/invoices/{id}/process`](../../vic.api.v0.html#/invoices/startProcessingInvoice)
+## [`POST /v0/invoices`](../../vic.api.v0.html#/Invoices/createInvoice)
+## [`POST /v0/invoices/{id}/document`](../../vic.api.v0.html#/Invoices/uploadDocumentInvoice)
+## [`POST /v0/invoices/{id}/process`](../../vic.api.v0.html#/Invoices/startProcessingInvoice)
 
 Create an invoice in the Vic.ai system.
 
