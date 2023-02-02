@@ -136,7 +136,7 @@ paths:
           $ref: "#/components/responses/AccountsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /account/{id}:
+  /accounts/{id}:
     get:
       description: |
         Use this request to get data for a single GL account that is stored in
@@ -218,7 +218,7 @@ paths:
           $ref: "#/components/responses/DimensionsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /dimension/{id}:
+  /dimensions/{id}:
     get:
       description: |
         Use this request to get data for a single dimension that is stored in
@@ -314,7 +314,7 @@ paths:
           $ref: "#/components/responses/VendorsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /vendor/{id}:
+  /vendors/{id}:
     get:
       description: Use this request to get data for a single vendor that is stored in Vic.ai.
       summary: Info for a specific vendor
@@ -379,7 +379,7 @@ paths:
           $ref: "#/components/responses/VendorDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /vendor/{id}/errors:
+  /vendors/{id}/errors:
     post:
       description: |
         Use this post to report vendor update failure errors back to Vic.ai.
@@ -465,7 +465,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}:
+  /invoices/{id}:
     get:
       description: |
         Use this request to get data for a single invoice that is stored in
@@ -557,7 +557,7 @@ paths:
           $ref: "#/components/responses/InvoiceDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}/process:
+  /invoices/{id}/process:
     post:
       summary: Start the invoice processing.
       description: |
@@ -585,7 +585,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}/document:
+  /invoices/{id}/document:
     get:
       description: |
         Use this request to get the document associated with a single invoice
@@ -651,7 +651,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}/confirm:
+  /invoices/{id}/confirm:
     post:
       description: |
         Used to confirm that the invoice data have been successfully posted to
@@ -692,7 +692,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}/reject:
+  /invoices/{id}/reject:
     post:
       description: |
         Used to communicate that the invoice data have **NOT** been
@@ -731,7 +731,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /invoice/{id}/lineItems:
+  /invoices/{id}/lineItems:
     get:
       description: |
         List all of the line items for the invoice.
@@ -774,7 +774,7 @@ paths:
           $ref: "#/components/responses/TrainingInvoicesResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /trainingInvoice/{id}:
+  /trainingInvoices/{id}:
     get:
       description: |
         Use this request to get data for a single training invoice that is
@@ -863,7 +863,7 @@ paths:
           $ref: "#/components/responses/TrainingInvoiceDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /trainingInvoice/{id}/document:
+  /trainingInvoices/{id}/document:
     get:
       description: |
         Use this request to get the document associated with a training invoice
@@ -899,7 +899,7 @@ paths:
           $ref: "#/components/responses/VatCodesResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-  /vatCode/{id}:
+  /vatCodes/{id}:
     get:
       description: |
         Use this request to get data for a single vat code that is stored in

@@ -6,6 +6,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+### V0
+- Deprecate singular resource path names in favor of pluralized paths. Old paths will be supported for at least 6 months. We recommend changing to the newer paths as soon as possible.
+- Changed `/v0/account/{id}` to `/v0/accounts/{id}`
+- Changed `/v0/dimension/{id}` to `/v0/dimensions/{id}`
+- Changed `/v0/invoice/{id}/confirm` to `/v0/invoices/{id}/confirm`
+- Changed `/v0/invoice/{id}/document` to `/v0/invoices/{id}/document`
+- Changed `/v0/invoice/{id}/lineItems` to `/v0/invoices/{id}/lineItems`
+- Changed `/v0/invoice/{id}/process` to `/v0/invoices/{id}/process`
+- Changed `/v0/invoice/{id}/reject` to `/v0/invoices/{id}/reject`
+- Changed `/v0/invoice/{id}` to `/v0/invoices/{id}`
+- Changed `/v0/trainingInvoice/{id}/document` to `/v0/trainingInvoices/{id}/document`
+- Changed `/v0/trainingInvoice/{id}` to `/v0/trainingInvoices/{id}`
+- Changed `/v0/vatCode/{id}` to `/v0/vatCodes/{id}`
+- Changed `/v0/vendor/{id}/errors` to `/v0/vendors/{id}/errors`
+- Changed `/v0/vendor/{id}` to `/v0/vendors/{id}`
+
 
 ## v0.7.0
 ### V0
