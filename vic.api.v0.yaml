@@ -394,6 +394,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UseSystem'
       requestBody:
         required: true
         content:
@@ -414,6 +415,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/RequestId'
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         "200":
           $ref: "#/components/responses/VendorRemoteErrorsClearedResponse"
