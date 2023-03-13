@@ -24,7 +24,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
         "vendor": {
             "externalId": "the-vendor-external-id"
         },
-        "items": [
+        "lineItems": [
             {
                 "productNumber": "11111",
                 "productDescription": "Some widget",
