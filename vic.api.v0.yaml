@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.6.1
+  version: 0.8.0
   contact: {}
   title: Vic.Api
   description: |
@@ -1614,8 +1614,15 @@ components:
         name:
           type: string
           maxLength: 255
+          description: The name of the dimension.
         type:
           type: string
+          maxLength: 255
+          description: The dimension type name.
+        typeExternalId:
+          type: string
+          maxLength: 255
+          description: The dimension type's external ID in the ERP system.
         shortName:
           type: string
           maxLength: 255
@@ -1641,7 +1648,8 @@ components:
     DimensionUpsert:
       type: object
       required:
-      - externalUpdatedAt
+        - externalUpdatedAt
+        - name
       properties:
         externalId:
           $ref: '#/components/schemas/ExternalId'
@@ -1653,8 +1661,17 @@ components:
         name:
           type: string
           maxLength: 255
+          description: The name of the dimension.
         type:
           type: string
+          maxLength: 255
+          description: The dimension type name.
+        typeExternalId:
+          type: string
+          maxLength: 255
+          description: |-
+            The type's external ID in the ERP system. If left unspecified, it
+            will clear the existing value.
         shortName:
           type: string
           maxLength: 255
