@@ -152,6 +152,7 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
+<h2 id="v080"><a class="header" href="#v080">v0.8.0</a></h2>
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
 <ul>
 <li>Deprecate singular resource path names in favor of pluralized paths. Old paths will be supported for at least 6 months. We recommend changing to the newer paths as soon as possible.</li>
@@ -168,6 +169,13 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Changed <code>/v0/vatCode/{id}</code> to <code>/v0/vatCodes/{id}</code></li>
 <li>Changed <code>/v0/vendor/{id}/errors</code> to <code>/v0/vendors/{id}/errors</code></li>
 <li>Changed <code>/v0/vendor/{id}</code> to <code>/v0/vendors/{id}</code></li>
+<li>Add <code>typeExternalId</code> to <code>#/components/schemas/Dimension</code>.</li>
+<li>Add <code>typeExternalId</code> to <code>#/components/schemas/DimensionUpsert</code>.</li>
+<li>Changed set max length for <code>type</code> on <code>#/components/schemas/Dimension</code>.</li>
+<li>Changed set max length for <code>type</code> on <code>#/components/schemas/DimensionUpsert</code>.</li>
+<li>Changed set max length for <code>name</code> on <code>#/components/schemas/Dimension</code>.</li>
+<li>Changed set max length for <code>name</code> on <code>#/components/schemas/DimensionUpsert</code>.</li>
+<li>Changed <code>name</code> to be required for <code>#/components/schemas/DimensionUpsert</code>.</li>
 </ul>
 <h2 id="v070"><a class="header" href="#v070">v0.7.0</a></h2>
 <h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
