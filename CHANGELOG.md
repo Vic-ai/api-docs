@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+## v0.8.0
 ### V0
 - Deprecate singular resource path names in favor of pluralized paths. Old paths will be supported for at least 6 months. We recommend changing to the newer paths as soon as possible.
 - Changed `/v0/account/{id}` to `/v0/accounts/{id}`
@@ -21,6 +23,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed `/v0/vatCode/{id}` to `/v0/vatCodes/{id}`
 - Changed `/v0/vendor/{id}/errors` to `/v0/vendors/{id}/errors`
 - Changed `/v0/vendor/{id}` to `/v0/vendors/{id}`
+- Add `typeExternalId` to `#/components/schemas/Dimension`.
+- Add `typeExternalId` to `#/components/schemas/DimensionUpsert`.
+- Changed set max length for `type` on `#/components/schemas/Dimension`.
+- Changed set max length for `type` on `#/components/schemas/DimensionUpsert`.
+- Changed set max length for `name` on `#/components/schemas/Dimension`.
+- Changed set max length for `name` on `#/components/schemas/DimensionUpsert`.
+- Changed `name` to be required for `#/components/schemas/DimensionUpsert`.
 
 
 ## v0.7.0
