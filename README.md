@@ -49,12 +49,6 @@ To view the V0 openapi spec
 open public/vic.api.v0.html
 ```
 
-To view the V1 openapi spec
-
-```sh
-open public/vic.api.v1.html
-```
-
 ## Deployment
 
 The `main` branch is auto deployed when merged into.
