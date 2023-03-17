@@ -2591,9 +2591,18 @@ components:
           - $ref: '#/components/schemas/ExternalId'
           nullable: true
         dimensionsExternalIds:
+          description: |
+            This has been deprecated. Please use the `dimensions` field to
+            specify the dimensions to set for this line item.
+          deprecated: true
           type: array
           items:
             $ref: '#/components/schemas/ExternalId'
+        dimensions:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/DimensionRef"
         lineItemIsVatOnly:
           type: boolean
           default: false
