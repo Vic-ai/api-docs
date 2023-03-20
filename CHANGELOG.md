@@ -6,6 +6,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Unreleased
+
+### v0.9.0
+### V0
+- Added `externalTypeId` to `#/components/schemas/DimensionRef`.
+- Expanded documentation for `#/components/schemas/DimensionRef`.
+- Deprecated `dimensionsExternalIds` in `#/components/schemas/TrainingInvoiceLineItemUpsert`. Instead please use the `dimensions` field which has the same functionality as the `createInvoice` operation.
+
 ### V1
 - Dropped all support for V1. We have not offered it in production since it was documented. In the future we will bring it back.
 

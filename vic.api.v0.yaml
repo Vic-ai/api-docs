@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.8.0
+  version: 0.9.0
   contact: {}
   title: Vic.Api
   description: |
@@ -1686,22 +1686,60 @@ components:
     DimensionRef:
       type: object
       description: |
-        A reference to a dimension within vic.
+        A reference to a dimension within Vic.
 
-        The `internalId` takes precedence over `externalId` and `externalId` takes
-        precedence over `name`.
+        The `internalId` takes precedence over all fields specified. If a
+        dimension is not found matching the `internalId` an error will be
+        returned.
 
-        If two dimensions exist with the same `name`, then an error will be returned.
+        When `externalId` is provided, it takes precedence over `name` and can
+        be used in combination with `typeExternalId`.
+
+        If `name` is the only field specified and more than one dimension exists
+        with that `name`, then an error will be returned. It can be used in
+        combination with `typeExternalId`.
+
+        If `typeExternalId` is specified with `externalId` or `name` and more
+        than one dimension exists with those fields, then an error will be
+        returned.
       properties:
         internalId:
+          description: |
+            Vic's id of the dimension.
+
+            Takes precedence over all other fields. Other fields are ignored if
+            this is specified.
           type: string
           maxLength: 255
           nullable: true
         externalId:
+          description: |
+            The id of the dimension in the ERP.
+
+            Takes precedence over `name`. Can be used in combination with
+            `typeExternalId`.
+
+            If more than one dimension is found meeting the criteria specified,
+            an error will be returned.
           type: string
           maxLength: 255
           nullable: true
         name:
+          description: |
+            The name of the dimension.
+
+            Can be used in combination with `typeExternalId`.
+
+            If more than one dimension is found meeting the criteria specified,
+            an error will be returned.
+          type: string
+          maxLength: 255
+          nullable: true
+        typeExternalId:
+          description: |
+            The type id in the ERP.
+
+            This is a supplemental field to be used with `externalId` or `name`.
           type: string
           maxLength: 255
           nullable: true
@@ -2553,9 +2591,18 @@ components:
           - $ref: '#/components/schemas/ExternalId'
           nullable: true
         dimensionsExternalIds:
+          description: |
+            This has been deprecated. Please use the `dimensions` field to
+            specify the dimensions to set for this line item.
+          deprecated: true
           type: array
           items:
             $ref: '#/components/schemas/ExternalId'
+        dimensions:
+          type: array
+          nullable: true
+          items:
+            $ref: "#/components/schemas/DimensionRef"
         lineItemIsVatOnly:
           type: boolean
           default: false
