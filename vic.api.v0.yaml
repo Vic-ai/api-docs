@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.9.0
+  version: 0.10.0
   contact: {}
   title: Vic.Api
   description: |
@@ -1180,10 +1180,20 @@ paths:
               requestBody:
                 required: true
                 content:
-                  application/pdf:
+                  multipart/form-data:
                     schema:
-                      type: string
-                      format: binary
+                      type: object
+                      properties:
+                        invoiceData:
+                          $ref: "#/components/schemas/Invoice"
+                        invoiceDocument:
+                          type: string
+                          format: binary
+                    encoding:
+                      invoiceData:
+                        contentType: application/json
+                      invoiceDocument:
+                        contentType: application/pdf
               responses:
                 "201":
                   description: Successful upsert
