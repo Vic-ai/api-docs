@@ -218,6 +218,19 @@ paths:
           $ref: "#/components/responses/DimensionsResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+    post:
+      description: Create a new dimension in Vic.ai.
+      summary: Create a dimension
+      operationId: createDimension
+      tags:
+        - Dimensions
+      requestBody:
+        $ref: "#/components/requestBodies/CreateDimensionRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/DimensionCreatedResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
   /dimensions/{id}:
     get:
       description: |
@@ -1645,6 +1658,40 @@ components:
           format: date-time
           description: Does not have UTC normalization.
           example: "2021-06-29T17:20:53.154"
+    CreateDimension:
+      type: object
+      required:
+        - externalUpdatedAt
+        - name
+      properties:
+        externalId:
+          $ref: '#/components/schemas/ExternalId'
+        externalUpdatedAt:
+          type: string
+          format: date-time
+          description: Does not have UTC normalization.
+          example: '2021-06-29T17:20:53.154'
+        name:
+          type: string
+          maxLength: 255
+          description: The name of the dimension.
+        type:
+          type: string
+          maxLength: 255
+          description: The dimension type name.
+        typeExternalId:
+          type: string
+          maxLength: 255
+          description: |-
+            The type's external ID in the ERP system. If left unspecified, it
+            will clear the existing value.
+        shortName:
+          type: string
+          maxLength: 255
+        externalData:
+          allOf:
+            - $ref: '#/components/schemas/ExternalData'
+          nullable: true
     DimensionUpsert:
       type: object
       required:
@@ -3248,6 +3295,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CreatePurchaseOrder"
+    CreateDimensionRequest:
+      description: Create a dimension.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateDimension'
 
   responses:
     ForbiddenResponse:
