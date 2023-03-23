@@ -10,10 +10,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v0.10.0
 ### V0
 - Added `createDimension` operation.
+- `invoiceTransfer` callback will now receive the same payload as the `invoicePost` callback.
 
 ## v0.9.0
 ### V0
-- Added `externalTypeId` to `#/components/schemas/DimensionRef`.
+- Added `typeExternalId` to `#/components/schemas/DimensionRef`.
 - Expanded documentation for `#/components/schemas/DimensionRef`.
 - Deprecated `dimensionsExternalIds` in `#/components/schemas/TrainingInvoiceLineItemUpsert`. Instead please use the `dimensions` field which has the same functionality as the `createInvoice` operation.
 
