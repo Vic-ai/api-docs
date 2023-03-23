@@ -153,11 +153,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
 <ul>
 <li>Added <code>createDimension</code> operation.</li>
+<li><code>invoiceTransfer</code> callback will now receive the same payload as the <code>invoicePost</code> callback.</li>
 </ul>
 <h2 id="v090"><a class="header" href="#v090">v0.9.0</a></h2>
 <h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
 <ul>
-<li>Added <code>externalTypeId</code> to <code>#/components/schemas/DimensionRef</code>.</li>
+<li>Added <code>typeExternalId</code> to <code>#/components/schemas/DimensionRef</code>.</li>
 <li>Expanded documentation for <code>#/components/schemas/DimensionRef</code>.</li>
 <li>Deprecated <code>dimensionsExternalIds</code> in <code>#/components/schemas/TrainingInvoiceLineItemUpsert</code>. Instead please use the <code>dimensions</code> field which has the same functionality as the <code>createInvoice</code> operation.</li>
 </ul>
