@@ -250,8 +250,11 @@ paths:
           $ref: "#/components/responses/ErrorResponse"
     put:
       description: |
-        Use this request to *upsert* dimensions data for one dimension into
-        Vic.ai.
+        Use this request to update or insert dimensions data for one dimension
+        into Vic.ai.
+
+        **Note:** The insert portion of this will be changed to no longer
+        function and the `createDimension` operation should be used instead.
 
         If the dimension is known by Vic.ai, the `externalId` supplied will be
         used to resolve the dimension and perform an update of the data,
