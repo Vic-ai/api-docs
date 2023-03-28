@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.11.0
+### V0
+- Added `accountNumber` to `#/components/schemas/CreateInvoice`
+- Added `servicePeriodStart` to `#/components/schemas/CreateInvoice`
+- Added `servicePeriodEnd` to `#/components/schemas/CreateInvoice`
+- Added `accountNumber` to `#/components/schemas/TrainingInvoiceUpsert`
+- Added `servicePeriodStart` to `#/components/schemas/TrainingInvoiceUpsert`
+- Added `servicePeriodEnd` to `#/components/schemas/TrainingInvoiceUpsert`
+
+
 ## v0.10.0
 ### V0
 - Added `createDimension` operation.

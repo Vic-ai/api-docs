@@ -2077,6 +2077,17 @@ components:
           description: The date the invoice is due on.
           type: string
           format: date
+        accountNumber:
+          type: string
+          nullable: true
+        servicePeriodStart:
+          type: string
+          format: date
+          nullable: true
+        servicePeriodEnd:
+          type: string
+          format: date
+          nullable: true
         paymentRef:
           description: |
             The payment reference number. The KID is a customer identification
@@ -2502,6 +2513,17 @@ components:
           format: date
           nullable: true
         dueDate:
+          type: string
+          format: date
+          nullable: true
+        accountNumber:
+          type: string
+          nullable: true
+        servicePeriodStart:
+          type: string
+          format: date
+          nullable: true
+        servicePeriodEnd:
           type: string
           format: date
           nullable: true
