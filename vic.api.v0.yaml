@@ -2179,6 +2179,7 @@ components:
         - quantity
         - unitAmount
         - lineItemTotal
+        - lineNumber
       properties:
         productNumber:
           type: string
@@ -2200,6 +2201,9 @@ components:
           $ref: "#/components/schemas/MonetaryValue"
         lineItemTotal:
           $ref: "#/components/schemas/MonetaryValue"
+        lineNumber:
+          type: integer
+          minimum: 1
         dimensions:
           type: array
           items:

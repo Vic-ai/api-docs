@@ -33,6 +33,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
                 "quantityReceived": "13.0",
                 "unitAmount": "3.50",
                 "lineItemTotal": "45.50",
+                "lineNumber": 0,
                 "dimensions": [
                     {"externalId": "dimenstion-external-id"}
                 ]
@@ -45,6 +46,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
                 "quantityReceived": "1.0",
                 "unitAmount": "3.50",
                 "lineItemTotal": "3.50",
+                "lineNumber": 1,
                 "dimensions": [
                     {"externalId": "dimenstion-external-id"}
                 ]
