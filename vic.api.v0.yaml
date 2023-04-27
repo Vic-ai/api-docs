@@ -2643,6 +2643,11 @@ components:
           description: The quantity of things that were invoiced.
           type: string
           format: decimal
+        lineItemTotal:
+          description: The line item total
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
