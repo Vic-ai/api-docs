@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Added `lineNumber` to `#/components/schemas/CreatePurchaseOrderItem`
+- Added `lineNumber` to `#/components/schemas/PurchaseOrderItem`
+
+
 ## v0.11.0
 ### V0
 - Added `accountNumber` to `#/components/schemas/CreateInvoice`

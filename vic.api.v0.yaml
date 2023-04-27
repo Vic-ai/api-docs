@@ -2375,6 +2375,9 @@ components:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
           nullable: true
+        lineNumber:
+          description: The line number of the item in the purchase order.
+          type: integer
         dimensions:
           type: array
           items:
