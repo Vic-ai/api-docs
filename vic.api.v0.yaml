@@ -1968,6 +1968,11 @@ components:
 
             If the VAT is known, that should be specified in the `vat.amount`
             field.
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
+          nullable: true
         comment:
           type: string
           maxLength: 255
@@ -2634,6 +2639,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalId'
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
@@ -2695,6 +2704,11 @@ components:
         lineItemIsVatOnly:
           type: boolean
           default: false
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
+          nullable: true
     VatCode:
       type: object
       required:

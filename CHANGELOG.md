@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `lineNumber` to `#/components/schemas/PurchaseOrderItem`
 - Renamed `quantity` to `quantityReceived` in `#/components/schemas/CreatePurchaseOrderItem`
 - Renamed `quantity` to `quantityReceived` in `#/components/schemas/PurchaseOrderItem`
+- Added `quantityInvoiced` to `#/components/schemas/InvoiceLineItem`
+- Added `quantityInvoiced` to `#/components/schemas/CreateInvoiceLineItem`
+- Added `quantityInvoiced` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
 
 
 ## v0.11.0
