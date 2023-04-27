@@ -2648,6 +2648,10 @@ components:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
           nullable: true
+        poLineNumber:
+          description: "The line number in a matched purchase order."
+          type: integer
+          nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
