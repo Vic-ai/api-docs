@@ -2182,6 +2182,7 @@ components:
       required:
         - productNumber
         - quantityReceived
+        - quantityRequested
         - unitAmount
         - lineItemTotal
         - lineNumber
