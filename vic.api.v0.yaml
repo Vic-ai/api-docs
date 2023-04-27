@@ -2383,6 +2383,7 @@ components:
         lineNumber:
           description: The line number of the item in the purchase order.
           type: integer
+          minimum: 1
         dimensions:
           type: array
           items:
