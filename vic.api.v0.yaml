@@ -2368,17 +2368,21 @@ components:
         unitOfMeasure:
           type: string
           maxLength: 255
+          description: The unit of measure used.
         quantityReceived:
+          description: The quantity received. It must be a non-negative value.
           type: string
           format: decimal
           example: "1.0"
         unitAmount:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
+          description: The per-unit amount. It must be a non-negative value.
           nullable: true
         lineItemTotal:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
+          description: The line item total. It must be a non-negative value.
           nullable: true
         lineNumber:
           description: The line number of the item in the purchase order.
