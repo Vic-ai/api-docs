@@ -2199,9 +2199,15 @@ components:
           example: "kg"
           maxLength: 255
         quantityReceived:
+          description: The quantity received. It must be a non-negative value.
           type: string
           format: decimal
           example: "12.3"
+        quantityRequested:
+          description: The quantity requested. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "1.0"
         unitAmount:
           $ref: "#/components/schemas/MonetaryValue"
         lineItemTotal:
@@ -2369,6 +2375,11 @@ components:
           type: string
           maxLength: 255
           description: The unit of measure used.
+        quantityRequested:
+          description: The quantity requested. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "1.0"
         quantityReceived:
           description: The quantity received. It must be a non-negative value.
           type: string
