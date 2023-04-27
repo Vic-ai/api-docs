@@ -2176,7 +2176,7 @@ components:
       type: object
       required:
         - productNumber
-        - quantity
+        - quantityReceived
         - unitAmount
         - lineItemTotal
         - lineNumber
@@ -2193,7 +2193,7 @@ components:
           nullable: true
           example: "kg"
           maxLength: 255
-        quantity:
+        quantityReceived:
           type: string
           format: decimal
           example: "12.3"
@@ -2363,7 +2363,7 @@ components:
         unitOfMeasure:
           type: string
           maxLength: 255
-        quantity:
+        quantityReceived:
           type: string
           format: decimal
           example: "1.0"
