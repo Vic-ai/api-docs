@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `quantityInvoiced` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
 - Added `lineItemTotal` to `#/components/schemas/InvoiceLineItem`
 - Added `poLineNumber` to `#/components/schemas/InvoiceLineItem`
+- Added `poNumber` to `#/components/schemas/InvoiceLineItem`
 
 
 ## v0.11.0

@@ -2652,6 +2652,11 @@ components:
           description: "The line number in a matched purchase order."
           type: integer
           nullable: true
+        poNumber:
+          description: "The matched purchase order number."
+          type: string
+          maxLength: 255
+          nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
