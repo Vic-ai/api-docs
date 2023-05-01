@@ -2358,7 +2358,7 @@ components:
         - open
         - closed
       default: open
-    PurchaseOrderItem:
+    PurchaseOrderLineItem:
       type: object
       required:
         - internalId
@@ -2448,7 +2448,7 @@ components:
         lineItems:
           type: array
           items:
-            $ref: "#/components/schemas/PurchaseOrderItem"
+            $ref: "#/components/schemas/PurchaseOrderLineItem"
     TrainingInvoice:
       type: object
       required:

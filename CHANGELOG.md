@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `lineItemTotal` to `#/components/schemas/InvoiceLineItem`
 - Added `poLineNumber` to `#/components/schemas/InvoiceLineItem`
 - Added `poNumber` to `#/components/schemas/InvoiceLineItem`
+- Renamed `#/components/schemas/PurchaseOrderItem` to `#/components/schemas/PurchaseOrderLineItem`
 
 
 ## v0.11.0
