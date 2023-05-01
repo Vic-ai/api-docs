@@ -1379,6 +1379,26 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /purchaseOrderLineItems:
+    post:
+      description: Add a line item to a purchase order.
+      summary: Add a line item to a purchase order.
+      operationId: createPurchaseOrderLineItem
+      tags:
+        - PurchaseOrders
+      requestBody:
+        $ref: "#/components/requestBodies/CreatePurchaseOrderLineItemRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/PurchaseOrderLineItemResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -2187,6 +2207,53 @@ components:
         - lineItemTotal
         - lineNumber
       properties:
+        productNumber:
+          type: string
+          maxLength: 255
+        productDescription:
+          type: string
+          nullable: true
+          maxLength: 255
+        unitOfMeasure:
+          type: string
+          nullable: true
+          example: "kg"
+          maxLength: 255
+        quantityReceived:
+          description: The quantity received. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "12.3"
+        quantityRequested:
+          description: The quantity requested. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "1.0"
+        unitAmount:
+          $ref: "#/components/schemas/MonetaryValue"
+        lineItemTotal:
+          $ref: "#/components/schemas/MonetaryValue"
+        lineNumber:
+          type: integer
+          minimum: 1
+        dimensions:
+          type: array
+          items:
+            $ref: "#/components/schemas/DimensionRef"
+    CreatePurchaseOrderLineItem:
+      type: object
+      required:
+        - purchaseOrderId
+        - productNumber
+        - quantityReceived
+        - quantityRequested
+        - unitAmount
+        - lineItemTotal
+        - lineNumber
+      properties:
+        purchaseOrderId:
+          type: string
+          description: The ID of the purchase order to attach this line item to.
         productNumber:
           type: string
           maxLength: 255
@@ -3382,6 +3449,13 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CreatePurchaseOrder"
+    CreatePurchaseOrderLineItemRequest:
+      description: Create a purchase order line item.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreatePurchaseOrderLineItem"
+
     CreateDimensionRequest:
       description: Create a dimension.
       required: true
@@ -3667,5 +3741,11 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/PurchaseOrder"
+    PurchaseOrderLineItemResponse:
+      description: The purchase order line item.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PurchaseOrderLineItem"
     PurchaseOrderDeletedResponse:
       description: Purchase order was successfully deleted.
