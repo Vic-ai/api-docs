@@ -1426,6 +1426,28 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: Delete a purchase order's line item
+      summary: Delete a purchase order's line item
+      operationId: deletePurchaseOrderLineItem
+      tags:
+        - PurchaseOrders
+      parameters:
+        - name: purchaseOrderLineItemId
+          in: path
+          required: true
+          description: The id of the purchase order line item.
+          schema:
+            type: string
+      responses:
+        "204":
+          $ref: "#/components/responses/PurchaseOrderLineItemDeletedResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "404":
+          $ref: "#/components/responses/ResourceNotFoundResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -3824,3 +3846,5 @@ components:
             $ref: "#/components/schemas/PurchaseOrderLineItem"
     PurchaseOrderDeletedResponse:
       description: Purchase order was successfully deleted.
+    PurchaseOrderLineItemDeletedResponse:
+      description: Purchase order line item was successfully deleted.
