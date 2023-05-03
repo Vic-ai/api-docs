@@ -1358,7 +1358,11 @@ paths:
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
-      description: Delete a purchase order.
+      description: |
+        Delete a purchase order.
+
+        Once finished updating the purchase order you should also also call
+        `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Delete a purchase order
       operationId: deletePurchaseOrder
       tags:
@@ -1411,7 +1415,11 @@ paths:
           $ref: "#/components/responses/ErrorResponse"
   /purchaseOrderLineItems:
     post:
-      description: Add a line item to a purchase order.
+      description: |
+        Add a line item to a purchase order.
+
+        Once finished updating the purchase order you should also also call
+        `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Add a line item to a purchase order.
       operationId: createPurchaseOrderLineItem
       tags:
@@ -1431,7 +1439,11 @@ paths:
           $ref: "#/components/responses/ErrorResponse"
   /purchaseOrderLineItems/{purchaseOrderLineItemId}:
     put:
-      description: Update a purchase order's line item
+      description: |
+        Update a purchase order's line item.
+
+        Once finished updating the purchase order you should also also call
+        `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Update a purchase order's line item
       operationId: updatePurchaseOrderLineItem
       tags:
@@ -1457,7 +1469,11 @@ paths:
         default:
           $ref: "#/components/responses/ErrorResponse"
     delete:
-      description: Delete a purchase order's line item
+      description: |
+        Delete a purchase order's line item.
+
+        Once finished updating the purchase order you should also also call
+        `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Delete a purchase order's line item
       operationId: deletePurchaseOrderLineItem
       tags:
@@ -2251,7 +2267,7 @@ components:
         currencyId:
           allOf:
             - $ref: "#/components/schemas/Currency"
-          description: The currency that the purchase order is in.
+          description: The currency that the purchase order uses.
         description:
           type: string
           nullable: true
