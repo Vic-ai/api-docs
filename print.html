@@ -152,6 +152,20 @@
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
+<ul>
+<li>Added <code>lineNumber</code> to <code>#/components/schemas/CreatePurchaseOrderItem</code></li>
+<li>Added <code>lineNumber</code> to <code>#/components/schemas/PurchaseOrderItem</code></li>
+<li>Renamed <code>quantity</code> to <code>quantityRequested</code> in <code>#/components/schemas/CreatePurchaseOrderItem</code></li>
+<li>Renamed <code>quantity</code> to <code>quantityRequested</code> in <code>#/components/schemas/PurchaseOrderItem</code></li>
+<li>Added <code>quantityReceived</code> to <code>#/components/schemas/CreatePurchaseOrderItem</code></li>
+<li>Added <code>quantityReceived</code> to <code>#/components/schemas/PurchaseOrderItem</code></li>
+<li>Added <code>quantityInvoiced</code> to <code>#/components/schemas/InvoiceLineItem</code></li>
+<li>Added <code>quantityInvoiced</code> to <code>#/components/schemas/CreateInvoiceLineItem</code></li>
+<li>Added <code>quantityInvoiced</code> to <code>#/components/schemas/TrainingInvoiceLineItemUpsert</code></li>
+<li>Added <code>lineItemTotal</code> to <code>#/components/schemas/InvoiceLineItem</code></li>
+<li>Added <code>poLineNumber</code> to <code>#/components/schemas/InvoiceLineItem</code></li>
+<li>Added <code>poNumber</code> to <code>#/components/schemas/InvoiceLineItem</code></li>
+</ul>
 <h2 id="v0110"><a class="header" href="#v0110">v0.11.0</a></h2>
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
 <ul>
@@ -543,6 +557,7 @@ been updated, and <code>201</code> when the vendor has been created.</li>
             {
                 &quot;amount&quot;: &quot;800&quot;,
                 &quot;index&quot;: 0,
+                &quot;quantityInvoiced&quot;: &quot;1.0&quot;,
                 &quot;comment&quot;: &quot;Comment index 0&quot;,
                 &quot;description&quot;: &quot;Invoice line 0 Desc&quot;,
                 &quot;billable&quot;: null,
@@ -559,8 +574,9 @@ been updated, and <code>201</code> when the vendor has been created.</li>
                 ]
             },
             {
-                &quot;amount&quot;: &quot;1000&quot;,
+                &quot;amount&quot;: &quot;500&quot;,
                 &quot;index&quot;: 1,
+                &quot;quantityInvoiced&quot;: &quot;2.0&quot;,
                 &quot;comment&quot;: &quot;Comment index 1&quot;,
                 &quot;description&quot;: &quot;Invoice line 1 Desc&quot;,
                 &quot;billable&quot;: null,
@@ -719,7 +735,6 @@ not be matched they will be deleted and replaced with the desired items.</li>
                 &quot;productNumber&quot;: &quot;11111&quot;,
                 &quot;productDescription&quot;: &quot;Some widget&quot;,
                 &quot;unitOfMeasure&quot;: null,
-                &quot;quantity&quot;: &quot;12.3&quot;,
                 &quot;quantityReceived&quot;: &quot;13.0&quot;,
                 &quot;unitAmount&quot;: &quot;3.50&quot;,
                 &quot;lineItemTotal&quot;: &quot;45.50&quot;,
@@ -732,7 +747,6 @@ not be matched they will be deleted and replaced with the desired items.</li>
                 &quot;productNumber&quot;: &quot;22222&quot;,
                 &quot;productDescription&quot;: &quot;A different widget&quot;,
                 &quot;unitOfMeasure&quot;: null,
-                &quot;quantity&quot;: &quot;1.0&quot;,
                 &quot;quantityReceived&quot;: &quot;1.0&quot;,
                 &quot;unitAmount&quot;: &quot;3.50&quot;,
                 &quot;lineItemTotal&quot;: &quot;3.50&quot;,
