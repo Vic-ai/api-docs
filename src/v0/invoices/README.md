@@ -15,6 +15,7 @@ When creating an invoice, there are three steps to follow:
 3. Process the document with a POST to `/invoice/{id}/process`
 
 You can make the id the internal id (from vic.ai) or the external id (from your system).
+
 ### Example
 
 ```bash
@@ -50,6 +51,7 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
             {
                 "amount": "800",
                 "index": 0,
+                "quantityInvoiced": "1.0",
                 "comment": "Comment index 0",
                 "description": "Invoice line 0 Desc",
                 "billable": null,
@@ -66,8 +68,9 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                 ]
             },
             {
-                "amount": "1000",
+                "amount": "500",
                 "index": 1,
+                "quantityInvoiced": "2.0",
                 "comment": "Comment index 1",
                 "description": "Invoice line 1 Desc",
                 "billable": null,

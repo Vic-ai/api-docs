@@ -1968,6 +1968,11 @@ components:
 
             If the VAT is known, that should be specified in the `vat.amount`
             field.
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
+          nullable: true
         comment:
           type: string
           maxLength: 255
@@ -2176,7 +2181,8 @@ components:
       type: object
       required:
         - productNumber
-        - quantity
+        - quantityReceived
+        - quantityRequested
         - unitAmount
         - lineItemTotal
         - lineNumber
@@ -2193,10 +2199,16 @@ components:
           nullable: true
           example: "kg"
           maxLength: 255
-        quantity:
+        quantityReceived:
+          description: The quantity received. It must be a non-negative value.
           type: string
           format: decimal
           example: "12.3"
+        quantityRequested:
+          description: The quantity requested. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "1.0"
         unitAmount:
           $ref: "#/components/schemas/MonetaryValue"
         lineItemTotal:
@@ -2363,18 +2375,31 @@ components:
         unitOfMeasure:
           type: string
           maxLength: 255
-        quantity:
+          description: The unit of measure used.
+        quantityRequested:
+          description: The quantity requested. It must be a non-negative value.
+          type: string
+          format: decimal
+          example: "1.0"
+        quantityReceived:
+          description: The quantity received. It must be a non-negative value.
           type: string
           format: decimal
           example: "1.0"
         unitAmount:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
+          description: The per-unit amount. It must be a non-negative value.
           nullable: true
         lineItemTotal:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
+          description: The line item total. It must be a non-negative value.
           nullable: true
+        lineNumber:
+          description: The line number of the item in the purchase order.
+          type: integer
+          minimum: 1
         dimensions:
           type: array
           items:
@@ -2631,6 +2656,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ExternalId'
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
+        lineItemTotal:
+          description: The line item total
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+        poLineNumber:
+          description: "The line number in a matched purchase order."
+          type: integer
+          nullable: true
+        poNumber:
+          description: "The matched purchase order number."
+          type: string
+          maxLength: 255
+          nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
@@ -2692,6 +2735,11 @@ components:
         lineItemIsVatOnly:
           type: boolean
           default: false
+        quantityInvoiced:
+          description: The quantity of things that were invoiced.
+          type: string
+          format: decimal
+          nullable: true
     VatCode:
       type: object
       required:

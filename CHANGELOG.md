@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Added `lineNumber` to `#/components/schemas/CreatePurchaseOrderItem`
+- Added `lineNumber` to `#/components/schemas/PurchaseOrderItem`
+- Renamed `quantity` to `quantityRequested` in `#/components/schemas/CreatePurchaseOrderItem`
+- Renamed `quantity` to `quantityRequested` in `#/components/schemas/PurchaseOrderItem`
+- Added `quantityReceived` to `#/components/schemas/CreatePurchaseOrderItem`
+- Added `quantityReceived` to `#/components/schemas/PurchaseOrderItem`
+- Added `quantityInvoiced` to `#/components/schemas/InvoiceLineItem`
+- Added `quantityInvoiced` to `#/components/schemas/CreateInvoiceLineItem`
+- Added `quantityInvoiced` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
+- Added `lineItemTotal` to `#/components/schemas/InvoiceLineItem`
+- Added `poLineNumber` to `#/components/schemas/InvoiceLineItem`
+- Added `poNumber` to `#/components/schemas/InvoiceLineItem`
+
+
 ## v0.11.0
 ### V0
 - Added `accountNumber` to `#/components/schemas/CreateInvoice`
