@@ -145,55 +145,67 @@
                 <div id="content" class="content">
                     <main>
                         <h1 id="purchase-orders"><a class="header" href="#purchase-orders">Purchase Orders</a></h1>
-<h2 id="post-v0purchaseorders"><a class="header" href="#post-v0purchaseorders"><a href="../../vic.api.v0.html#/PurchaseOrders/createPurchaseOrder"><code>POST /v0/purchaseOrders</code></a></a></h2>
+<h2 id="create-purchase-order"><a class="header" href="#create-purchase-order">Create Purchase Order</a></h2>
+<pre><code>POST /v0/purchaseOrders
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/createPurchaseOrder">Open API</a></p>
 <p>Creates a purchase order in the Vic.ai system.</p>
+<p>You are responsible for setting the <code>amount</code> on the purchase order which is the
+summation of all the purchase order line items.</p>
+<p>Once the purchase order has been created and all manipulations are finished, you
+must call <a href="#process-purchase-order">Process Purchase Order</a>.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
 <pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
     --data-raw '{
-        &quot;amount&quot;: &quot;1.00&quot;,
-        &quot;createdOn&quot;: &quot;2022-06-01&quot;,
-        &quot;deliverOn&quot;: &quot;2022-07-01&quot;,
-        &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
-        &quot;currencyId&quot;: &quot;USD&quot;,
-        &quot;poNumber&quot;: &quot;abc123&quot;,
-        &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
-        &quot;description&quot;: &quot;A purchase order&quot;,
-        &quot;externalId&quot;: &quot;po-1&quot;,
-        &quot;vendor&quot;: {
-            &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
-        },
-        &quot;lineItems&quot;: [
-            {
-                &quot;productNumber&quot;: &quot;11111&quot;,
-                &quot;productDescription&quot;: &quot;Some widget&quot;,
-                &quot;unitOfMeasure&quot;: null,
-                &quot;quantityReceived&quot;: &quot;13.0&quot;,
-                &quot;unitAmount&quot;: &quot;3.50&quot;,
-                &quot;lineItemTotal&quot;: &quot;45.50&quot;,
-                &quot;lineNumber&quot;: 0,
-                &quot;dimensions&quot;: [
-                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
-                ]
-            },
-            {
-                &quot;productNumber&quot;: &quot;22222&quot;,
-                &quot;productDescription&quot;: &quot;A different widget&quot;,
-                &quot;unitOfMeasure&quot;: null,
-                &quot;quantityReceived&quot;: &quot;1.0&quot;,
-                &quot;unitAmount&quot;: &quot;3.50&quot;,
-                &quot;lineItemTotal&quot;: &quot;3.50&quot;,
-                &quot;lineNumber&quot;: 1,
-                &quot;dimensions&quot;: [
-                    {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
-                ]
-            }
-        ]
+      &quot;amount&quot;: &quot;1.00&quot;,
+      &quot;createdOn&quot;: &quot;2022-06-01&quot;,
+      &quot;deliverOn&quot;: &quot;2022-07-01&quot;,
+      &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;poNumber&quot;: &quot;abc123&quot;,
+      &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
+      &quot;description&quot;: &quot;A purchase order&quot;,
+      &quot;externalId&quot;: &quot;po-1&quot;,
+      &quot;vendor&quot;: {
+          &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
+      },
+      &quot;lineItems&quot;: [
+          {
+              &quot;productNumber&quot;: &quot;11111&quot;,
+              &quot;productDescription&quot;: &quot;Some widget&quot;,
+              &quot;unitOfMeasure&quot;: null,
+              &quot;quantityReceived&quot;: &quot;13.0&quot;,
+              &quot;quantityRequested&quot;: &quot;13.0&quot;,
+              &quot;unitAmount&quot;: &quot;3.50&quot;,
+              &quot;lineItemTotal&quot;: &quot;45.50&quot;,
+              &quot;lineNumber&quot;: 0,
+              &quot;dimensions&quot;: [
+                  {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+              ]
+          },
+          {
+              &quot;productNumber&quot;: &quot;22222&quot;,
+              &quot;productDescription&quot;: &quot;A different widget&quot;,
+              &quot;unitOfMeasure&quot;: null,
+              &quot;quantityReceived&quot;: &quot;1.0&quot;,
+              &quot;quantityRequested&quot;: &quot;1.0&quot;,
+              &quot;unitAmount&quot;: &quot;3.50&quot;,
+              &quot;lineItemTotal&quot;: &quot;3.50&quot;,
+              &quot;lineNumber&quot;: 1,
+              &quot;dimensions&quot;: [
+                  {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+              ]
+          }
+      ]
     }'
 </code></pre>
-<h2 id="get-v0purchaseorderspurchaseorderid"><a class="header" href="#get-v0purchaseorderspurchaseorderid"><a href="../../vic.api.v0.html#/PurchaseOrders/getPurchaseOrder"><code>GET /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<h2 id="get-purchase-order"><a class="header" href="#get-purchase-order">Get Purchase Order</a></h2>
+<pre><code>GET /v0/purchaseOrders/{purchaseOrderId}
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/getPurchaseOrder">Open API</a></p>
 <p>Fetch a purchase order in the Vic.ai system.</p>
 <p>Only the <code>internalId</code> of the purchase order is supported.</p>
 <h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
@@ -201,7 +213,10 @@
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
-<h2 id="delete-v0purchaseorderspurchaseorderid"><a class="header" href="#delete-v0purchaseorderspurchaseorderid"><a href="../../vic.api.v0.html#/PurchaseOrders/deletePurchaseOrder"><code>DELETE /v0/purchaseOrders/{purchaseOrderId}</code></a></a></h2>
+<h2 id="delete-purchase-order"><a class="header" href="#delete-purchase-order">Delete Purchase Order</a></h2>
+<pre><code>DELETE /v0/purchaseOrders/{purchaseOrderId}
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/deletePurchaseOrder">Open API</a></p>
 <p>Deletes a purchase order from the Vic.ai system.</p>
 <p>Only the <code>internalId</code> of the purchase order is supported.</p>
 <h3 id="example-2"><a class="header" href="#example-2">Example</a></h3>
@@ -209,11 +224,132 @@
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
-<h2 id="post-v0purchaseorderspurchaseorderidprocess"><a class="header" href="#post-v0purchaseorderspurchaseorderidprocess"><a href="../../vic.api.v0.html#/PurchaseOrders/processPurchaseOrder"><code>POST /v0/purchaseOrders/{purchaseOrderId}/process</code></a></a></h2>
-<p>Start the matching process for the purchase order.</p>
-<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h2 id="update-purchase-order"><a class="header" href="#update-purchase-order">Update Purchase Order</a></h2>
+<pre><code>PUT /v0/purchaseOrders/{purchaseOrderId}
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/updatePurchaseOrder">Open API</a></p>
+<p>Updates a purchase order.</p>
+<p>To alter a purchase order's set of line items you will need to call one of the
+following operations.</p>
+<ul>
+<li><a href="#create-purchase-order-item">Create Purchase Order Item</a></li>
+<li><a href="#update-purchase-order-item">Update Purchase Order Item</a></li>
+<li><a href="#delete-purchase-order-item">Delete Purchase Order Item</a></li>
+</ul>
+<p>Once you are finished manipulating the purchase order you will need to call
+<a href="#process-purchase-order">Process Purchase Order</a> to kick off the matching
+process based on the updated information.</p>
 <h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
+<pre><code class="language-bash">curl --location --request PUT 'https://api.us.dev.vic.ai/v0/purchaseOrders/56dae9cc-8726-4082-9622-1111d1a61da5' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+      &quot;amount&quot;: &quot;100.00&quot;,
+      &quot;createdOn&quot;: &quot;2022-06-01&quot;,
+      &quot;deliverOn&quot;: &quot;2022-07-01&quot;,
+      &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;poNumber&quot;: &quot;abc123&quot;,
+      &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
+      &quot;description&quot;: &quot;A purchase order&quot;,
+      &quot;externalId&quot;: &quot;po-1&quot;,
+      &quot;vendor&quot;: {
+          &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
+      }
+    }'
+</code></pre>
+<h2 id="process-purchase-order"><a class="header" href="#process-purchase-order">Process Purchase Order</a></h2>
+<pre><code>POST /v0/purchaseOrders/{purchaseOrderId}/process
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/processPurchaseOrder">Open API</a></p>
+<p>Starts the matching process for the purchase order.</p>
+<p>Only the <code>internalId</code> of the purchase order is supported.</p>
+<h3 id="example-4"><a class="header" href="#example-4">Example</a></h3>
 <pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders/ffb64be6-5e80-47d1-90bd-316663c52c8/process' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<h2 id="create-purchase-order-line-item"><a class="header" href="#create-purchase-order-line-item">Create Purchase Order Line Item</a></h2>
+<pre><code>POST /v0/purchaseOrderLineItems
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/createPurchaseOrderLineItem">Open API</a></p>
+<p>Create a purchase order's line item.</p>
+<p>Caution should be taken when creating a new line item in a purchase order. Each
+purchase order line item must have a line number and it must be unique among the
+other line items. It should be a non negative value.</p>
+<p>After creating the new purchase order line item, you <strong>must</strong> update the the
+purchase order's <code>amount</code> field. This should be done once you are finished
+manipulating all of the line items.</p>
+<p>Once you are finished manipulating the purchase order you will need to call
+<a href="#process-purchase-order">Process Purchase Order</a> to kick off the matching
+process based on the updated information.</p>
+<h3 id="example-5"><a class="header" href="#example-5">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrdersLineItems' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+      &quot;purchaseOrderId&quot;: &quot;0dfeb8db-7eae-4207-9557-b365062d5877&quot;,
+      &quot;productNumber&quot;: &quot;11111&quot;,
+      &quot;productDescription&quot;: &quot;Some widget&quot;,
+      &quot;unitOfMeasure&quot;: null,
+      &quot;quantityReceived&quot;: &quot;13.0&quot;,
+      &quot;unitAmount&quot;: &quot;3.50&quot;,
+      &quot;lineItemTotal&quot;: &quot;45.50&quot;,
+      &quot;lineNumber&quot;: 0,
+      &quot;dimensions&quot;: [
+          {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+      ]
+    }'
+</code></pre>
+<h2 id="update-purchase-order-line-item"><a class="header" href="#update-purchase-order-line-item">Update Purchase Order Line Item</a></h2>
+<pre><code>PUT /v0/purchaseOrderLineItems/{purchaseOrderLineItemId}
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/updatePurchaseOrderLineItem">Open API</a></p>
+<p>Updates a purchase order's line item.</p>
+<p>If there are existing matches made to an invoice that has been posted, you will
+not be able to update the purchase order line item.</p>
+<p>If you update <code>lineItemTotal</code> you <strong>must</strong> update the purchase order's <code>amount</code>
+field which is the summation of all the line items. This should be done once you
+are finished manipulating all of the line items.</p>
+<p>Once you are finished manipulating the purchase order you will need to call
+<a href="#process-purchase-order">Process Purchase Order</a> to kick off the matching
+process based on the updated information.</p>
+<h3 id="example-6"><a class="header" href="#example-6">Example</a></h3>
+<pre><code class="language-bash">curl --location --request PUT 'https://api.us.dev.vic.ai/v0/purchaseOrdersLineItems/9b4810da-5959-47b6-91db-4b7d76a67232' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+      &quot;productNumber&quot;: &quot;11111-r12&quot;,
+      &quot;productDescription&quot;: &quot;Change widget description&quot;,
+      &quot;unitOfMeasure&quot;: null,
+      &quot;quantityReceived&quot;: &quot;20.0&quot;,
+      &quot;quantityRequested&quot;: &quot;13.0&quot;,
+      &quot;unitAmount&quot;: &quot;3.50&quot;,
+      &quot;lineItemTotal&quot;: &quot;70.00&quot;,
+      &quot;lineNumber&quot;: 0,
+      &quot;dimensions&quot;: [
+          {&quot;externalId&quot;: &quot;dimenstion-external-id&quot;}
+      ]
+    }'
+</code></pre>
+<h2 id="delete-purchase-order-line-item"><a class="header" href="#delete-purchase-order-line-item">Delete Purchase Order Line Item</a></h2>
+<pre><code>DELETE /v0/purchaseOrderLineItems/{purchaseOrderLineItemId}
+</code></pre>
+<p><a href="../../vic.api.v0.html#/PurchaseOrders/deletePurchaseOrderLineItem">Open API</a></p>
+<p>Delete a purchase order's line item.</p>
+<p>If there are existing matches made to an invoice that has been posted, you will
+not be able to delete the purchase order line item.</p>
+<p>After deleting the purchase order line item, you <strong>must</strong> update the the
+purchase order's <code>amount</code> field. This should be done once you are finished
+manipulating all of the line items.</p>
+<p>Once you are finished manipulating the purchase order you will need to call
+<a href="#process-purchase-order">Process Purchase Order</a> to kick off the matching
+process based on the updated information.</p>
+<h3 id="example-7"><a class="header" href="#example-7">Example</a></h3>
+<pre><code class="language-bash">curl --location --request DELETE 'https://api.us.dev.vic.ai/v0/purchaseOrdersLineItems/9b4810da-5959-47b6-91db-4b7d76a67232' \
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
