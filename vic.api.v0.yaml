@@ -2242,6 +2242,7 @@ components:
       required:
         - poNumber
         - amount
+        - vendor
       properties:
         externalId:
           type: string
@@ -2286,7 +2287,6 @@ components:
         vendor:
           allOf:
             - $ref: "#/components/schemas/VendorRef"
-          nullable: true
           description: The vendor of the purchase order.
         lineItems:
           type: array
@@ -2297,6 +2297,7 @@ components:
       required:
         - poNumber
         - amount
+        - vendor
       properties:
         externalId:
           type: string
@@ -2341,7 +2342,6 @@ components:
         vendor:
           allOf:
             - $ref: "#/components/schemas/VendorRef"
-          nullable: true
           description: The vendor of the purchase order.
     CreatePurchaseOrderItem:
       type: object
