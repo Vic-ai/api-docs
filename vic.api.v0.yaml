@@ -2531,6 +2531,11 @@ components:
           example: Millum
         internalId:
           type: string
+        externalId:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: The id of the invoice within the ERP system.
         paymentTerm:
           oneOf:
           - $ref: "#/components/schemas/InvoicePaymentTerm"

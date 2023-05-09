@@ -22,6 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `#/components/schemas/PurchaseOrderItem` to `#/components/schemas/PurchaseOrderLineItem`
 - Changed `vendor` is now required for `#/components/schemas/CreatePurchaseOrder`
 - Changed `vendor` is now required for `#/components/schemas/UpdatePurchaseOrder`
+- Fixed missing `externalId` by adding it to `#/components/schemas/Invoice`
+
 
 ## v0.11.0
 ### V0
