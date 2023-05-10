@@ -2366,12 +2366,12 @@ components:
           example: "kg"
           maxLength: 255
         quantityReceived:
-          description: The quantity received. It must be a non-negative value.
+          description: The quantity received.
           type: string
           format: decimal
           example: "12.3"
         quantityRequested:
-          description: The quantity requested. It must be a non-negative value.
+          description: The quantity requested.
           type: string
           format: decimal
           example: "1.0"
@@ -2413,12 +2413,12 @@ components:
           example: "kg"
           maxLength: 255
         quantityReceived:
-          description: The quantity received. It must be a non-negative value.
+          description: The quantity received.
           type: string
           format: decimal
           example: "12.3"
         quantityRequested:
-          description: The quantity requested. It must be a non-negative value.
+          description: The quantity requested.
           type: string
           format: decimal
           example: "1.0"
@@ -2456,12 +2456,12 @@ components:
           example: "kg"
           maxLength: 255
         quantityReceived:
-          description: The quantity received. It must be a non-negative value.
+          description: The quantity received.
           type: string
           format: decimal
           example: "12.3"
         quantityRequested:
-          description: The quantity requested. It must be a non-negative value.
+          description: The quantity requested.
           type: string
           format: decimal
           example: "1.0"
@@ -2638,24 +2638,24 @@ components:
           maxLength: 255
           description: The unit of measure used.
         quantityRequested:
-          description: The quantity requested. It must be a non-negative value.
+          description: The quantity requested.
           type: string
           format: decimal
           example: "1.0"
         quantityReceived:
-          description: The quantity received. It must be a non-negative value.
+          description: The quantity received.
           type: string
           format: decimal
           example: "1.0"
         unitAmount:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
-          description: The per-unit amount. It must be a non-negative value.
+          description: The per-unit amount.
           nullable: true
         lineItemTotal:
           allOf:
             - $ref: "#/components/schemas/MonetaryValue"
-          description: The line item total. It must be a non-negative value.
+          description: The line item total.
           nullable: true
         lineNumber:
           description: The line number of the item in the purchase order.
