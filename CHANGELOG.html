@@ -148,8 +148,13 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
-<h2 id="v0120"><a class="header" href="#v0120">v0.12.0</a></h2>
+<h2 id="v0121"><a class="header" href="#v0121">v0.12.1</a></h2>
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
+<ul>
+<li>Allow negative values for <code>quantityRequested</code>, <code>quantityReceived</code>, <code>quantityInvoiced</code>, <code>unitAmount</code>, and <code>lineItemTotal</code>.</li>
+</ul>
+<h2 id="v0120"><a class="header" href="#v0120">v0.12.0</a></h2>
+<h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
 <ul>
 <li>Added <code>lineNumber</code> to <code>#/components/schemas/CreatePurchaseOrderItem</code></li>
 <li>Added <code>lineNumber</code> to <code>#/components/schemas/PurchaseOrderItem</code></li>
@@ -169,7 +174,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Fixed missing <code>externalId</code> by adding it to <code>#/components/schemas/Invoice</code></li>
 </ul>
 <h2 id="v0110"><a class="header" href="#v0110">v0.11.0</a></h2>
-<h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
+<h3 id="v0-2"><a class="header" href="#v0-2">V0</a></h3>
 <ul>
 <li>Added <code>accountNumber</code> to <code>#/components/schemas/CreateInvoice</code></li>
 <li>Added <code>servicePeriodStart</code> to <code>#/components/schemas/CreateInvoice</code></li>
@@ -179,13 +184,13 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>servicePeriodEnd</code> to <code>#/components/schemas/TrainingInvoiceUpsert</code></li>
 </ul>
 <h2 id="v0100"><a class="header" href="#v0100">v0.10.0</a></h2>
-<h3 id="v0-2"><a class="header" href="#v0-2">V0</a></h3>
+<h3 id="v0-3"><a class="header" href="#v0-3">V0</a></h3>
 <ul>
 <li>Added <code>createDimension</code> operation.</li>
 <li><code>invoiceTransfer</code> callback will now receive the same payload as the <code>invoicePost</code> callback.</li>
 </ul>
 <h2 id="v090"><a class="header" href="#v090">v0.9.0</a></h2>
-<h3 id="v0-3"><a class="header" href="#v0-3">V0</a></h3>
+<h3 id="v0-4"><a class="header" href="#v0-4">V0</a></h3>
 <ul>
 <li>Added <code>typeExternalId</code> to <code>#/components/schemas/DimensionRef</code>.</li>
 <li>Expanded documentation for <code>#/components/schemas/DimensionRef</code>.</li>
@@ -196,7 +201,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Dropped all support for V1. We have not offered it in production since it was documented. In the future we will bring it back.</li>
 </ul>
 <h2 id="v080"><a class="header" href="#v080">v0.8.0</a></h2>
-<h3 id="v0-4"><a class="header" href="#v0-4">V0</a></h3>
+<h3 id="v0-5"><a class="header" href="#v0-5">V0</a></h3>
 <ul>
 <li>Deprecate singular resource path names in favor of pluralized paths. Old paths will be supported for at least 6 months. We recommend changing to the newer paths as soon as possible.</li>
 <li>Changed <code>/v0/account/{id}</code> to <code>/v0/accounts/{id}</code></li>
@@ -221,7 +226,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Changed <code>name</code> to be required for <code>#/components/schemas/DimensionUpsert</code>.</li>
 </ul>
 <h2 id="v070"><a class="header" href="#v070">v0.7.0</a></h2>
-<h3 id="v0-5"><a class="header" href="#v0-5">V0</a></h3>
+<h3 id="v0-6"><a class="header" href="#v0-6">V0</a></h3>
 <ul>
 <li>Remove unused <code>#/components/schemas/QueryCommon</code>.</li>
 <li>Remove unused <code>#/components/schemas/UpsertCommon</code>.</li>
@@ -233,7 +238,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Add <code>DELETE /v0/purchaseOrders/{purchaseOrderId}</code> to delete purchase orders.</li>
 </ul>
 <h2 id="v061"><a class="header" href="#v061">v0.6.1</a></h2>
-<h3 id="v0-6"><a class="header" href="#v0-6">V0</a></h3>
+<h3 id="v0-7"><a class="header" href="#v0-7">V0</a></h3>
 <ul>
 <li>Add <code>#/components/schemas/PaymentInfoMethod</code> enum.</li>
 <li>Add <code>#/components/schemas/InternationalBankAccount</code> object.</li>
@@ -247,7 +252,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Remove required fields from <code>#/components/schemas/Dimension</code>.</li>
 </ul>
 <h2 id="v060"><a class="header" href="#v060">v0.6.0</a></h2>
-<h3 id="v0-7"><a class="header" href="#v0-7">V0</a></h3>
+<h3 id="v0-8"><a class="header" href="#v0-8">V0</a></h3>
 <ul>
 <li>Lift all error responses to the <code>#/components/responses</code> section.</li>
 <li>Replace <code>obtainToken</code> response with <code>#/components/responses/TokenCreatedResponse</code></li>
@@ -290,12 +295,12 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Replace <code>getCostAccounts</code> response with <code>#/components/responses/CostAccountsResponse</code></li>
 </ul>
 <h2 id="v050"><a class="header" href="#v050">v0.5.0</a></h2>
-<h3 id="v0-8"><a class="header" href="#v0-8">V0</a></h3>
+<h3 id="v0-9"><a class="header" href="#v0-9">V0</a></h3>
 <ul>
 <li>Replace <code>dimensions</code> ref to <code>#/components/schemas/Dimension</code>.</li>
 </ul>
 <h2 id="v040"><a class="header" href="#v040">v0.4.0</a></h2>
-<h3 id="v0-9"><a class="header" href="#v0-9">V0</a></h3>
+<h3 id="v0-10"><a class="header" href="#v0-10">V0</a></h3>
 <ul>
 <li>Removed <code>requiredDimensionsExternal</code> from <code>#/components/schemas/Account</code>. This field was never supported.</li>
 <li>Removed <code>parentAccountExternalId</code> from <code>#/components/schemas/Account</code>. This field was never supported.</li>
@@ -308,17 +313,17 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Removed <code>parentDimensionExternalId</code> from <code>#/components/schemas/DimensionUpsert</code>. This field was never supported.</li>
 </ul>
 <h2 id="v0319"><a class="header" href="#v0319">v0.3.19</a></h2>
-<h3 id="v0-10"><a class="header" href="#v0-10">V0</a></h3>
+<h3 id="v0-11"><a class="header" href="#v0-11">V0</a></h3>
 <ul>
 <li>Changed <code>Account</code> <code>number</code> to only permit the pattern <code>^\d+$</code>.</li>
 </ul>
 <h2 id="v0318"><a class="header" href="#v0318">v0.3.18</a></h2>
-<h3 id="v0-11"><a class="header" href="#v0-11">V0</a></h3>
+<h3 id="v0-12"><a class="header" href="#v0-12">V0</a></h3>
 <ul>
 <li>Added <code>name</code> to <code>#/components/schemas/DimensionRef</code></li>
 </ul>
 <h2 id="v0317"><a class="header" href="#v0317">v0.3.17</a></h2>
-<h3 id="v0-12"><a class="header" href="#v0-12">V0</a></h3>
+<h3 id="v0-13"><a class="header" href="#v0-13">V0</a></h3>
 <ul>
 <li>Added <code>POST /v0/invoice/{id}/reject</code>.</li>
 <li>Added <code>GET /v0/subscription</code> to fetch the currently configued V0 subscription.</li>
@@ -331,7 +336,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>GET /v1/purchase_orders/:id</code> to get a specific purchase order.</li>
 </ul>
 <h2 id="v0315"><a class="header" href="#v0315">v0.3.15</a></h2>
-<h3 id="v0-13"><a class="header" href="#v0-13">V0</a></h3>
+<h3 id="v0-14"><a class="header" href="#v0-14">V0</a></h3>
 <ul>
 <li>Added <code>description</code> to <code>#/components/schemas/Vendor</code>.</li>
 <li>Added <code>VendorTaxInfo</code> to <code>#/components/schemas/VendorTaxInfo</code>.</li>
