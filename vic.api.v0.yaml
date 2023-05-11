@@ -2275,10 +2275,18 @@ components:
           maxLength: 255
           description: The description of the purchase order.
         requestor:
-          type: string
+          type: object
           nullable: true
-          maxLength: 255
           description: The person or entity who requested the purchase order.
+          properties:
+            email:
+              type: string
+              nullable: true
+              maxLength: 255
+            name:
+              type: string
+              nullable: true
+              maxLength: 255
         createdOn:
           type: string
           format: date
