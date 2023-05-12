@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## v0.12.2
 ### V0
 - Allow passing `bolNumber` (bill of lading number) to `#/components/schemas/CreateInvoice`, `#/components/schemas/TrainingInvoice` and `#/components/schemas/TrainingInvoiceUpsert`
-
+- Allow passing `requestor` (`#/components/schemas/PurchaseOrderRequestor`) to `#/components/schemas/CreatePurchaseOrder` and `#/components/schemas/UpdatePurchaseOrder`
 
 ## v0.12.1
 ### V0

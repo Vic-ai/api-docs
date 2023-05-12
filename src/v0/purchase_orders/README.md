@@ -16,6 +16,9 @@ summation of all the purchase order line items.
 Once the purchase order has been created and all manipulations are finished, you
 must call [Process Purchase Order](#process-purchase-order).
 
+Optionally, to set a requestor, you can pass a `requestor` object with `email` or `name`.
+
+
 ### Example
 
 ```bash
@@ -30,9 +33,12 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
       "issuedOn": "2022-06-01",
       "currencyId": "USD",
       "poNumber": "abc123",
-      "requestor": "Bob From Marketing",
       "description": "A purchase order",
       "externalId": "po-1",
+      "requestor": {
+        "email": "bob@vic.ai",
+        "name": "Bob From Marketing"
+      },
       "vendor": {
           "externalId": "the-vendor-external-id"
       },
