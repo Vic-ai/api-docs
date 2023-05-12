@@ -2791,6 +2791,7 @@ components:
         bolNumber:
           description: The bill of lading number.
           type: string
+          maxLength: 255
           nullable: true
         poNumber:
           type: string
