@@ -155,6 +155,7 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h3 id="v0"><a class="header" href="#v0">V0</a></h3>
 <ul>
 <li>Allow passing <code>bolNumber</code> (bill of lading number) to <code>#/components/schemas/CreateInvoice</code>, <code>#/components/schemas/TrainingInvoice</code> and <code>#/components/schemas/TrainingInvoiceUpsert</code></li>
+<li>Allow passing <code>requestor</code> (<code>#/components/schemas/PurchaseOrderRequestor</code>) to <code>#/components/schemas/CreatePurchaseOrder</code> and <code>#/components/schemas/UpdatePurchaseOrder</code></li>
 </ul>
 <h2 id="v0121"><a class="header" href="#v0121">v0.12.1</a></h2>
 <h3 id="v0-1"><a class="header" href="#v0-1">V0</a></h3>
@@ -734,6 +735,7 @@ not be matched they will be deleted and replaced with the desired items.</li>
 summation of all the purchase order line items.</p>
 <p>Once the purchase order has been created and all manipulations are finished, you
 must call <a href="v0/purchase_orders/index.html#process-purchase-order">Process Purchase Order</a>.</p>
+<p>Optionally, to set a requestor, you can pass a <code>requestor</code> object with <code>email</code> or <code>name</code>.</p>
 <h3 id="example-3"><a class="header" href="#example-3">Example</a></h3>
 <pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/purchaseOrders' \
     --header 'Content-Type: application/json' \
@@ -746,9 +748,12 @@ must call <a href="v0/purchase_orders/index.html#process-purchase-order">Process
       &quot;issuedOn&quot;: &quot;2022-06-01&quot;,
       &quot;currencyId&quot;: &quot;USD&quot;,
       &quot;poNumber&quot;: &quot;abc123&quot;,
-      &quot;requestor&quot;: &quot;Bob From Marketing&quot;,
       &quot;description&quot;: &quot;A purchase order&quot;,
       &quot;externalId&quot;: &quot;po-1&quot;,
+      &quot;requestor&quot;: {
+        &quot;email&quot;: &quot;bob@vic.ai&quot;,
+        &quot;name&quot;: &quot;Bob From Marketing&quot;
+      },
       &quot;vendor&quot;: {
           &quot;externalId&quot;: &quot;the-vendor-external-id&quot;
       },
