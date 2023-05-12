@@ -2169,6 +2169,10 @@ components:
           description: Number that appears on the invoice.
           type: string
           maxLength: 255
+        bolNumber:
+          description: The bill of lading number.
+          type: string
+          nullable: true
         poNumber:
           type: string
           nullable: true
@@ -2728,6 +2732,10 @@ components:
           description: number that appears on the invoice
           type: string
           maxLength: 255
+        bolNumber:
+          description: The bill of lading number.
+          type: string
+          nullable: true
         poNumber:
           type: string
           nullable: true
@@ -2779,6 +2787,10 @@ components:
           description: number that appears on the invoice
           type: string
           maxLength: 255
+          nullable: true
+        bolNumber:
+          description: The bill of lading number.
+          type: string
           nullable: true
         poNumber:
           type: string
