@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.13.0
+
+For managing tags:
+
+- Added `GET /v0/tags` to get all tags.
+- Added `POST /v0/tag` to create new tags.
+- Added `PUT /v0/tag/{id}` to update tags.
+- Added `DELETE /v0/tag/{id}` to delete tags.
+
+For managing vendor tags:
+
+- Added `GET /v0/vendorTags` to get all vendor tags.
+- Added `POST /v0/vendorTag` to create new vendor tags.
+- Added `DELETE /v0/vendorTag/{id}` to delete vendor tags.
+
 ## v0.12.2
 ### V0
 - Allow passing `bolNumber` (bill of lading number) to `#/components/schemas/CreateInvoice`, `#/components/schemas/TrainingInvoice` and `#/components/schemas/TrainingInvoiceUpsert`

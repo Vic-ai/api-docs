@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.12.0
+  version: 0.13.0
   contact: {}
   title: Vic.Api
   description: |
@@ -70,6 +70,10 @@ tags:
     description: |
       These requests represents a user’s action in the Vic.ai system and
       repsonses to those actions.
+  - name: Tags
+    description: |
+      Tags are part of your *ERP* **Masterdata**, and represent business
+      categories that are associated with certain entities, like Vendor.
   - name: TrainingInvoices
     description: |
       Invoices that are being used to train Vic.ai's machine learning system.
@@ -1307,7 +1311,7 @@ paths:
   /purchaseOrders/{purchaseOrderId}:
     get:
       description: Get a purchase order.
-      summary: Get a purcahse order
+      summary: Get a purchase order
       operationId: getPurchaseOrder
       tags:
         - PurchaseOrders
@@ -1494,6 +1498,118 @@ paths:
           $ref: "#/components/responses/ResourceNotFoundResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /tags:
+    get:
+      description: |
+        Get a list of tags.
+
+        Tags are used to categorize entities.
+      summary: Get a list of tags
+      operationId: listTags
+      tags:
+        - Tags
+      responses:
+        "200":
+          $ref: "#/components/responses/TagListResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      description: |
+        Create a new tag.
+      summary: Create a new tag
+      operationId: createTag
+      tags:
+        - Tags
+      requestBody:
+        $ref: "#/components/requestBodies/CreateTagRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/TagResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    put:
+      description: |
+        Update a tag.
+      summary: Update a tag
+      operationId: updateTag
+      tags:
+        - Tags
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateTagRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/TagResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: |
+        Delete a tag.
+      summary: Delete a tag
+      operationId: deleteTag
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/TagId'
+      responses:
+        "201":
+          $ref: "#/components/responses/TagDeletedResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /vendorTags:
+    get:
+      description: |
+        Get a list of vendor tags.
+
+        Vendor tags are used to categorize vendors using tags.
+      summary: Get a list of vendor tags
+      operationId: listVendorTags
+      tags:
+        - Tags
+      responses:
+        "200":
+          $ref: "#/components/responses/VendorTagListResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      description: |
+        Create a new vendor tag.
+      summary: Create a new vendor tag
+      operationId: createVendorTag
+      tags:
+        - Tags
+      requestBody:
+        $ref: "#/components/requestBodies/CreateVendorTagRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/VendorTagResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: |
+        Delete a vendor tag.
+      summary: Delete a vendor tag
+      operationId: deleteVendorTag
+      tags:
+        - Tags
+      parameters:
+        - $ref: '#/components/parameters/VendorTagId'
+      responses:
+        "201":
+          $ref: "#/components/responses/VendorTagDeletedResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -1628,6 +1744,20 @@ components:
         The header will appear as follows `Bearer YOURTOKEN`.
       example: Bearer abc123mysecrettoken456def
       required: false
+      schema:
+        type: string
+    TagId:
+      name: id
+      in: path
+      required: true
+      description: The id of the tag
+      schema:
+        type: string
+    VendorTagId:
+      name: id
+      in: path
+      required: true
+      description: The id of the vendor tag
       schema:
         type: string
 
@@ -3661,7 +3791,62 @@ components:
     UnsubscribeResult:
       enum:
         - OK
-
+    Tags:
+      type: array
+      items:
+        $ref: '#/components/schemas/Tag'
+    Tag:
+      type: object
+      required:
+        - value
+      properties:
+        id:
+          type: string
+        value:
+          type: string
+          maxLength: 255
+    VendorTags:
+      type: array
+      items:
+        $ref: '#/components/schemas/VendorTag'
+    VendorTag:
+      type: object
+      required:
+        - vendorId
+        - tagId
+      properties:
+        id: 
+          type: string
+        vendorId: 
+          type: string
+        tagId:
+          type: string
+    CreateTag:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          maxLength: 255
+    UpdateTag:
+      type: object
+      required:
+        - value
+      properties:
+        value:
+          type: string
+          maxLength: 255
+    CreateVendorTag:
+      type: object
+      required:
+        - vendorId
+        - tagId
+      properties:
+        vendorId:
+          type: string
+        tagId:
+          type: string
   requestBodies:
     CreatePurchaseOrderRequest:
       description: Create a purchase order.
@@ -3694,6 +3879,28 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateDimension'
+    CreateTagRequest:
+      description: Create a tag.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateTag'
+    UpdateTagRequest:
+      description: Update a tag.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateTag'
+    CreateVendorTagRequest:
+      description: Create a vendor tag.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreateVendorTag'
+    
 
   responses:
     ForbiddenResponse:
@@ -3982,3 +4189,39 @@ components:
       description: Purchase order was successfully deleted.
     PurchaseOrderLineItemDeletedResponse:
       description: Purchase order line item was successfully deleted.
+    TagListResponse:
+      description: A list of tags.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Tags"
+    TagResponse:
+      description: A single tag.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Tag"
+    TagDeletedResponse:
+      description: Tag was successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Tag"
+    VendorTagListResponse:
+      description: A list of vendor tags.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VendorTags"
+    VendorTagResponse:
+      description: A single vendor tag.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VendorTag"
+    VendorTagDeletedResponse:
+      description: Vendor tag was successfully deleted.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VendorTag"
