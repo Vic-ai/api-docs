@@ -2378,6 +2378,7 @@ components:
         - poNumber
         - amount
         - vendor
+        - lineItems
       properties:
         externalId:
           type: string
