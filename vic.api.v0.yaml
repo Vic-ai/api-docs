@@ -3869,6 +3869,7 @@ components:
           description: The invoice item's internal id.
         purchaseOrderItemId:
           type: string
+          description: The purchase order item's internal id.
         quantityMatched:
           type: string
   requestBodies:
