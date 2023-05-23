@@ -3866,6 +3866,7 @@ components:
       properties:
         invoiceItemId:
           type: string
+          description: The invoice item's internal id.
         purchaseOrderItemId:
           type: string
         quantityMatched:
