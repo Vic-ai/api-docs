@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.13.0
+  version: 0.14.0
   contact: {}
   title: Vic.Api
   description: |
@@ -2798,6 +2798,11 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/DimensionRef"
+        invoiceItemsMatched:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/MatchItem'
     PurchaseOrder:
       type: object
       required:
@@ -3091,6 +3096,11 @@ components:
           type: string
           maxLength: 255
           nullable: true
+        poItemsMatched:
+          type: array
+          uniqueItems: true
+          items:
+            $ref: '#/components/schemas/MatchItem'
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
@@ -3846,6 +3856,19 @@ components:
         vendorId:
           type: string
         tagId:
+          type: string
+    MatchItem:
+      type: object
+      required:
+        - invoiceItemId
+        - purchaseOrderItemId
+        - quantityMatched
+      properties:
+        invoiceItemId:
+          type: string
+        purchaseOrderItemId:
+          type: string
+        quantityMatched:
           type: string
   requestBodies:
     CreatePurchaseOrderRequest:

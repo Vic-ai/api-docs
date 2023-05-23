@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.14.0
+
+- Added new schema `#/components/schemas/MatchItem`.
+- Added `poItemsMatched` to `#/components/schemas/` which is an array of `MatchItem`s.
+- Added `invoiceItemsMatched` to `#/components/schemas/PurchaseOrderLineItem` which is an array of `MatchItem`s.
+
 ## v0.13.0
 
 For managing tags:
