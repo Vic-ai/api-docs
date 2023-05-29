@@ -3557,7 +3557,6 @@ components:
           type: string
           nullable: true
           maxLength: 255
-
     VendorRemoteError:
       description: |
         The remote error on a Vendor.
