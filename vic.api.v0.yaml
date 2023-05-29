@@ -3429,6 +3429,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
+        managers:
+          type: array
+          items:  
+            $ref: "#/components/schemas/VendorManager"
         errors:
           description: The errors that occurred in the external ERP system.
           items:
@@ -3541,6 +3545,23 @@ components:
           maximum: 599
         message:
           $ref: '#/components/schemas/ErrorString'
+    VendorManager:
+      type: object
+      description: |
+        Vic.ai user who manages a vendor.
+
+        When `email` is provided, it takes priority over `name`. If no user
+        exists with the `email` provided, then `name` will be used as a 
+        fallback. If neither are found, the api will return an error.
+      properties:
+        email:
+          type: string
+          nullable: true
+          maxLength: 255
+        name:
+          type: string
+          nullable: true
+          maxLength: 255
     VendorRemoteError:
       description: |
         The remote error on a Vendor.
