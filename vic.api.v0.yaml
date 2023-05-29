@@ -3547,7 +3547,12 @@ components:
           $ref: '#/components/schemas/ErrorString'
     VendorManager:
       type: object
-      description: Vic.ai user who manages a vendor.
+      description: |
+        Vic.ai user who manages a vendor.
+
+        When `email` is provided, it takes priority over `name`. If no user
+        exists with the `email` provided, then `name` will be used as a 
+        fallback. If neither are found, the api will return an error.
       properties:
         email:
           type: string
