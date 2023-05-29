@@ -3429,6 +3429,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
+        managers:
+          type: array
+          items:  
+            $ref: "#/components/schemas/VendorManager"
         errors:
           description: The errors that occurred in the external ERP system.
           items:
@@ -3541,6 +3545,19 @@ components:
           maximum: 599
         message:
           $ref: '#/components/schemas/ErrorString'
+    VendorManager:
+      type: object
+      description: Vic.ai user who manages a vendor.
+      properties:
+        email:
+          type: string
+          nullable: true
+          maxLength: 255
+        name:
+          type: string
+          nullable: true
+          maxLength: 255
+
     VendorRemoteError:
       description: |
         The remote error on a Vendor.

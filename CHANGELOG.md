@@ -9,7 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Removed pattern constraint from `#/components/schemas/Account`
 - Removed pattern constraint from `#/components/schemas/AccountUpsert`
-- Removed pattern constraint from `#/components/schemas/CostAccountInfo`
+- Removed pattern constraint from `#/components/schemas/CostAccountInfo`'
+- Added `#/components/schemas/VendorManager`
+- Allow passing `managers` (`#/components/schemas/VendorManager`) to `#/components/schemas/VendorUpsert`
 
 ## v0.14.0
 
