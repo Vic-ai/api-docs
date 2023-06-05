@@ -1562,7 +1562,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/TagId'
       responses:
-        "201":
+        "204":
           $ref: "#/components/responses/TagDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
@@ -1610,7 +1610,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/VendorTagId'
       responses:
-        "201":
+        "204":
           $ref: "#/components/responses/VendorTagDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
@@ -4251,10 +4251,6 @@ components:
             $ref: "#/components/schemas/Tag"
     TagDeletedResponse:
       description: Tag was successfully deleted.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Tag"
     VendorTagListResponse:
       description: A list of vendor tags.
       content:
@@ -4269,7 +4265,3 @@ components:
             $ref: "#/components/schemas/VendorTag"
     VendorTagDeletedResponse:
       description: Vendor tag was successfully deleted.
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/VendorTag"
