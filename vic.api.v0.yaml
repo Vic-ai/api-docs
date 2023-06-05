@@ -1531,6 +1531,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /tags/{id}:
     put:
       description: |
         Update a tag.
@@ -1538,6 +1539,8 @@ paths:
       operationId: updateTag
       tags:
         - Tags
+      parameters:
+        - $ref: '#/components/parameters/TagId'
       requestBody:
         $ref: "#/components/requestBodies/UpdateTagRequest"
       responses:
@@ -1596,6 +1599,7 @@ paths:
           $ref: "#/components/responses/UnprocessableEntityResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /vendorTags/{id}:
     delete:
       description: |
         Delete a vendor tag.
