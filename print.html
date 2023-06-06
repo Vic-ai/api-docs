@@ -639,13 +639,13 @@ been updated, and <code>201</code> when the vendor has been created.</li>
         ]
         }'
 </code></pre>
-<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/12345/document?useSystem=INTERNAL' \
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices/12345/document?useSystem=INTERNAL' \
 --header 'Content-Type: multipart/form-data' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
 --form 'document=@&quot;/path/to/document.pdf&quot;'
 </code></pre>
-<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoice/21/process?useSystem=INTERNAL' \
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices/21/process?useSystem=INTERNAL' \
 --header 'Accept: application/json' \
 --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
