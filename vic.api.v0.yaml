@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.14.0
+  version: 0.16.0
   contact: {}
   title: Vic.Api
   description: |
@@ -65,6 +65,13 @@ tags:
       - Invoices which have been posted to the ERP system.
 
       By default, access to unposted invoices is restricted.
+  - name: PaymentTerms
+    description: |
+      Payment Terms are part of your *ERP* **Masterdata**, that represent
+      payment terms that Vic.ai can automatically assign to invoices. Some
+      vendors may have a default payment term, and some invoices may have a
+      specific payment term. In either case, Vic.ai can automatically assign
+      payment terms to invoices.
   - name: PurchaseOrders
   - name: Subscriptions
     description: |
@@ -1614,6 +1621,72 @@ paths:
           $ref: "#/components/responses/VendorTagDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
+  /paymentTerms:
+    get:
+      description: |
+        Get a list of payment terms.
+      summary: Get a list of payment terms
+      operationId: listPaymentTerms
+      tags:
+        - PaymentTerms
+      responses:
+        "200":
+          $ref: "#/components/responses/PaymentTermListResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      description: |
+        Create a new payment term.
+      summary: Create a new payment term
+      operationId: createPaymentTerm
+      tags:
+        - PaymentTerms
+      requestBody:
+        $ref: "#/components/requestBodies/CreatePaymentTermRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/PaymentTermResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /paymentTerms/{id}:
+    put:
+      description: |
+        Update a payment term.
+      summary: Update a payment term
+      operationId: updatePaymentTerm
+      tags:
+        - PaymentTerms
+      parameters:
+        - $ref: '#/components/parameters/PaymentTermId'
+      requestBody:
+        $ref: "#/components/requestBodies/UpdatePaymentTermRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/PaymentTermResponse"
+        "403":
+          $ref: "#/components/responses/ForbiddenResponse"
+        "422":
+          $ref: "#/components/responses/UnprocessableEntityResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: |
+        Delete a payment term.
+      summary: Delete a payment term
+      operationId: deletePaymentTerm
+      tags:
+        - PaymentTerms
+      parameters:
+        - $ref: '#/components/parameters/PaymentTermId'
+      responses:
+        "204":
+          $ref: "#/components/responses/PaymentTermDeletedResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
 
 components:
   securitySchemes:
@@ -1764,6 +1837,13 @@ components:
       description: The id of the vendor tag
       schema:
         type: string
+    PaymentTermId:
+      name: id
+      in: path
+      required: true
+      description: The id of the payment term
+      schema:
+        type: string
 
   schemas:
     InternalId:
@@ -1891,7 +1971,11 @@ components:
         type:
           type: string
           maxLength: 255
-          description: The dimension type name.
+          description: The dimension type.
+        typeName:
+          type: string
+          maxLength: 255
+          description: The dimension type name. A human friendly type name.
         typeExternalId:
           type: string
           maxLength: 255
@@ -1938,6 +2022,10 @@ components:
         type:
           type: string
           maxLength: 255
+          description: The dimension type.
+        typeName:
+          type: string
+          maxLength: 255
           description: The dimension type name.
         typeExternalId:
           type: string
@@ -1970,6 +2058,10 @@ components:
           maxLength: 255
           description: The name of the dimension.
         type:
+          type: string
+          maxLength: 255
+          description: The dimension type.
+        typeName:
           type: string
           maxLength: 255
           description: The dimension type name.
@@ -2157,7 +2249,7 @@ components:
           minimum: 0
           description: The number of `unit` for the payment term.
         unit:
-          $ref: "#/components/schemas/PaymentTermUnit"
+          $ref: "#/components/schemas/PaymentInfoTermUnit"
     LineItemVat:
       type: object
       properties:
@@ -2187,6 +2279,102 @@ components:
           description: |
             The amount of VAT. If the VAT amount is unknown, this should be left
             `NULL` or unspecified.
+    CreatePaymentTerm:
+      type: object
+      required:
+        - name
+        - daysToPay
+      properties:
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          description: The name of the payment term
+        daysToPay:
+          type: integer
+          minimum: 1
+          description: The number of days the invoice should be paid in.
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: A description of the payment term.
+        discountDays:
+          type: integer
+          nullable: true
+          minimum: 0
+          description: The number of days the invoice should be paid in to get a discount.
+        discountPercentage:
+          type: string
+          format: decimal
+          nullable: true
+          minimum: 0
+          description: The discount percentage if paid within the number of discount days.
+    UpdatePaymentTerm:
+      type: object
+      required:
+        - name
+        - daysToPay
+      properties:
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          description: The name of the payment term
+        daysToPay:
+          type: integer
+          minimum: 1
+          description: The number of days the invoice should be paid in.
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: A description of the payment term.
+        discountDays:
+          type: integer
+          nullable: true
+          minimum: 0
+          description: The number of days the invoice should be paid in to get a discount.
+        discountPercentage:
+          type: string
+          format: decimal
+          nullable: true
+          minimum: 0
+          description: The discount percentage if paid within the number of discount days.
+    PaymentTerm:
+      type: object
+      required:
+        - name
+        - daysToPay
+      properties:
+        id:
+          type: string
+          description: The payment term's id.
+        name:
+          type: string
+          nullable: false
+          maxLength: 255
+          description: The name of the payment term
+        daysToPay:
+          type: integer
+          minimum: 1
+          description: The number of days the invoice should be paid in.
+        description:
+          type: string
+          nullable: true
+          maxLength: 255
+          description: A description of the payment term.
+        discountDays:
+          type: integer
+          nullable: true
+          minimum: 0
+          description: The number of days the invoice should be paid in to get a discount.
+        discountPercentage:
+          type: string
+          format: decimal
+          nullable: true
+          minimum: 0
+          description: The discount percentage if paid within the number of discount days.
     CreateInvoiceLineItem:
       type: object
       required:
@@ -2300,11 +2488,6 @@ components:
           description: Number that appears on the invoice.
           type: string
           maxLength: 255
-        bolNumber:
-          description: The bill of lading number.
-          type: string
-          maxLength: 255
-          nullable: true
         poNumber:
           type: string
           nullable: true
@@ -2374,6 +2557,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateInvoiceLineItem"
+        bolNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/BillOfLadingNumber"
     CreatePurchaseOrder:
       required:
         - poNumber
@@ -2709,6 +2896,10 @@ components:
           format: url
         status:
           $ref: '#/components/schemas/InvoiceState'
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     InvoiceConfirm:
       type: object
       required:
@@ -2862,7 +3053,6 @@ components:
           type: string
           nullable: true
           maxLength: 255
-
     TrainingInvoice:
       type: object
       required:
@@ -2881,11 +3071,6 @@ components:
           description: number that appears on the invoice
           type: string
           maxLength: 255
-        bolNumber:
-          description: The bill of lading number.
-          type: string
-          maxLength: 255
-          nullable: true
         poNumber:
           type: string
           nullable: true
@@ -2924,6 +3109,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     TrainingInvoiceUpsert:
       type: object
       required:
@@ -2935,11 +3124,6 @@ components:
           $ref: '#/components/schemas/TransactionType'
         refNumber:
           description: number that appears on the invoice
-          type: string
-          maxLength: 255
-          nullable: true
-        bolNumber:
-          description: The bill of lading number.
           type: string
           maxLength: 255
           nullable: true
@@ -3005,6 +3189,10 @@ components:
           format: date-time
           description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     Invoices:
       type: array
       items:
@@ -3637,12 +3825,12 @@ components:
           $ref: '#/components/schemas/ErrorString'
         message:
           $ref: '#/components/schemas/ErrorString'
-    PaymentTermUnit:
+    PaymentInfoTermUnit:
       type: string
       description: The payment term units supported.
       enum:
         - DAYS
-    PaymentTerm:
+    PaymentInfoTerm:
       type: object
       required:
         - count
@@ -3652,7 +3840,7 @@ components:
           type: integer
           minimum: 1
         unit:
-          $ref: "#/components/schemas/PaymentTermUnit"
+          $ref: "#/components/schemas/PaymentInfoTermUnit"
     AccrualTermUnit:
       type: string
       description: The accrual term units supported.
@@ -3742,7 +3930,7 @@ components:
           nullable: true
         paymentTerm:
           allOf:
-            - $ref: "#/components/schemas/PaymentTerm"
+            - $ref: "#/components/schemas/PaymentInfoTerm"
           nullable: true
         bankGiro:
           type: string
@@ -3895,6 +4083,15 @@ components:
           description: The purchase order item's internal id.
         quantityMatched:
           type: string
+    BillOfLadingNumber:
+      description: The bill of lading number.
+      type: object
+      required:
+        - bolNumber
+      properties:
+        bolNumber:
+          type: string
+
   requestBodies:
     CreatePurchaseOrderRequest:
       description: Create a purchase order.
@@ -3948,7 +4145,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/CreateVendorTag'
-    
+    CreatePaymentTermRequest:
+      description: Create a payment term.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/CreatePaymentTerm'
+    UpdatePaymentTermRequest:
+      description: Update a payment term.
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdatePaymentTerm'
 
   responses:
     ForbiddenResponse:
@@ -4265,3 +4475,17 @@ components:
             $ref: "#/components/schemas/VendorTag"
     VendorTagDeletedResponse:
       description: Vendor tag was successfully deleted.
+    PaymentTermListResponse:
+      description: A list of payment terms.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PaymentTerm"
+    PaymentTermResponse:
+      description: A single payment term.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PaymentTerm"
+    PaymentTermDeletedResponse:
+      description: Payment term was successfully deleted.

@@ -5,13 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## v0.16.0
+
+- Replaced `bolNumber` with `bolNumbers` for `#/components/schemas/Invoice`.
+- Replaced `bolNumber` with `bolNumbers` for `#/components/schemas/TrainingInvoice`.
+- Replaced `bolNumber` with `bolNumbers` for `#/components/schemas/CreateInvoice`.
+- Replaced `bolNumber` with `bolNumbers` for `#/components/schemas/TrainingInvoiceUpsert`.
+- Added `typeName` to `#/components/schemas/Dimension`.
+- Added `typeName` to `#/components/schemas/DimensionUpsert`.
+- Added support for managing payment terms.
+
 ## v0.14.1
 
-- Removed pattern constraint from `#/components/schemas/Account`
-- Removed pattern constraint from `#/components/schemas/AccountUpsert`
-- Removed pattern constraint from `#/components/schemas/CostAccountInfo`'
-- Added `#/components/schemas/VendorManager`
-- Allow passing `managers` (`#/components/schemas/VendorManager`) to `#/components/schemas/VendorUpsert`
+- Removed pattern constraint from `#/components/schemas/Account`.
+- Removed pattern constraint from `#/components/schemas/AccountUpsert`.
+- Removed pattern constraint from `#/components/schemas/CostAccountInfo`.
+- Added `#/components/schemas/VendorManager`.
+- Allow passing `managers` (`#/components/schemas/VendorManager`) to `#/components/schemas/VendorUpsert`.
 
 ## v0.14.0
 
