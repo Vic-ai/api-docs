@@ -2381,6 +2381,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/CreateInvoiceLineItem"
+        bolNumbers:
+          type: array
+          items:
+            $ref: "#/components/schemas/BillOfLadingNumber"
     CreatePurchaseOrder:
       required:
         - poNumber
@@ -2716,6 +2720,10 @@ components:
           format: url
         status:
           $ref: '#/components/schemas/InvoiceState'
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     InvoiceConfirm:
       type: object
       required:
@@ -2869,7 +2877,6 @@ components:
           type: string
           nullable: true
           maxLength: 255
-
     TrainingInvoice:
       type: object
       required:
@@ -2926,6 +2933,10 @@ components:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
           nullable: true
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     TrainingInvoiceUpsert:
       type: object
       required:
@@ -3002,6 +3013,10 @@ components:
           format: date-time
           description: Does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
+        bolNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/BillOfLadingNumber'
     Invoices:
       type: array
       items:
@@ -3891,6 +3906,14 @@ components:
           type: string
           description: The purchase order item's internal id.
         quantityMatched:
+          type: string
+    BillOfLadingNumber:
+      description: The bill of lading number.
+      type: object
+      required:
+        - bolNumber
+      properties:
+        bolNumber:
           type: string
   requestBodies:
     CreatePurchaseOrderRequest:
