@@ -2677,6 +2677,7 @@ components:
       properties:
         productNumber:
           type: string
+          nullable: true
           maxLength: 255
         productDescription:
           type: string
@@ -2724,6 +2725,7 @@ components:
           description: The ID of the purchase order to attach this line item to.
         productNumber:
           type: string
+          nullable: true
           maxLength: 255
         productDescription:
           type: string
@@ -2767,6 +2769,7 @@ components:
       properties:
         productNumber:
           type: string
+          nullable: true
           maxLength: 255
         productDescription:
           type: string
@@ -2955,6 +2958,7 @@ components:
           maxLength: 255
         productNumber:
           type: string
+          nullable: true
           maxLength: 255
         productDescription:
           type: string
