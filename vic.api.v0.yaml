@@ -2901,6 +2901,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillOfLadingNumber'
+        selfAssessedUseTaxAmount:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
+        selfAssessedUseTaxAccount:
+          type: string
+          nullable: true
+          maxLength: 255
     InvoiceConfirm:
       type: object
       required:
