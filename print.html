@@ -173,6 +173,18 @@
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.0.0/">Keep a Changelog</a>,
 and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
+<h2 id="v0170"><a class="header" href="#v0170">v0.17.0</a></h2>
+<ul>
+<li>Allow nullable <code>productNumber</code> for <code>#/components/schemas/CreatePurchaseOrderItem</code>.</li>
+<li>Allow nullable <code>productNumber</code> for <code>#/components/schemas/CreatePurchaseOrderLineItem</code>.</li>
+<li>Allow nullable <code>productNumber</code> for <code>#/components/schemas/UpdatePurchaseOrderLineItem</code>.</li>
+<li>Allow nullable <code>productNumber</code> for <code>#/components/schemas/PurchaseOrderLineItem</code>.</li>
+<li>Fix definition of <code>requestor</code> for  <code>#/compnents/schemas/CreatePurchaseOrder</code> to be a <code>PurchaseOrderRequestor</code> object.</li>
+<li>Added <code>selfAssessedUseTaxAmount</code> to <code>#/components/schemas/Invoice</code>.</li>
+<li>Added <code>selfAssessedUseTaxAccount</code> to <code>#/components/schemas/Invoice</code>.</li>
+<li>Added <code>createTaxCode</code> operation.</li>
+<li>Added <code>getTaxCodes</code> operation.</li>
+</ul>
 <h2 id="v0160"><a class="header" href="#v0160">v0.16.0</a></h2>
 <ul>
 <li>Replaced <code>bolNumber</code> with <code>bolNumbers</code> for <code>#/components/schemas/Invoice</code>.</li>
