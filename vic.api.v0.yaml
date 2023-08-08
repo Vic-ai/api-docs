@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.17.0
+  version: 0.17.1
   contact: {}
   title: Vic.Api
   description: |
@@ -3624,6 +3624,10 @@ components:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           $ref: "#/components/schemas/PaymentInfo"
+        paymentTermId:
+          description: The id of the `PaymentTerm` a vendor uses.
+          type: string
+          nullable: true
         externalData:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
@@ -3688,6 +3692,10 @@ components:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           $ref: "#/components/schemas/PaymentInfo"
+        paymentTermId:
+          description: The id of the `PaymentTerm` a vendor uses.
+          type: string
+          nullable: true
         externalData:
           allOf:
           - $ref: '#/components/schemas/ExternalData'
@@ -3755,6 +3763,10 @@ components:
           $ref: '#/components/schemas/VendorTaxInfo'
         defaultPaymentInfo:
           $ref: "#/components/schemas/PaymentInfo"
+        paymentTermId:
+          description: The id of the `PaymentTerm` a vendor uses.
+          type: string
+          nullable: true
         externalData:
           allOf:
             - $ref: '#/components/schemas/ExternalData'
