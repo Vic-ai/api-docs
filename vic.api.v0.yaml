@@ -2941,6 +2941,14 @@ components:
       - lineItems
       - status
       properties:
+        totalAmount:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          description: The total amount of the invoice, including tax/VAT.
+        amountWithoutTax:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          description: The total amount of the invoice, excluding tax.
         transactionType:
           $ref: '#/components/schemas/TransactionType'
         refNumber:
