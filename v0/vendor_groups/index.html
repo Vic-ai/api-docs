@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Training Invoices - Vic API Documentation</title>
+        <title>Vendor Groups - Vic API Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -83,7 +83,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../../v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../../v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/training_invoices/index.html" class="active"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="../../v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../../v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../../v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../../v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="../../v0/vendor_groups/index.html" class="active"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -166,122 +166,66 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="training-invoices"><a class="header" href="#training-invoices">Training Invoices</a></h1>
-<h2 id="put-v0traininginvoices"><a class="header" href="#put-v0traininginvoices"><a href="../../vic.api.v0.html#/TrainingInvoices/upsertTrainingInvoice"><code>PUT /v0/trainingInvoices</code></a></a></h2>
-<p>Upserts a training invoice into the Vic.ai system.</p>
-<h3 id="inserting-training-invoice"><a class="header" href="#inserting-training-invoice">Inserting Training Invoice</a></h3>
-<p>When inserting a new training invoice a <code>Content-Type</code> of <code>multipart/form-data</code>
-is required due to the nature of sending a <code>pdf</code>, <code>png</code>, <code>tiff</code>, or <code>gif</code>
-document.</p>
-<p>Two parameters are required for inserting a new training invoice.</p>
-<ul>
-<li><code>invoiceData</code> - The json data that represents the training invoice.</li>
-<li><code>invoiceDocument</code> - The <code>pdf</code>, <code>png</code>, <code>tiff</code>, or <code>gif</code> training invoice document.</li>
-</ul>
-<h4 id="example"><a class="header" href="#example">Example</a></h4>
-<pre><code class="language-bash">curl -X PUT 'https://api.us.stage.vic.ai/v0/trainingInvoice/invoice-123' \
-    --location \
-    --header 'Content-Type: multipart/form-data' \
+                        <h1 id="vendor-groups"><a class="header" href="#vendor-groups">Vendor Groups</a></h1>
+<h2 id="list-vendor-groups"><a class="header" href="#list-vendor-groups">List Vendor Groups</a></h2>
+<p>Lists all vendor groups.</p>
+<p>This response is paginated. When there is another page the <code>x-next</code> header will
+be present and the value provided will need to be used in the <code>cursor</code> parameter
+for the next page of vendor groups.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/vendorGroups' \
     --header 'Accept: application/json' \
-    --header 'Authorization: Bearer MYBEARERTOKEN' \
-    --form 'invoiceDocument=@&quot;/path/to/invoice/document.pdf&quot;' \
-    --form 'invoiceData=&quot;{
-        \&quot;externalUpdatedAt\&quot;: \&quot;2022-01-20 04:10:00\&quot;,
-        \&quot;transactionType\&quot;: \&quot;INVOICE\&quot;,
-        \&quot;refNumber\&quot;: \&quot;1000000\&quot;,
-        \&quot;poNumber\&quot;: \&quot;PO123\&quot;,
-        \&quot;description\&quot;: \&quot;The invoice description\&quot;,
-        \&quot;currency\&quot;: \&quot;USD\&quot;,
-        \&quot;language\&quot;: \&quot;EN\&quot;,
-        \&quot;issueDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;glDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;dueDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;paymentInfo\&quot;:{
-            \&quot;bankAccountNum\&quot;:\&quot;1234567890\&quot;
-        },
-        \&quot;vendorExternalId\&quot;: \&quot;vendor-external-id-1\&quot;,
-        \&quot;lineItems\&quot;: [
-            {
-                \&quot;index\&quot;: 0,
-                \&quot;amount\&quot;: 123.53,
-                \&quot;description\&quot;: \&quot;Line item description\&quot;,
-                \&quot;comment\&quot;: \&quot;A quick comment about the line item\&quot;,
-                \&quot;accrual\&quot;:{
-                    \&quot;start\&quot;: \&quot;2022-01-20\&quot;,
-                    \&quot;count\&quot;: 3,
-                    \&quot;unit\&quot;: \&quot;MONTHS\&quot;
-                },
-                \&quot;billable\&quot;: false,
-                \&quot;dimensionsExternalIds\&quot;: [\&quot;dimension-external-id-1\&quot;],
-                \&quot;costAccountExternalId\&quot;: \&quot;cost-account-external-id-1\&quot;
-            }
-        ]
-    }&quot;;type=application/json'
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
-<h3 id="updating-training-invoice"><a class="header" href="#updating-training-invoice">Updating Training Invoice</a></h3>
-<p>When updating a training invoice, the <code>invoiceDocument</code> is no longer required,
-and the <code>Content-Type</code> can be <code>application/json</code></p>
-<p>If the training invoice needs the underlying document updated, use a
-<code>multipart/form-data</code> to accomplish this. It will have the same format as the
-insert described above.</p>
-<p>Some things to note about updating existing invoices.</p>
-<ul>
-<li>The line items passed will be set as the desired state of the invoice.</li>
-<li>Empty list of line items will cause all line items to be deleted.</li>
-<li>Existing line items passed will be matched as best as possible. If they can
-not be matched they will be deleted and replaced with the desired items.</li>
-</ul>
-<h4 id="example-1"><a class="header" href="#example-1">Example</a></h4>
-<pre><code class="language-bash">curl -X PUT 'https://api.us.stage.vic.ai/v0/trainingInvoice/invoice-123' \
-    --location \
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: &quot;eebc1747-ffe5-4286-beb5-ebc3d6ae73e6&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 1&quot;
+  },
+  {
+    &quot;id&quot;: &quot;7ca2622f-1859-4a3b-8b3d-5bb5343d04af&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 2&quot;
+  },
+  {
+    &quot;id&quot;: &quot;74c47d8f-cb67-4872-aa9a-2c063c6e9d22&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 3&quot;
+  }
+]
+</code></pre>
+<h2 id="create-vendor-group"><a class="header" href="#create-vendor-group">Create Vendor Group</a></h2>
+<p>Create a vendor group.</p>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/vendorGroups' \
     --header 'Content-Type: application/json' \
     --header 'Accept: application/json' \
-    --header 'Authorization: Bearer MYBEARERTOKEN' \
-    --data '{
-        &quot;externalUpdatedAt&quot;: &quot;2022-01-20 04:10:00&quot;,
-        &quot;transactionType&quot;: &quot;INVOICE&quot;,
-        &quot;refNumber&quot;: &quot;1000000&quot;,
-        &quot;poNumber&quot;: &quot;PO123&quot;,
-        &quot;description&quot;: &quot;The invoice description&quot;,
-        &quot;currency&quot;: &quot;USD&quot;,
-        &quot;language&quot;: &quot;EN&quot;,
-        &quot;issueDate&quot;: &quot;2022-01-20&quot;,
-        &quot;glDate&quot;: &quot;2022-01-20&quot;,
-        &quot;dueDate&quot;: &quot;2022-01-20&quot;,
-        &quot;paymentInfo&quot;:{
-            &quot;bankAccountNum&quot;:&quot;1234567890&quot;
-        },
-        &quot;vendorExternalId&quot;: &quot;vendor-external-id-1&quot;,
-        &quot;lineItems&quot;: [
-            {
-                &quot;index&quot;: 0,
-                &quot;amount&quot;: 123.53,
-                &quot;description&quot;: &quot;Line item description&quot;,
-                &quot;comment&quot;: &quot;A quick comment about the line item&quot;,
-                &quot;accrual&quot;:{
-                    &quot;start&quot;: &quot;2022-01-20&quot;,
-                    &quot;count&quot;: 3,
-                    &quot;unit&quot;: &quot;MONTHS&quot;
-                },
-                &quot;billable&quot;: false,
-                &quot;dimensionsExternalIds&quot;: [&quot;dimension-external-id-1&quot;],
-                &quot;costAccountExternalId&quot;: &quot;cost-account-external-id-1&quot;
-            }
-        ]
-    }&quot;'
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+      &quot;name&quot;: &quot;My New Vendor Group&quot;
+    }'
 </code></pre>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;02f7c19c-7007-42e8-9faf-538f2d27bb27&quot;,
+  &quot;name&quot;: &quot;My New Vendor Group&quot;
+}
+</code></pre>
+<h2 id="delete-vendor-group"><a class="header" href="#delete-vendor-group">Delete Vendor Group</a></h2>
+<p>Deletes a vendor group. This is a destructive action. When a vendor group is
+deleted, it will cause the vendors that have the group assigned to have the
+group id cleared. The vendor will not be deleted.</p>
+<pre><code class="language-bash">curl --location --request DELETE 'https://api.us.dev.vic.ai/v0/vendorGroups/2fc5ebd1-61f1-4c71-a4b6-e72e823b3d5c' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<p>When successful, a <code>204</code> will be returned with an empty body.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../../v0/invoices/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../../v0/purchase_orders/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../../v0/purchase_orders/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <i class="fa fa-angle-right"></i>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -289,13 +233,10 @@ not be matched they will be deleted and replaced with the desired items.</li>
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../../v0/invoices/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../../v0/purchase_orders/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../../v0/purchase_orders/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <i class="fa fa-angle-right"></i>
-                    </a>
             </nav>
 
         </div>

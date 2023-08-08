@@ -84,7 +84,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -1016,6 +1016,57 @@ process based on the updated information.</p>
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="vendor-groups"><a class="header" href="#vendor-groups">Vendor Groups</a></h1>
+<h2 id="list-vendor-groups"><a class="header" href="#list-vendor-groups">List Vendor Groups</a></h2>
+<p>Lists all vendor groups.</p>
+<p>This response is paginated. When there is another page the <code>x-next</code> header will
+be present and the value provided will need to be used in the <code>cursor</code> parameter
+for the next page of vendor groups.</p>
+<h3 id="example-11"><a class="header" href="#example-11">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/vendorGroups' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: &quot;eebc1747-ffe5-4286-beb5-ebc3d6ae73e6&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 1&quot;
+  },
+  {
+    &quot;id&quot;: &quot;7ca2622f-1859-4a3b-8b3d-5bb5343d04af&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 2&quot;
+  },
+  {
+    &quot;id&quot;: &quot;74c47d8f-cb67-4872-aa9a-2c063c6e9d22&quot;,
+    &quot;name&quot;: &quot;My Vendor Group 3&quot;
+  }
+]
+</code></pre>
+<h2 id="create-vendor-group"><a class="header" href="#create-vendor-group">Create Vendor Group</a></h2>
+<p>Create a vendor group.</p>
+<h3 id="example-12"><a class="header" href="#example-12">Example</a></h3>
+<pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/vendorGroups' \
+    --header 'Content-Type: application/json' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;' \
+    --data-raw '{
+      &quot;name&quot;: &quot;My New Vendor Group&quot;
+    }'
+</code></pre>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;02f7c19c-7007-42e8-9faf-538f2d27bb27&quot;,
+  &quot;name&quot;: &quot;My New Vendor Group&quot;
+}
+</code></pre>
+<h2 id="delete-vendor-group"><a class="header" href="#delete-vendor-group">Delete Vendor Group</a></h2>
+<p>Deletes a vendor group. This is a destructive action. When a vendor group is
+deleted, it will cause the vendors that have the group assigned to have the
+group id cleared. The vendor will not be deleted.</p>
+<pre><code class="language-bash">curl --location --request DELETE 'https://api.us.dev.vic.ai/v0/vendorGroups/2fc5ebd1-61f1-4c71-a4b6-e72e823b3d5c' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<p>When successful, a <code>204</code> will be returned with an empty body.</p>
 
                     </main>
 
