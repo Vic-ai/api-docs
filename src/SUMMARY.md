@@ -9,3 +9,4 @@
   - [Invoices](v0/invoices/README.md)
   - [Training Invoices](v0/training_invoices/README.md)
   - [Purchase Orders](v0/purchase_orders/README.md)
+  - [Vendor Groups](v0/vendor_groups/README.md)

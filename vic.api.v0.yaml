@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  version: 0.17.1
+  version: 0.17.2
   contact: {}
   title: Vic.Api
   description: |
@@ -446,6 +446,75 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/VendorRemoteErrorsClearedResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /vendorGroups:
+    get:
+      description: List all vendor groups.
+      summary: List all vendor groups
+      operationId: listVendorGroups
+      tags:
+        - Vendors
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+      responses:
+        "200":
+          $ref: "#/components/responses/VendorGroupsResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    post:
+      description: Create a vendor group.
+      summary: Create a vendor group
+      operationId: createVendorGroup
+      tags:
+        - Vendors
+      requestBody:
+        $ref: "#/components/requestBodies/CreateVendorGroupRequest"
+      responses:
+        "201":
+          $ref: "#/components/responses/VendorGroupResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+  /vendorGroups/{id}:
+    put:
+      description: Update the vendor group.
+      summary: Update the vendor group
+      operationId: updateVendorGroup
+      tags:
+        - Vendors
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the vendor group
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        $ref: "#/components/requestBodies/UpdateVendorGroupRequest"
+      responses:
+        "200":
+          $ref: "#/components/responses/VendorGroupResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
+    delete:
+      description: Delete vendor group.
+      summary: Delete vendor group
+      operationId: deleteVendorGroup
+      tags:
+        - Vendors
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: The id of the vendor group
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "204":
+          $ref: "#/components/responses/VendorGroupDeletedResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
   /invoices:
@@ -3515,6 +3584,38 @@ components:
         vatDebitAccount:
           type: string
           maxLength: 255
+    CreateVendorGroup:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the vendor group
+    UpdateVendorGroup:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: The name of the vendor group
+    VendorGroup:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: string
+          description: The id of the vendor group.
+        name:
+          type: string
+          description: The name of the vendor group
+    VendorGroups:
+      type: array
+      items:
+        $ref: '#/components/schemas/VendorGroup'
     VendorState:
       type: string
       enum:
@@ -3627,6 +3728,12 @@ components:
         paymentTermId:
           description: The id of the `PaymentTerm` a vendor uses.
           type: string
+          format: uuid
+          nullable: true
+        vendorGroupId:
+          description: The `VendorGroup` id the vendor is attached to.
+          type: string
+          format: uuid
           nullable: true
         externalData:
           allOf:
@@ -3695,6 +3802,12 @@ components:
         paymentTermId:
           description: The id of the `PaymentTerm` a vendor uses.
           type: string
+          format: uuid
+          nullable: true
+        vendorGroupId:
+          description: The `VendorGroup` id the vendor is attached to.
+          type: string
+          format: uuid
           nullable: true
         externalData:
           allOf:
@@ -3766,6 +3879,12 @@ components:
         paymentTermId:
           description: The id of the `PaymentTerm` a vendor uses.
           type: string
+          format: uuid
+          nullable: true
+        vendorGroupId:
+          description: The `VendorGroup` id the vendor is attached to.
+          type: string
+          format: uuid
           nullable: true
         externalData:
           allOf:
@@ -4241,7 +4360,18 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CreateTaxCode"
-
+    CreateVendorGroupRequest:
+      description: Create a vendor group.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/CreateVendorGroup"
+    UpdateVendorGroupRequest:
+      description: Update a vendor group.
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/UpdateVendorGroup"
     UpdatePaymentTermRequest:
       description: Update a payment term.
       required: true
@@ -4380,6 +4510,26 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Vendor"
+    VendorGroupsResponse:
+      description: List of vendor groups.
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VendorGroups"
+    VendorGroupResponse:
+      description: List of vendor groups.
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/VendorGroup"
+    VendorGroupDeletedResponse:
+      description: Vendor group was successfully deleted.
     VendorRemoteErrorsUpdatedResponse:
       description: Vendor errors were successfully updated.
       content:
