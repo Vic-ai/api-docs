@@ -3439,6 +3439,10 @@ components:
           uniqueItems: true
           items:
             $ref: '#/components/schemas/MatchItem'
+        unitPrice:
+          allOf:
+            - $ref: "#/components/schemas/MonetaryValue"
+          nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required:
