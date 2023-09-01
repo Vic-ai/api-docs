@@ -712,6 +712,8 @@ paths:
         * Once an invoice has been processed, you may not attach a new document.
         * Once a document has been attached to an invoice, it may not be
           changed.
+
+        **NOTE:** The maximum file size allowed is 64MB.
       operationId: uploadDocumentInvoice
       tags:
         - Invoices

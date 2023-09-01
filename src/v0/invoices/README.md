@@ -16,6 +16,10 @@ When creating an invoice, there are three steps to follow:
 
 You can make the id the internal id (from vic.ai) or the external id (from your system).
 
+### Uploads
+
+The maximum file size allowed to upload is 64MB.
+
 ### Example
 
 ```bash
