@@ -179,6 +179,8 @@
 <li>Process the document with a POST to <code>/invoice/{id}/process</code></li>
 </ol>
 <p>You can make the id the internal id (from vic.ai) or the external id (from your system).</p>
+<h3 id="uploads"><a class="header" href="#uploads">Uploads</a></h3>
+<p>The maximum file size allowed to upload is 64MB.</p>
 <h3 id="example"><a class="header" href="#example">Example</a></h3>
 <pre><code class="language-bash">curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
     --header 'Content-Type: application/json' \
