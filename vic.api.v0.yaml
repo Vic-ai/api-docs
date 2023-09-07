@@ -2517,6 +2517,11 @@ components:
         billable:
           type: boolean
           nullable: true
+        taxCodeId:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of Tax Code to use for the line item.
         vat:
           oneOf:
           - $ref: "#/components/schemas/LineItemVat"
@@ -3829,7 +3834,7 @@ components:
           nullable: true
         managers:
           type: array
-          items:  
+          items:
             $ref: "#/components/schemas/VendorManager"
         errors:
           description: The errors that occurred in the external ERP system.
@@ -3959,7 +3964,7 @@ components:
         Vic.ai user who manages a vendor.
 
         When `email` is provided, it takes priority over `name`. If no user
-        exists with the `email` provided, then `name` will be used as a 
+        exists with the `email` provided, then `name` will be used as a
         fallback. If neither are found, the api will return an error.
       properties:
         email:
@@ -4252,9 +4257,9 @@ components:
         - vendorId
         - tagId
       properties:
-        id: 
+        id:
           type: string
-        vendorId: 
+        vendorId:
           type: string
         tagId:
           type: string
