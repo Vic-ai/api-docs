@@ -2713,7 +2713,7 @@ components:
         issuedOn:
           type: string
           format: date
-          nullable: true
+          nullable: false
           description: When the purchase order was issued.
         poNumber:
           type: string
