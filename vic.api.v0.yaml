@@ -2704,6 +2704,7 @@ components:
         - amount
         - vendor
         - lineItems
+        - issuedOn
       properties:
         externalId:
           type: string
