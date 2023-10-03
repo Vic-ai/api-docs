@@ -10,3 +10,5 @@
   - [Training Invoices](v0/training_invoices/README.md)
   - [Purchase Orders](v0/purchase_orders/README.md)
   - [Vendor Groups](v0/vendor_groups/README.md)
+  - [Payments](v0/payments.md)
+  - [Webhooks](v0/webhooks.md)
