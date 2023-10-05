@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Removed `costAccountExternalId` from `TrainingInvoiceUpsert` required fields.
 - Renamed `#/components/schemas/VendorRef` to `#/components/schemas/VendorLookup`.
 - Added new `#/components/schemas/InvoiceRef`.
+- Added new `#/components/schemas/CostAccountRef`.
 
 ## v0.17.1
 

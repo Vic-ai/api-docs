@@ -2386,6 +2386,20 @@ components:
           type: string
           nullable: true
           maxLength: 255
+    CostAccountRef:
+      type: object
+      description: A reference to a `CostAccount`.
+      properties:
+        internalId:
+          description: The id of the `CostAccount` in Vic.
+          type: string
+          nullable: true
+          maxLength: 255
+        externalId:
+          description: The id of the `CostAccount` in the ERP.
+          type: string
+          nullable: true
+          maxLength: 255
     VendorLookup:
       type: object
       properties:
