@@ -2145,9 +2145,172 @@ components:
           type: string
           maxLength: 255
           nullable: true
+    CreditStatus:
+      enum: [pending_approval, rejected, approved, acknowledged, voided]
+    Credit:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id of the credit.
+        amount:
+          $ref: '#/components/schemas/MonetaryValue'
+        currencyId:
+          $ref: '#/components/schemas/Currency'
+        status:
+          $ref: '#/components/schemas/CreditStatus'
+        approvedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: The payment approver has approved the credit.
+        fundedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            The date time when the credit was applied to the payments when funds
+            were withdrawn.
+        rejectedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: The payment approver has rejected the credit payment.
+        voidedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            This is set when a credit has been voided by the payment processor.
+            Generally this would happen due to a `Vendor` missing address
+            information or a malformed `Invoice` was trying to be paid. Other
+            cases could cause this to be voided due to insufficient funds.
+        invoice:
+          $ref: '#/components/schemas/InvoiceRef'
+        vendor:
+          $ref: '#/components/schemas/VendorRef'
     PaymentKind:
       description: The payment kind.
       enum: [ACH, CHECK, IBAN, BBAN, PLUSGIRO, BANKGIRO]
+    PaymentBatchStatus:
+      description: The status of the payment batch.
+      enum: [pending_approval, rejected, approved, voided]
+    PaymentStatus:
+      enum: [pending_approval, rejected, approved, acknowledged, voided]
+    Payment:
+      type: object
+      description: |
+        The payment made for an `Invoice`. The `CostAccount` assigned to the
+        payment is where the funds are being debited from.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id of the credit.
+        amount:
+          $ref: '#/components/schemas/MonetaryValue'
+        discountAmount:
+          description: |
+            The discount amount applied using the `PaymentTerm` on the vendor.
+            The `discountAmount + amount` should be equal to the `Invoice`
+            amount due in most cases. Accountants are allowed to make partial
+            payments. Typically when partial payments are made, `discountAmount`
+            will be `0.00`.
+          allOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+        currencyId:
+          $ref: '#/components/schemas/Currency'
+        status:
+          $ref: '#/components/schemas/PaymentStatus'
+        approvedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: The payment approver has approved the payment.
+        fundedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            A rough date time when the funds were withdrawn.
+            **Note**: This is not an exact date time of when the funds were
+            withdrawn. This is the date the payments were submitted to the bank
+            and were accepted by the bank.
+        rejectedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: The payment approver has rejected the payment.
+        voidedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            This is set when a credit has been voided by the payment processor.
+            Generally this would happen due to a `Vendor` missing address
+            information or a malformed `Invoice` was trying to be paid. Other
+            cases could cause this to be voided due to insufficient funds.
+        invoice:
+          $ref: '#/components/schemas/InvoiceRef'
+        costAccount:
+          $ref: '#/components/schemas/CostAccountRef'
+        vendor:
+          $ref: '#/components/schemas/VendorRef'
+    PaymentBatch:
+      type: object
+      description: A batch of payments made with Vic.
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: The id of the payment batch in Vic.
+        name:
+          type: string
+          description: The name of the payment batch that the accountant has set.
+        companyId:
+          type: string
+          description: The id of the `Company` in Vic.
+        processedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            The date time of when the payment was sent to the payment processor.
+        approvedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            The payment approver has approved the batch of payments and will be
+            scheduled to be processed.
+        rejectedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            This is set when the payment approver has rejected the entire batch
+            of payments. Each `Payment` and `Credit` will have their
+            `rejectedAt` fields also set.
+        voidedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            This is set when an entire batch of payments was voided.
+            Generally this would happen due to a `Vendor` missing address
+            information or a malformed `Invoice` was trying to be paid. Other
+            cases could cause this to be voided due to insufficient funds.
+        status:
+          $ref: '#/components/schemas/PaymentBatchStatus'
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/Payment'
+        credits:
+          type: array
+          items:
+            $ref: '#/components/schemas/Credit'
     InvoicePaymentInfo:
       type: object
       description: |

@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added new `#/components/schemas/InvoiceRef`.
 - Added new `#/components/schemas/CostAccountRef`.
 - Added new `#/components/schemas/VendorRef`.
+- Added new `#/components/schemas/PaymentStatus`.
+- Added new `#/components/schemas/CreditStatus`.
+- Added new `#/components/schemas/PaymentBatchStatus`.
+- Added new `#/components/schemas/Payment`.
+- Added new `#/components/schemas/Credit`.
+- Added new `#/components/schemas/PaymentBatch`.
 
 ## v0.17.1
 
