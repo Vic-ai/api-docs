@@ -2400,6 +2400,20 @@ components:
           type: string
           nullable: true
           maxLength: 255
+    VendorRef:
+      type: object
+      description: A reference to a `Vendor`.
+      properties:
+        internalId:
+          description: The id of the `Vendor` in Vic.
+          type: string
+          nullable: true
+          maxLength: 255
+        externalId:
+          description: The id of the `Vendor` in the ERP.
+          type: string
+          nullable: true
+          maxLength: 255
     VendorLookup:
       type: object
       properties:

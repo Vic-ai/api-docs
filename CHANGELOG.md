@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Renamed `#/components/schemas/VendorRef` to `#/components/schemas/VendorLookup`.
 - Added new `#/components/schemas/InvoiceRef`.
 - Added new `#/components/schemas/CostAccountRef`.
+- Added new `#/components/schemas/VendorRef`.
 
 ## v0.17.1
 
