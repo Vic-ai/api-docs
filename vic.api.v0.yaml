@@ -2372,7 +2372,7 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/DimensionRef'
-    VendorRef:
+    VendorLookup:
       type: object
       properties:
         internalId:
@@ -2484,7 +2484,7 @@ components:
           nullable: true
         vendor:
           oneOf:
-            - $ref: '#/components/schemas/VendorRef'
+            - $ref: '#/components/schemas/VendorLookup'
           description: The vendor information that the invoice is from.
           nullable: true
         lineItems:
@@ -2570,7 +2570,7 @@ components:
           description: When the purchase order was created.
         vendor:
           allOf:
-            - $ref: '#/components/schemas/VendorRef'
+            - $ref: '#/components/schemas/VendorLookup'
           description: The vendor of the purchase order.
         lineItems:
           type: array
@@ -2621,7 +2621,7 @@ components:
           description: When the purchase order was created.
         vendor:
           allOf:
-            - $ref: '#/components/schemas/VendorRef'
+            - $ref: '#/components/schemas/VendorLookup'
           description: The vendor of the purchase order.
     CreatePurchaseOrderItem:
       type: object
