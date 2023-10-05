@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Changed `issuedOn` to be non nullable for `#/components/schemas/CreateInvoiceLineItem`.
 - Removed `costAccountExternalId` from `TrainingInvoiceUpsert` required fields.
 - Renamed `#/components/schemas/VendorRef` to `#/components/schemas/VendorLookup`.
+- Added new `#/components/schemas/InvoiceRef`.
 
 ## v0.17.1
 

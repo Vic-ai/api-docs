@@ -2372,6 +2372,20 @@ components:
           nullable: true
           items:
             $ref: '#/components/schemas/DimensionRef'
+    InvoiceRef:
+      type: object
+      description: A reference to an `Invoice`.
+      properties:
+        internalId:
+          description: The id of the `Invoice` in Vic.
+          type: string
+          nullable: true
+          maxLength: 255
+        externalId:
+          description: The id of the `Invoice` in the ERP.
+          type: string
+          nullable: true
+          maxLength: 255
     VendorLookup:
       type: object
       properties:
