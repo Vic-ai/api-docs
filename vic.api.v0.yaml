@@ -3275,6 +3275,7 @@ components:
         - transactionType
         - vendorExternalId
         - externalUpdatedAt
+        - refNumber
       properties:
         transactionType:
           $ref: '#/components/schemas/TransactionType'
