@@ -1389,6 +1389,23 @@ paths:
         default:
           $ref: "#/components/responses/ErrorResponse"
   /purchaseOrders:
+    get:
+      description: List purchase orders.
+      summary: List purchase orders
+      operationId: listPurchaseOrders
+      tags:
+        - PurchaseOrders
+      parameters:
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+        - $ref: '#/components/parameters/SinceFilter'
+        - $ref: '#/components/parameters/UptoFilter'
+        - $ref: '#/components/parameters/PurchaseOrderStatusFilter'
+      responses:
+        "200":
+          $ref: "#/components/responses/PurchaseOrdersResponse"
+        default:
+          $ref: "#/components/responses/ErrorResponse"
     post:
       description: |
         Create a purchase order.
@@ -1833,6 +1850,22 @@ components:
       schema:
         type: string
         format: date-time
+    UptoFilter:
+      name: upto
+      in: query
+      description: |
+        Datetime value for decremental updates.
+      required: false
+      schema:
+        type: string
+        format: date-time
+    PurchaseOrderStatusFilter:
+      name: status
+      in: query
+      description: selects the status of purchase orders which are to be searched
+      required: false
+      schema:
+        $ref: '#/components/schemas/PurchaseOrderStatus'
     InvoiceStateFilter:
       name: state
       in: query
@@ -3197,6 +3230,10 @@ components:
           type: array
           items:
             $ref: "#/components/schemas/PurchaseOrderLineItem"
+    PurchaseOrders:
+      type: array
+      items:
+        $ref: '#/components/schemas/PurchaseOrder'
     PurchaseOrderRequestor:
       type: object
       description: The person or entity who requested the purchase order.
@@ -4692,6 +4729,15 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/CostAccounts"
+    PurchaseOrdersResponse:
+      description: A paged array of purchase orders
+      headers:
+        x-next:
+          $ref: "#/components/headers/NextPageToken"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/PurchaseOrders"
     PurchaseOrderResponse:
       description: The purchase order.
       content:
