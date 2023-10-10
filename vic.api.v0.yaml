@@ -1309,8 +1309,6 @@ paths:
           $ref: "#/components/responses/PurchaseOrdersResponse"
         default:
           $ref: "#/components/responses/ErrorResponse"
-
-      
     post:
       description: |
         Create a purchase order.
@@ -1770,12 +1768,7 @@ components:
       description: selects the status of purchase orders which are to be searched
       required: false
       schema:
-        anyOf:
-          - $ref: '#/components/schemas/PurchaseOrderStatus'
-          - enum:
-            - open
-            - closed
-
+        $ref: '#/components/schemas/PurchaseOrderStatus'
     InvoiceStateFilter:
       name: state
       in: query
@@ -4486,7 +4479,6 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/PurchaseOrders"
-
     PurchaseOrderResponse:
       description: The purchase order.
       content:
