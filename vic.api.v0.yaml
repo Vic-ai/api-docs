@@ -3110,6 +3110,8 @@ components:
           type: string
           nullable: true
         issueDate:
+          description: needs to be equal or before the current value (if updating)
+            or any value (if creating or updating null issue_date value)
           type: string
           format: date
           nullable: true
