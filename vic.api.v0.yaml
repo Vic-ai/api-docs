@@ -3403,25 +3403,6 @@ components:
           type: string
           format: decimal
           nullable: true
-    CreateTaxCode:
-      required:
-        - code
-        - decimal
-      properties:
-        code:
-          type: string
-          maxLength: 255
-        description:
-          type: string
-          maxLength: 255
-        rate:
-          type: number
-        internalId:
-          $ref: '#/components/schemas/InternalId'
-        internalUpdatedAt:
-          type: string
-          description: Is in UTC.
-          format: date-time
     VatCode:
       type: object
       required:
