@@ -3261,7 +3261,7 @@ components:
           nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
-      required: [costAccountExternalId, amount]
+      required: [amount]
       properties:
         index:
           description: |
