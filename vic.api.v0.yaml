@@ -3863,8 +3863,8 @@ components:
     InvoiceItemLineType:
       type: string
       description: The type of invoice item line.
-      enum: [ITEM, EXPENSE]
-      default: EXPENSE
+      enum: [item, expense]
+      default: expense
     CustomField:
       type: object
       properties:
