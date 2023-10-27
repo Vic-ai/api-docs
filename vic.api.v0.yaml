@@ -3071,7 +3071,7 @@ components:
           minItems: 1
           uniqueItems: true
           items:
-            $ref: '#/components/schemas/InvoiceLineItem'
+            $ref: '#/components/schemas/TrainingInvoiceLineItem'
         externalData:
           allOf:
             - $ref: '#/components/schemas/ExternalData'
@@ -3259,6 +3259,14 @@ components:
           allOf:
             - $ref: '#/components/schemas/MonetaryValue'
           nullable: true
+    TrainingInvoiceLineItem:
+      allOf:
+        - $ref: '#/components/schemas/InvoiceLineItem'
+        - type: object
+          properties:
+            lineType:
+              $ref: '#/components/schemas/InvoiceItemLineType'
+              nullable: true
     TrainingInvoiceLineItemUpsert:
       type: object
       required: [amount]
@@ -3315,6 +3323,8 @@ components:
         lineItemIsVatOnly:
           type: boolean
           default: false
+        lineType:
+          $ref: '#/components/schemas/InvoiceItemLineType'
         quantityInvoiced:
           description: The quantity of things that were invoiced.
           type: string
@@ -3855,6 +3865,11 @@ components:
       description: The type of invoice transaction.
       enum: [INVOICE, CREDITNOTE]
       default: INVOICE
+    InvoiceItemLineType:
+      type: string
+      description: The type of invoice item line.
+      enum: [ITEM, EXPENSE]
+      default: EXPENSE
     CustomField:
       type: object
       properties:

@@ -52,7 +52,8 @@ curl -X PUT 'https://api.us.stage.vic.ai/v0/trainingInvoice/invoice-123' \
                 },
                 \"billable\": false,
                 \"dimensionsExternalIds\": [\"dimension-external-id-1\"],
-                \"costAccountExternalId\": \"cost-account-external-id-1\"
+                \"costAccountExternalId\": \"cost-account-external-id-1\",
+                \"lineType\": \"item\"
             }
         ]
     }";type=application/json'
