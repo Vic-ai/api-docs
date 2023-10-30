@@ -69,7 +69,8 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                     {
                         "externalId": "prod_470"
                     }
-                ]
+                ],
+                "lineType": "item"
             },
             {
                 "amount": "500",
@@ -88,7 +89,8 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                     {
                         "externalId": "dep_9"
                     }
-                ]
+                ],
+                "lineType": "expense"
             }
         ]
         }'
