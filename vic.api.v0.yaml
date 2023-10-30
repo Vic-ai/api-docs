@@ -2277,6 +2277,13 @@ components:
           nullable: true
           description: |
             The date time of when the payment was sent to the payment processor.
+        completedAt:
+          type: string
+          format: date-time
+          nullable: true
+          description: |
+            The date time of when all of the payments have been submitted to the
+            bank accounts.
         approvedAt:
           type: string
           format: date-time
