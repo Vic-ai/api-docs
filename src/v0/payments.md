@@ -1,18 +1,18 @@
 # Payments
 
-## List Batch Payments
+## List Payment Batches
 
 ```
-GET /v0/batchPayments
+GET /v0/paymentBatches
 ```
 
 
-## Get Batch Payment
+## Get Payment Batch
 
 ```
-GET /v0/batchPayments/{batchPaymentId}
+GET /v0/paymentBatches/{id}
 ```
 
 ## Webhook Events
 
-See [webhooks](./webhooks.md#batch-payment-processed) for more information.
+See [webhooks](./webhooks.md#payment-batch-processed) for more information.

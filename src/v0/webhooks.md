@@ -20,7 +20,7 @@ There will be a top level field `event` that describes what the type of event
 is. There will also be a `data` envelope that will contain the data for the
 event.
 
-## Batch Payment Processed
+## Payment Batch Processed
 
 This event is emitted from the Vic system when a batch of payments has been sent
 to the payment processor and a successful response has been obtained. For more
@@ -29,7 +29,7 @@ information about the structure of what is in the `data` envelope, see
 
 ```json
 {
-  "event": "batch_payment_processed",
+  "event": "payment_batch_processed",
   "data": {
     "id": "f1c2384f-57d8-41fe-afa6-17caf62b2a3f",
     "name": "Batch 2023-10-01 001",
