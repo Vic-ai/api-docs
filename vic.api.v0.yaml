@@ -61,6 +61,8 @@ tags:
       - Invoices which have not yet been posted to the ERP system.
       - Invoices which have been posted to the ERP system.
       By default, access to unposted invoices is restricted.
+  - name: Payments
+    description: The payment module of the Vic.ai system.
   - name: PaymentTerms
     description: |
       Payment Terms are part of your *ERP* **Masterdata**, that represent
@@ -1664,6 +1666,68 @@ paths:
           $ref: '#/components/responses/PaymentTermDeletedResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /paymentBatches:
+    get:
+      description: List all payment batches.
+      summary: List all payment batches
+      operationId: listPaymentBatches
+      tags: [Payments]
+      parameters:
+        - name: completedAtOrAfter
+          in: query
+          required: false
+          description: |
+            Filter batches that were completed at or after the date time
+            provided. This can be used in combination with `completedAtOrBefore`.
+          schema:
+            type: string
+            format: date-time
+        - name: completedAtOrBefore
+          in: query
+          required: false
+          description: |
+            Filter batches that were completed at or before the date time
+            provided. This can be used in combination with `completedAtOrAfter`.
+          schema:
+            type: string
+            format: date-time
+        - $ref: '#/components/parameters/PaymentBatchStatusFilter'
+        - $ref: '#/components/parameters/PagingLimit'
+        - $ref: '#/components/parameters/PagingCursor'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentBatchListResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /paymentBatches/{id}:
+    get:
+      description: |
+        The batches returned may include payments and credits that could be
+        `rejected` or `voided`. This is by design. If you are synchronizing with
+        an ERP, it is most likely safe to discard the `rejected` payments or
+        credits. When payments or credits are `voided`, this can happen for a
+        variety of reasons.
+        <br/> <br/>
+        The payment provider can not process that payment due to an error.
+        <br/>
+        The vendor attached to that payment is missing required information or
+        is no longer valid.
+        <br/>
+        A stop payment was issued outside of Vic and support has had to go
+        remediate.
+        <br/> <br/>
+        By no means is this list exhaustive and if you have questions, please
+        reach out to support.
+      summary: Get a payment batch
+      operationId: getPaymentBatch
+      tags: [Payments]
+      parameters:
+        - $ref: '#/components/parameters/PaymentBatchId'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentBatchResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   securitySchemes:
     BearerAuth:
@@ -1674,6 +1738,9 @@ components:
       description: A link to the next page of responses
       schema:
         type: string
+  #
+  # Shared Common Parameters
+  #
   parameters:
     PathId:
       name: id
@@ -1718,6 +1785,23 @@ components:
       schema:
         type: string
         format: date-time
+    PaymentBatchId:
+      name: id
+      in: path
+      description: The ID of the payment batch.
+      required: true
+      schema:
+        type: string
+    PaymentBatchStatusFilter:
+      name: status
+      in: query
+      description: |
+        Selects the payment batches that match the status provided. When left
+        unspecified, it is the same as if `all` was specified.
+      schema:
+        anyOf:
+          - $ref: '#/components/schemas/PaymentBatchStatus'
+          - enum: [all]
     PurchaseOrderStatusFilter:
       name: status
       in: query
@@ -1824,6 +1908,9 @@ components:
       description: The id of the payment term
       schema:
         type: string
+  #
+  # Shared Schemas
+  #
   schemas:
     InternalId:
       description: The internal id Vic uses for the record.
@@ -2318,6 +2405,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Credit'
+    PaymentBatches:
+      type: array
+      items:
+        $ref: '#/components/schemas/PaymentBatch'
     InvoicePaymentInfo:
       type: object
       description: |
@@ -4273,6 +4364,9 @@ components:
       properties:
         bolNumber:
           type: string
+  #
+  # The requests
+  #
   requestBodies:
     CreatePurchaseOrderRequest:
       description: Create a purchase order.
@@ -4358,6 +4452,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UpdatePaymentTerm'
+  #
+  # The responses
+  #
   responses:
     ForbiddenResponse:
       description: The request was forbidden.
@@ -4722,3 +4819,18 @@ components:
             $ref: '#/components/schemas/PaymentTerm'
     PaymentTermDeletedResponse:
       description: Payment term was successfully deleted.
+    PaymentBatchListResponse:
+      description: A paged array of Payment Batches
+      headers:
+        x-next:
+          $ref: '#/components/headers/NextPageToken'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentBatches'
+    PaymentBatchResponse:
+      description: A single Payment Batch.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentBatch'

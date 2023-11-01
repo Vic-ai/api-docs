@@ -21,6 +21,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added new `#/components/schemas/Payment`.
 - Added new `#/components/schemas/Credit`.
 - Added new `#/components/schemas/PaymentBatch`.
+- Added `listPaymentBatches` operation.
+- Added `getPaymentBatch` operation.
 
 ## v0.17.1
 
