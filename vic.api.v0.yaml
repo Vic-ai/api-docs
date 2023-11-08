@@ -1040,6 +1040,46 @@ paths:
         default:
           $ref: '#/components/responses/ErrorResponse'
       callbacks:
+        events:
+          https://mycallbackurl.com/events:
+            post:
+              description: |
+                This is the end point where all newer `V1` events will be sent
+                to. The integration must respond to this callback quickly and if
+                necessary update the Vic system later.
+                > **Note**: The callback timeout is 15 seconds. Once the timeout
+                > has been reached, the request will be considered a failure and
+                > a retry will be attempted.
+                * All `2XX` responses will be treated as successful.
+                * All `4XX` responses will be treated as successful. If
+                  something is to be rejected, you will need to make the
+                  appropriate calls to the Vic API to complete the asynchronous
+                  handshake. Example: confirming or rejecting an invoice post.
+                * All `5XX` responses will be treated as a failure and will be
+                  retried with an exponential backoff. Once the retries have
+                  been exhausted, the event is  discarded.
+              parameters:
+                - $ref: '#/components/parameters/SubscriptionToken'
+                - $ref: '#/components/parameters/RequestId'
+              requestBody:
+                required: true
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/WebhookEvent'
+              responses:
+                2XX:
+                  description: |
+                    Event was received successfully. The body of the response
+                    will be ingored.
+                4XX:
+                  description: |
+                    Event was received successfully. The body of the response
+                    will be ingored.
+                default:
+                  description: |
+                    Event was not received and a retry will be attempted later.
+                    The body of the response will be ingored.
         vendorNew:
           https://mycallbackurl.com/vendorNew:
             post:
@@ -1054,7 +1094,7 @@ paths:
                 object `externalId` will not be specified, and the error message
                 you specify will be surfaced to the user.
                 A 400 response indicates a data validation error.
-                This callback will timeout after 5 seconds.
+                *Note:* This callback will timeout after 15 seconds.
               parameters:
                 - $ref: '#/components/parameters/SubscriptionToken'
                 - $ref: '#/components/parameters/RequestId'
@@ -1859,6 +1899,7 @@ components:
         Which system to use for id or updatedAt filters.
       required: false
       schema:
+        type: string
         enum: [INTERNAL, EXTERNAL, internal, external]
         default: EXTERNAL
     SortOrder:
@@ -1867,6 +1908,7 @@ components:
       description: what sort order should be used for queries
       required: false
       schema:
+        type: string
         enum: [ASCENDING, DESCENDING]
         default: ASCENDING
     RequestId:
@@ -2233,6 +2275,7 @@ components:
           maxLength: 255
           nullable: true
     CreditStatus:
+      type: string
       enum: [pending_approval, rejected, approved, acknowledged, voided]
     Credit:
       type: object
@@ -2278,12 +2321,15 @@ components:
         vendor:
           $ref: '#/components/schemas/VendorRef'
     PaymentKind:
+      type: string
       description: The payment kind.
       enum: [ACH, CHECK, IBAN, BBAN, PLUSGIRO, BANKGIRO]
     PaymentBatchStatus:
+      type: string
       description: The status of the payment batch.
       enum: [pending_approval, rejected, approved, voided]
     PaymentStatus:
+      type: string
       enum: [pending_approval, rejected, approved, acknowledged, voided]
     Payment:
       type: object
@@ -4025,6 +4071,7 @@ components:
           example: '2021-06-29T17:20:53.154'
     SubscriptionUpsert:
       type: object
+      required: [callbackUrl, accessToken, expiresAt]
       properties:
         callbackUrl:
           type: string
@@ -4036,7 +4083,16 @@ components:
         expiresAt:
           type: string
           format: date-time
-      required: [callbackUrl, accessToken, expiresAt]
+        events:
+          description: |
+            The list of events to subscribe to. If you wish to subscribe to all
+            events simply pass `["all"]`. If you are updating the subscription
+            and wish to leave the events subscribed to alone, this field should
+            be left unspecified or null.
+          nullable: true
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEventName'
     Error:
       description: |
         generic error message in JSON format.  Note the 'code' field should
@@ -4291,10 +4347,12 @@ components:
         access_token:
           type: string
         token_type:
+          type: string
           enum: [Bearer]
         expires_in:
           type: integer
     UnsubscribeResult:
+      type: string
       enum: [OK]
     Tags:
       type: array
@@ -4364,6 +4422,26 @@ components:
       properties:
         bolNumber:
           type: string
+    WebhookEventName:
+      type: string
+      enum:
+        - all
+        - payment_batch_processed
+        - vendorNew
+        - invoicePost
+        - invoiceTransfer
+        - syncRequest
+    WebhookEvent:
+      type: object
+      properties:
+        event:
+          $ref: '#/components/schemas/WebhookEventName'
+        data:
+          oneOf:
+            - $ref: '#/components/schemas/PaymentBatch'
+            - $ref: '#/components/schemas/Invoice'
+            - $ref: '#/components/schemas/Vendor'
+
   #
   # The requests
   #
