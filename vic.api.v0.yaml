@@ -77,6 +77,7 @@ tags:
     description: |
       Tags are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with certain entities, like Vendor.
+  - name: TaxCodes
   - name: TrainingInvoices
     description: |
       Invoices that are being used to train Vic.ai's machine learning system.
@@ -2559,7 +2560,8 @@ components:
           maxLength: 255
           description: The description of the purchase order.
         requestor:
-          $ref: '#/components/schemas/PurchaseOrderRequestor'
+          allOf:
+            - $ref: '#/components/schemas/PurchaseOrderRequestor'
           nullable: true
         createdOn:
           type: string
@@ -2609,7 +2611,8 @@ components:
           maxLength: 255
           description: The description of the purchase order.
         requestor:
-          $ref: '#/components/schemas/PurchaseOrderRequestor'
+          allOf:
+            - $ref: '#/components/schemas/PurchaseOrderRequestor'
           nullable: true
         createdOn:
           type: string
@@ -3242,7 +3245,8 @@ components:
             - $ref: '#/components/schemas/MonetaryValue'
           nullable: true
         lineType:
-          $ref: '#/components/schemas/InvoiceItemLineType'
+          allOf:
+            - $ref: '#/components/schemas/InvoiceItemLineType'
           nullable: true
         poLineNumber:
           description: The line number in a matched purchase order.
