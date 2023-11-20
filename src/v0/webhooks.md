@@ -132,6 +132,11 @@ to the payment processor and a successful response has been obtained. For more
 information about the structure of what is in the `data` envelope, see
 [the payments](./payments.md) documentation.
 
+The payload for this event matches almost exactly what you will receive in the
+`getPaymentBatch` operation. With one caveat, only the approved credits and
+payments will be sent. Voided and rejected payments will not be sent. If you
+need these values, you should call `getPaymentBatch` in order to fetch them.
+
 ```json
 {
   "event": "payment_batch_processed",
@@ -170,7 +175,25 @@ information about the structure of what is in the `data` envelope, see
       }
     ],
     "credits": [
-      // credit object
+      {
+        "id": "091f257a-9b6e-4797-bcb6-ccd36dda260f",
+        "amount": "20.00",
+        "discountAmount": "0.00",
+        "currencyId": "USD",
+        "status": "approved",
+        "voidedAt": null,
+        "rejectedAt": null,
+        "approvedAt": "2023-10-01T19:12:00Z",
+        "fundedAt": null,
+        "invoice": {
+          "internalId": "900",
+          "externalId": "credit-note-id-in-erp"
+        },
+        "vendor": {
+          "internalId": "409",
+          "externalId": "vendor-id-in-erp"
+        },
+      }
     ]
   }
 }
