@@ -93,13 +93,17 @@ The receiver is expected to handle everything asynchronously via this method. We
 do not parse parse the response body and will ignore it.
 
 * All `2XX` responses will be treated as successful.
-* All `4XX` responses will be treated as successful. If something is to be
+* `401` and `403` responses will be treated as failures and be retried with an
+  exponential backoff. Once the retries have been exhausted, the event is
+  discarded.
+* All other `4XX` responses will be treated as successful. If something is to be
   rejected, you will need to make the appropriate calls to the Vic API to
   complete the asynchronous handshake. Example: confirming or rejecting an
   invoice post.
 * All `5XX` responses will be treated as a failure and will be retried with an
   exponential backoff. Once the retries have been exhausted, the event is
   discarded.
+* All events retried will be reattempted at least 5 times.
 
 > **NOTE**: The integrating system has 15 seconds to respond. After the time has
 > passed it will be considered a failure, and a retry will be sent for events
