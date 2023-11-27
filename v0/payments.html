@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>V0 - Vic API Documentation</title>
+        <title>Payments - Vic API Documentation</title>
 
 
         <!-- Custom HTML head -->
@@ -88,7 +88,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../v0/index.html" class="active"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="../v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li><li class="chapter-item expanded "><a href="../v0/payments.html"><strong aria-hidden="true">3.6.</strong> Payments</a></li><li class="chapter-item expanded "><a href="../v0/webhooks.html"><strong aria-hidden="true">3.7.</strong> Webhooks</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="../CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="../authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="../v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="../v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="../v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="../v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="../v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li><li class="chapter-item expanded "><a href="../v0/payments.html" class="active"><strong aria-hidden="true">3.6.</strong> Payments</a></li><li class="chapter-item expanded "><a href="../v0/webhooks.html"><strong aria-hidden="true">3.7.</strong> Webhooks</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -171,17 +171,158 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="v0"><a class="header" href="#v0">V0</a></h1>
+                        <h1 id="payments"><a class="header" href="#payments">Payments</a></h1>
+<h2 id="list-payment-batches"><a class="header" href="#list-payment-batches">List Payment Batches</a></h2>
+<pre><code>GET /v0/paymentBatches
+</code></pre>
+<p><a href="../vic.api.v0.html#/Payments/listPaymentBatches">Open API</a></p>
+<p>List all of the payment batches in the system.</p>
+<p>All payments and credits are returned in these calls. Special attention should
+be paid attention to the <code>status</code>, <code>rejectedAt</code>, <code>voidedAt</code>, and <code>approvedAt</code>.</p>
+<h3 id="example"><a class="header" href="#example">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/paymentBatches' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
+    &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
+    &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;rejectedAt&quot;: null,
+    &quot;voidedAt&quot;: null,
+    &quot;status&quot;: &quot;approved&quot;,
+    &quot;companyId&quot;: &quot;123&quot;,
+    &quot;payments&quot;: [
+      {
+        &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
+        &quot;amount&quot;: &quot;200.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;costAccount&quot;: {
+          &quot;internalId&quot;: &quot;1&quot;,
+          &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+        },
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;876&quot;,
+          &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ],
+    &quot;credits&quot;: [
+      {
+        &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
+        &quot;amount&quot;: &quot;20.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;900&quot;,
+          &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ]
+  }
+]
+</code></pre>
+<h2 id="get-payment-batch"><a class="header" href="#get-payment-batch">Get Payment Batch</a></h2>
+<pre><code>GET /v0/paymentBatches/{id}
+</code></pre>
+<p><a href="../vic.api.v0.html#/Payments/getPaymentBatch">Open API</a></p>
+<p>All payments and credits are returned in these calls. Special attention should
+be paid attention to the <code>status</code>, <code>rejectedAt</code>, <code>voidedAt</code>, and <code>approvedAt</code>.</p>
+<h3 id="example-1"><a class="header" href="#example-1">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/paymentBatches/1f9c36dc-4be4-488b-bead-b3f73e0313c9' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
+  &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
+  &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+  &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+  &quot;rejectedAt&quot;: null,
+  &quot;voidedAt&quot;: null,
+  &quot;status&quot;: &quot;approved&quot;,
+  &quot;companyId&quot;: &quot;123&quot;,
+  &quot;payments&quot;: [
+    {
+      &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
+      &quot;amount&quot;: &quot;200.00&quot;,
+      &quot;discountAmount&quot;: &quot;0.00&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;status&quot;: &quot;approved&quot;,
+      &quot;voidedAt&quot;: null,
+      &quot;rejectedAt&quot;: null,
+      &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+      &quot;fundedAt&quot;: null,
+      &quot;costAccount&quot;: {
+        &quot;internalId&quot;: &quot;1&quot;,
+        &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+      },
+      &quot;invoice&quot;: {
+        &quot;internalId&quot;: &quot;876&quot;,
+        &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+      },
+      &quot;vendor&quot;: {
+        &quot;internalId&quot;: &quot;409&quot;,
+        &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+      },
+    }
+  ],
+  &quot;credits&quot;: [
+    {
+      &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
+      &quot;amount&quot;: &quot;20.00&quot;,
+      &quot;discountAmount&quot;: &quot;0.00&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;status&quot;: &quot;approved&quot;,
+      &quot;voidedAt&quot;: null,
+      &quot;rejectedAt&quot;: null,
+      &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+      &quot;fundedAt&quot;: null,
+      &quot;invoice&quot;: {
+        &quot;internalId&quot;: &quot;900&quot;,
+        &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+      },
+      &quot;vendor&quot;: {
+        &quot;internalId&quot;: &quot;409&quot;,
+        &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+      },
+    }
+  ]
+}
+</code></pre>
+<h2 id="webhook-events"><a class="header" href="#webhook-events">Webhook Events</a></h2>
+<p>See <a href="./webhooks.html#payment-batch-processed">webhooks</a> for more information.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../authentication/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../v0/vendor_groups/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next prefetch" href="../vic.api.v0.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../v0/webhooks.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -191,11 +332,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../authentication/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../v0/vendor_groups/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next prefetch" href="../vic.api.v0.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../v0/webhooks.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>

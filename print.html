@@ -89,7 +89,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li></ol></li></ol>
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="index.html">Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">References</li><li class="chapter-item expanded "><a href="CHANGELOG.html"><strong aria-hidden="true">1.</strong> Changelog</a></li><li class="chapter-item expanded "><a href="authentication/index.html"><strong aria-hidden="true">2.</strong> Authentication</a></li><li class="chapter-item expanded "><a href="v0/index.html"><strong aria-hidden="true">3.</strong> V0</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="vic.api.v0.html"><strong aria-hidden="true">3.1.</strong> Open API Spec</a></li><li class="chapter-item expanded "><a href="v0/invoices/index.html"><strong aria-hidden="true">3.2.</strong> Invoices</a></li><li class="chapter-item expanded "><a href="v0/training_invoices/index.html"><strong aria-hidden="true">3.3.</strong> Training Invoices</a></li><li class="chapter-item expanded "><a href="v0/purchase_orders/index.html"><strong aria-hidden="true">3.4.</strong> Purchase Orders</a></li><li class="chapter-item expanded "><a href="v0/vendor_groups/index.html"><strong aria-hidden="true">3.5.</strong> Vendor Groups</a></li><li class="chapter-item expanded "><a href="v0/payments.html"><strong aria-hidden="true">3.6.</strong> Payments</a></li><li class="chapter-item expanded "><a href="v0/webhooks.html"><strong aria-hidden="true">3.7.</strong> Webhooks</a></li></ol></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -184,6 +184,18 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <li>Added <code>refNumber</code> to <code>TrainingInvoiceUpsert</code> required fields.</li>
 <li>Changed <code>issuedOn</code> to be non nullable for <code>#/components/schemas/CreateInvoiceLineItem</code>.</li>
 <li>Removed <code>costAccountExternalId</code> from <code>TrainingInvoiceUpsert</code> required fields.</li>
+<li>Renamed <code>#/components/schemas/VendorRef</code> to <code>#/components/schemas/VendorLookup</code>.</li>
+<li>Added new <code>#/components/schemas/InvoiceRef</code>.</li>
+<li>Added new <code>#/components/schemas/CostAccountRef</code>.</li>
+<li>Added new <code>#/components/schemas/VendorRef</code>.</li>
+<li>Added new <code>#/components/schemas/PaymentStatus</code>.</li>
+<li>Added new <code>#/components/schemas/CreditStatus</code>.</li>
+<li>Added new <code>#/components/schemas/PaymentBatchStatus</code>.</li>
+<li>Added new <code>#/components/schemas/Payment</code>.</li>
+<li>Added new <code>#/components/schemas/Credit</code>.</li>
+<li>Added new <code>#/components/schemas/PaymentBatch</code>.</li>
+<li>Added <code>listPaymentBatches</code> operation.</li>
+<li>Added <code>getPaymentBatch</code> operation.</li>
 </ul>
 <h2 id="v0171"><a class="header" href="#v0171">v0.17.1</a></h2>
 <ul>
@@ -1085,6 +1097,322 @@ group id cleared. The vendor will not be deleted.</p>
     --header 'Authorization: Bearer &lt;Bearer Token&gt;'
 </code></pre>
 <p>When successful, a <code>204</code> will be returned with an empty body.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="payments"><a class="header" href="#payments">Payments</a></h1>
+<h2 id="list-payment-batches"><a class="header" href="#list-payment-batches">List Payment Batches</a></h2>
+<pre><code>GET /v0/paymentBatches
+</code></pre>
+<p><a href="v0/../vic.api.v0.html#/Payments/listPaymentBatches">Open API</a></p>
+<p>List all of the payment batches in the system.</p>
+<p>All payments and credits are returned in these calls. Special attention should
+be paid attention to the <code>status</code>, <code>rejectedAt</code>, <code>voidedAt</code>, and <code>approvedAt</code>.</p>
+<h3 id="example-13"><a class="header" href="#example-13">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/paymentBatches' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<pre><code class="language-json">[
+  {
+    &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
+    &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
+    &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;rejectedAt&quot;: null,
+    &quot;voidedAt&quot;: null,
+    &quot;status&quot;: &quot;approved&quot;,
+    &quot;companyId&quot;: &quot;123&quot;,
+    &quot;payments&quot;: [
+      {
+        &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
+        &quot;amount&quot;: &quot;200.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;costAccount&quot;: {
+          &quot;internalId&quot;: &quot;1&quot;,
+          &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+        },
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;876&quot;,
+          &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ],
+    &quot;credits&quot;: [
+      {
+        &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
+        &quot;amount&quot;: &quot;20.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;900&quot;,
+          &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ]
+  }
+]
+</code></pre>
+<h2 id="get-payment-batch"><a class="header" href="#get-payment-batch">Get Payment Batch</a></h2>
+<pre><code>GET /v0/paymentBatches/{id}
+</code></pre>
+<p><a href="v0/../vic.api.v0.html#/Payments/getPaymentBatch">Open API</a></p>
+<p>All payments and credits are returned in these calls. Special attention should
+be paid attention to the <code>status</code>, <code>rejectedAt</code>, <code>voidedAt</code>, and <code>approvedAt</code>.</p>
+<h3 id="example-14"><a class="header" href="#example-14">Example</a></h3>
+<pre><code class="language-bash">curl --location --request GET 'https://api.us.dev.vic.ai/v0/paymentBatches/1f9c36dc-4be4-488b-bead-b3f73e0313c9' \
+    --header 'Accept: application/json' \
+    --header 'Authorization: Bearer &lt;Bearer Token&gt;'
+</code></pre>
+<pre><code class="language-json">{
+  &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
+  &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
+  &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+  &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+  &quot;rejectedAt&quot;: null,
+  &quot;voidedAt&quot;: null,
+  &quot;status&quot;: &quot;approved&quot;,
+  &quot;companyId&quot;: &quot;123&quot;,
+  &quot;payments&quot;: [
+    {
+      &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
+      &quot;amount&quot;: &quot;200.00&quot;,
+      &quot;discountAmount&quot;: &quot;0.00&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;status&quot;: &quot;approved&quot;,
+      &quot;voidedAt&quot;: null,
+      &quot;rejectedAt&quot;: null,
+      &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+      &quot;fundedAt&quot;: null,
+      &quot;costAccount&quot;: {
+        &quot;internalId&quot;: &quot;1&quot;,
+        &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+      },
+      &quot;invoice&quot;: {
+        &quot;internalId&quot;: &quot;876&quot;,
+        &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+      },
+      &quot;vendor&quot;: {
+        &quot;internalId&quot;: &quot;409&quot;,
+        &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+      },
+    }
+  ],
+  &quot;credits&quot;: [
+    {
+      &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
+      &quot;amount&quot;: &quot;20.00&quot;,
+      &quot;discountAmount&quot;: &quot;0.00&quot;,
+      &quot;currencyId&quot;: &quot;USD&quot;,
+      &quot;status&quot;: &quot;approved&quot;,
+      &quot;voidedAt&quot;: null,
+      &quot;rejectedAt&quot;: null,
+      &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+      &quot;fundedAt&quot;: null,
+      &quot;invoice&quot;: {
+        &quot;internalId&quot;: &quot;900&quot;,
+        &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+      },
+      &quot;vendor&quot;: {
+        &quot;internalId&quot;: &quot;409&quot;,
+        &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+      },
+    }
+  ]
+}
+</code></pre>
+<h2 id="webhook-events"><a class="header" href="#webhook-events">Webhook Events</a></h2>
+<p>See <a href="v0/./webhooks.html#payment-batch-processed">webhooks</a> for more information.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="webhooks"><a class="header" href="#webhooks">Webhooks</a></h1>
+<h2 id="subscriptions"><a class="header" href="#subscriptions">Subscriptions</a></h2>
+<p>You can subscribe to all events in the Vic API system or a subset of the
+<a href="v0/webhooks.html#events">events</a>. At the moment, each company may only have one subscription
+specified.</p>
+<h3 id="create-and-update-subscription"><a class="header" href="#create-and-update-subscription">Create and Update Subscription</a></h3>
+<p>To create or update a subscription with the Vic API, you can pass the following.</p>
+<pre><code class="language-sh">curl --request PUT \
+  --url http://api.us.dev.vic.ai/subscription \
+  --header 'Authorization: Bearer MYBEARERTOKEN' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
+  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
+  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;
+}'
+</code></pre>
+<p>If you wish to only subscribe to specific events you may pass an array of event
+names.</p>
+<pre><code class="language-sh">curl --request PUT \
+  --url http://api.us.stage.vic.ai/subscription \
+  --header 'Authorization: Bearer MYBEARERTOKEN' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
+  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
+  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;,
+  &quot;events&quot;: [&quot;payment_batch_processed&quot;]
+}'
+</code></pre>
+<p>If you need to update your subscription to receive all events after trimming it
+down, you may pass <code>&quot;events&quot;:[&quot;all&quot;]</code>. When passing <code>all</code>, it must be set by
+itself.</p>
+<pre><code class="language-sh">curl --request PUT \
+  --url http://api.us.stage.vic.ai/subscription \
+  --header 'Authorization: Bearer MYBEARERTOKEN' \
+  --header 'Accept: application/json' \
+  --header 'Content-Type: application/json' \
+  --data '{
+  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
+  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
+  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;,
+  &quot;events&quot;: [&quot;all&quot;]
+}'
+</code></pre>
+<h3 id="unsubscribe"><a class="header" href="#unsubscribe">Unsubscribe</a></h3>
+<p>You can delete a subscription by doing the following. Once the subscription is
+deleted, events will stop going to the callback url.</p>
+<pre><code class="language-sh">curl --request DELETE \
+  --url http://api.us.stage.vic.ai/subscription \
+  --header 'Authorization: Bearer MYBEARERTOKEN'
+</code></pre>
+<h2 id="events"><a class="header" href="#events">Events</a></h2>
+<p>These are the <code>V1</code> events you can subscribe to. These will be sent as a <code>POST</code>
+to <code>https://yourCallbackUrl/events</code>.</p>
+<ul>
+<li><code>all</code> - This is a special form, that specifies that you want all events sent
+to your webhook.</li>
+<li><a href="v0/webhooks.html#payment-batch-processed"><code>payment_batch_processed</code></a></li>
+</ul>
+<p>The following <code>V0</code> events may be specified. They will be sent to the original
+callback paths where the event name was in the path.</p>
+<ul>
+<li><code>vendorNew</code> - <code>POST</code> <code>https://yourCallbackUrl/vendorNew</code></li>
+<li><code>invoicePost</code> - <code>POST</code> <code>https://yourCallbackUrl/invoicePost</code></li>
+<li><code>invoiceTransfer</code> - <code>POST</code> <code>https://yourCallbackUrl/invoiceTransfer</code></li>
+<li><code>syncRequest</code> - <code>POST</code> <code>https://yourCallbackUrl/syncRequest</code></li>
+</ul>
+<h3 id="event-details"><a class="header" href="#event-details">Event Details</a></h3>
+<p>The newer webhook endpoints will be sent to <code>https://yourCallbackUrl/events</code>.
+The receiver is expected to handle everything asynchronously via this method. We
+do not parse parse the response body and will ignore it.</p>
+<ul>
+<li>All <code>2XX</code> responses will be treated as successful.</li>
+<li><code>401</code> and <code>403</code> responses will be treated as failures and be retried with an
+exponential backoff. Once the retries have been exhausted, the event is
+discarded.</li>
+<li>All other <code>4XX</code> responses will be treated as successful. If something is to be
+rejected, you will need to make the appropriate calls to the Vic API to
+complete the asynchronous handshake. Example: confirming or rejecting an
+invoice post.</li>
+<li>All <code>5XX</code> responses will be treated as a failure and will be retried with an
+exponential backoff. Once the retries have been exhausted, the event is
+discarded.</li>
+<li>All events retried will be reattempted at least 5 times.</li>
+</ul>
+<blockquote>
+<p><strong>NOTE</strong>: The integrating system has 15 seconds to respond. After the time has
+passed it will be considered a failure, and a retry will be sent for events
+going to <code>https://yourCallbackUrl/events</code>.</p>
+</blockquote>
+<p>The general structure of the webhook event will be as follows.</p>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;the_event_name&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;123&quot;,
+    &quot;something&quot;: &quot;value&quot;
+  }
+}
+</code></pre>
+<p>There will be a top level field <code>event</code> that describes what the type of event
+is. There will also be a <code>data</code> envelope that will contain the data for the
+event.</p>
+<h3 id="payment-batch-processed"><a class="header" href="#payment-batch-processed">Payment Batch Processed</a></h3>
+<p>This event is emitted from the Vic system when a batch of payments has been sent
+to the payment processor and a successful response has been obtained. For more
+information about the structure of what is in the <code>data</code> envelope, see
+<a href="v0/./payments.html">the payments</a> documentation.</p>
+<p>The payload for this event matches almost exactly what you will receive in the
+<code>getPaymentBatch</code> operation. With one caveat, only the approved credits and
+payments will be sent. Voided and rejected payments will not be sent. If you
+need these values, you should call <code>getPaymentBatch</code> in order to fetch them.</p>
+<pre><code class="language-json">{
+  &quot;event&quot;: &quot;payment_batch_processed&quot;,
+  &quot;data&quot;: {
+    &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
+    &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
+    &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+    &quot;rejectedAt&quot;: null,
+    &quot;voidedAt&quot;: null,
+    &quot;status&quot;: &quot;approved&quot;,
+    &quot;companyId&quot;: &quot;123&quot;,
+    &quot;payments&quot;: [
+      {
+        &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
+        &quot;amount&quot;: &quot;200.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;costAccount&quot;: {
+          &quot;internalId&quot;: &quot;1&quot;,
+          &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+        },
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;876&quot;,
+          &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ],
+    &quot;credits&quot;: [
+      {
+        &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
+        &quot;amount&quot;: &quot;20.00&quot;,
+        &quot;discountAmount&quot;: &quot;0.00&quot;,
+        &quot;currencyId&quot;: &quot;USD&quot;,
+        &quot;status&quot;: &quot;approved&quot;,
+        &quot;voidedAt&quot;: null,
+        &quot;rejectedAt&quot;: null,
+        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
+        &quot;fundedAt&quot;: null,
+        &quot;invoice&quot;: {
+          &quot;internalId&quot;: &quot;900&quot;,
+          &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+        },
+        &quot;vendor&quot;: {
+          &quot;internalId&quot;: &quot;409&quot;,
+          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        },
+      }
+    ]
+  }
+}
+</code></pre>
 
                     </main>
 
