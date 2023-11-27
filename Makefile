@@ -10,6 +10,9 @@ build: validate
 	mdbook build
 	python scripts/openapi-build.py --input-file vic.api.v0.yaml --output-dir public --output-name vic.api.v0
 
+format:
+	yamlfix vic.api.v0.yaml
+
 # Cleans the entire project of generated files.
 clean:
 	rm -rf public
@@ -17,5 +20,6 @@ clean:
 
 # Runs validations for the openapi specs
 validate:
+	yamlfix --check vic.api.v0.yaml
 	python -m openapi_spec_validator vic.api.v0.yaml
 	npx swagger-cli validate vic.api.v0.yaml

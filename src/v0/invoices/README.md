@@ -16,6 +16,10 @@ When creating an invoice, there are three steps to follow:
 
 You can make the id the internal id (from vic.ai) or the external id (from your system).
 
+### Uploads
+
+The maximum file size allowed to upload is 64MB.
+
 ### Example
 
 ```bash
@@ -65,7 +69,8 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                     {
                         "externalId": "prod_470"
                     }
-                ]
+                ],
+                "lineType": "item"
             },
             {
                 "amount": "500",
@@ -84,7 +89,8 @@ curl --location --request POST 'https://api.us.dev.vic.ai/v0/invoices' \
                     {
                         "externalId": "dep_9"
                     }
-                ]
+                ],
+                "lineType": "expense"
             }
         ]
         }'

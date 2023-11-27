@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Unreleased
+
+- Added `listPurchaseOrders` operation.
+- Added `refNumber` to `TrainingInvoiceUpsert` required fields.
+- Changed `issuedOn` to be non nullable for `#/components/schemas/CreateInvoiceLineItem`.
+- Removed `costAccountExternalId` from `TrainingInvoiceUpsert` required fields.
+
+## v0.17.1
+
+- Added `paymentTermId` to `#/components/schemas/Vendor`.
+- Added `paymentTermId` to `#/components/schemas/VendorUpsert`.
+- Added `paymentTermId` to `#/components/schemas/VendorCallback`.
+
+## v0.17.0
+
+- Allow nullable `productNumber` for `#/components/schemas/CreatePurchaseOrderItem`.
+- Allow nullable `productNumber` for `#/components/schemas/CreatePurchaseOrderLineItem`.
+- Allow nullable `productNumber` for `#/components/schemas/UpdatePurchaseOrderLineItem`.
+- Allow nullable `productNumber` for `#/components/schemas/PurchaseOrderLineItem`.
+- Fix definition of `requestor` for  `#/compnents/schemas/CreatePurchaseOrder` to be a `PurchaseOrderRequestor` object.
+- Added `selfAssessedUseTaxAmount` to `#/components/schemas/Invoice`.
+- Added `selfAssessedUseTaxAccount` to `#/components/schemas/Invoice`.
+- Added `createTaxCode` operation.
+- Added `getTaxCodes` operation.
+
 ## v0.16.0
 
 - Replaced `bolNumber` with `bolNumbers` for `#/components/schemas/Invoice`.
