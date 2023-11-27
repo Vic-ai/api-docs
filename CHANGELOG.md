@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added `refNumber` to `TrainingInvoiceUpsert` required fields.
 - Changed `issuedOn` to be non nullable for `#/components/schemas/CreateInvoiceLineItem`.
 - Removed `costAccountExternalId` from `TrainingInvoiceUpsert` required fields.
+- Renamed `#/components/schemas/VendorRef` to `#/components/schemas/VendorLookup`.
+- Added new `#/components/schemas/InvoiceRef`.
+- Added new `#/components/schemas/CostAccountRef`.
+- Added new `#/components/schemas/VendorRef`.
+- Added new `#/components/schemas/PaymentStatus`.
+- Added new `#/components/schemas/CreditStatus`.
+- Added new `#/components/schemas/PaymentBatchStatus`.
+- Added new `#/components/schemas/Payment`.
+- Added new `#/components/schemas/Credit`.
+- Added new `#/components/schemas/PaymentBatch`.
+- Added `listPaymentBatches` operation.
+- Added `getPaymentBatch` operation.
 
 ## v0.17.1
 
