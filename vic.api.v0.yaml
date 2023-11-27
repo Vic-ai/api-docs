@@ -1420,6 +1420,54 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /purchaseOrders/{purchaseOrderId}/close:
+    post:
+      description: Closes a purchase order.
+      summary: Close a purchase order
+      operationId: closePurchaseOrder
+      tags: [PurchaseOrders]
+      parameters:
+        - name: purchaseOrderId
+          in: path
+          required: true
+          description: The internal id of the purchase order.
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/PurchaseOrderResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /purchaseOrders/{purchaseOrderId}/open:
+    post:
+      description: Opens a purchase order.
+      summary: Opens a purchase order
+      operationId: openPurchaseOrder
+      tags: [PurchaseOrders]
+      parameters:
+        - name: purchaseOrderId
+          in: path
+          required: true
+          description: The internal id of the purchase order.
+          schema:
+            type: string
+      responses:
+        '200':
+          $ref: '#/components/responses/PurchaseOrderResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrderLineItems:
     post:
       description: |
