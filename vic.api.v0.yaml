@@ -2896,6 +2896,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillOfLadingNumber'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceFieldInput'
     CreateTaxCode:
       required: [code, description, rate]
       properties:
@@ -3200,6 +3204,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CustomField'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceField'
         language:
           type: string
           nullable: true
@@ -4292,6 +4300,39 @@ components:
         label:
           type: string
           maxLength: 255
+    InvoiceField:
+      type: object
+      properties:
+        label:
+          type: string
+          maxLength: 255
+          nullable: false
+        title:
+          type: string
+          maxLength: 255
+          nullable: false
+        type:
+          type: string
+          maxLength: 255
+          nullable: false
+        value:
+          type: string
+          maxLength: 255
+          nullable: true
+    InvoiceFieldInput:
+      type: object
+      required: [label, value]
+      properties:
+        label:
+          description: The label of the invoice field, prefixed with `custom:`.
+          maxLength: 255
+          nullable: false
+          type: string
+        value:
+          description: The value of the invoice field.
+          maxLength: 255
+          nullable: true
+          type: string
     VendorTaxInfo:
       type: object
       properties:
