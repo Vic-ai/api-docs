@@ -3492,6 +3492,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillOfLadingNumber'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceField'
     TrainingInvoiceUpsert:
       type: object
       required:
@@ -3573,6 +3577,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BillOfLadingNumber'
+        fields:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvoiceFieldInput'
     Invoices:
       type: array
       items:
@@ -4324,12 +4332,10 @@ components:
       required: [label, value]
       properties:
         label:
-          description: The label of the invoice field, prefixed with `custom:`.
           maxLength: 255
           nullable: false
           type: string
         value:
-          description: The value of the invoice field.
           maxLength: 255
           nullable: true
           type: string
