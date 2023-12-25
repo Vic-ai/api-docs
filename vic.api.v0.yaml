@@ -2577,7 +2577,8 @@ components:
             The amount of VAT. If the VAT amount is unknown, this should be left
             `NULL` or unspecified.
         rate:
-          $ref: '#/components/schemas/MonetaryValue'
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
           nullable: true
           description: |
             The amount of VAT percentage rate. If the VAT rate is unknown, this should be left
