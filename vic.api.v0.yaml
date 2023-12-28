@@ -3184,6 +3184,10 @@ components:
           allOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of the invoice, excluding tax.
+        amountTax:
+          allOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+          description: The total amount of tax on the invoice.
         transactionType:
           $ref: '#/components/schemas/TransactionType'
         refNumber:
@@ -3603,6 +3607,10 @@ components:
           type: integer
         amount:
           type: number
+        amountTax:
+          allOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+          description: The amount of tax on the invoice line item.
         description:
           type: string
         comment:
