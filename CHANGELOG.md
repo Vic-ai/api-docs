@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Unreleased
 
 - Added `rate` to `#/components/schemas/LineItemVat`
+- Added `paymentTermId` to `#/components/schemas/Invoice`
 
 ## v0.18.0
 
