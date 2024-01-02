@@ -3246,6 +3246,11 @@ components:
           nullable: true
           maxLength: 255
           description: The id of the invoice within the ERP system.
+        paymentTermId:
+          description: The id of the `PaymentTerm` a vendor uses.
+          type: string
+          format: uuid
+          nullable: true
         paymentTerm:
           oneOf:
             - $ref: '#/components/schemas/InvoicePaymentTerm'
