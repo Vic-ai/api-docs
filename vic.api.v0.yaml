@@ -2576,6 +2576,12 @@ components:
           description: |
             The amount of VAT. If the VAT amount is unknown, this should be left
             `NULL` or unspecified.
+        rate:
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+          nullable: true
+          description: |
+            The amount of VAT percentage. If the VAT percentage is unknown, this should be left `NULL` or unspecified.
     CreatePaymentTerm:
       type: object
       required: [name, daysToPay]
