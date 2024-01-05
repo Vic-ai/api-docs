@@ -9,6 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added `rate` to `#/components/schemas/LineItemVat`
 - Added `paymentTermId` to `#/components/schemas/Invoice`
+- Fixed missing `internalUpdateAt` and `externalUpdatedAt` to `#/components/schemas/Invoice`.
+- Fixed missing `externalUpdatedAt` to `#/components/schemas/TrainingInvoice`.
+- Clarified descriptions for `internalUpdatedAt` and `externalUpdatedAt` fields.
 
 ## v0.18.0
 

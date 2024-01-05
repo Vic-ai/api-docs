@@ -3241,6 +3241,10 @@ components:
           example: Millum
         internalId:
           type: string
+        internalUpdatedAt:
+          type: string
+          description: The date time in UTC when the record was updated at.
+          format: date-time
         externalId:
           type: string
           nullable: true
@@ -3251,6 +3255,12 @@ components:
           type: string
           format: uuid
           nullable: true
+        externalUpdatedAt:
+          type: string
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
+          format: date-time
         paymentTerm:
           oneOf:
             - $ref: '#/components/schemas/InvoicePaymentTerm'
@@ -3503,6 +3513,12 @@ components:
           allOf:
             - $ref: '#/components/schemas/ExternalData'
           nullable: true
+        externalUpdatedAt:
+          type: string
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
+          format: date-time
         bolNumbers:
           type: array
           items:
@@ -3586,7 +3602,9 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: Does not have UTC normalization.
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         bolNumbers:
           type: array
@@ -3773,14 +3791,16 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: Is in UTC.
+          description: The date time in UTC when the record was updated at.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: Does not have UTC normalization.
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         code:
           type: string
@@ -3826,7 +3846,9 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: Does not have UTC normalization.
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         activeStartingAt:
           type: string
@@ -3925,14 +3947,16 @@ components:
           $ref: '#/components/schemas/InternalId'
         internalUpdatedAt:
           type: string
-          description: Is in UTC.
+          description: The date time in UTC when the record was updated at.
           format: date-time
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
           type: string
           format: date-time
-          description: Does not have UTC normalization.
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         name:
           type: string
@@ -4008,7 +4032,9 @@ components:
         externalUpdatedAt:
           type: string
           format: date-time
-          description: Does not have UTC normalization.
+          description: |
+            The date time when the invoice was updated in the ERP system. This
+            does not have UTC normalization.
           example: '2021-06-29T17:20:53.154'
         name:
           type: string
