@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.19.0
+
 - Added `rate` to `#/components/schemas/LineItemVat`
 - Added `paymentTermId` to `#/components/schemas/Invoice`
 - Fixed missing `internalUpdateAt` and `externalUpdatedAt` to `#/components/schemas/Invoice`.
