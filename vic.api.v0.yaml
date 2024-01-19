@@ -4469,6 +4469,12 @@ components:
         vatAmount:
           type: number
           nullable: true
+        vatRate:
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+          nullable: true
+          description: |
+            The amount of VAT percentage. If the VAT percentage is unknown, this should be left `NULL` or unspecified.
     RequestIdCallback:
       type: object
       required: [requestId]
