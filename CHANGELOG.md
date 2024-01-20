@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add `vatRate` to `#/components/schemas/InvoiceLineItemInfo`
+
 ## v0.19.0
 
 - Added `rate` to `#/components/schemas/LineItemVat`
