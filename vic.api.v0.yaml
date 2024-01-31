@@ -2574,14 +2574,16 @@ components:
             - $ref: '#/components/schemas/MonetaryValue'
           nullable: true
           description: |
-            The amount of VAT. If the VAT amount is unknown, this should be left
-            `NULL` or unspecified.
+            The amount of VAT. This will be added to the line item's total. If
+            the VAT amount is unknown, this should be left `NULL` or
+            unspecified.
         rate:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           nullable: true
           description: |
-            The amount of VAT percentage. If the VAT percentage is unknown, this should be left `NULL` or unspecified.
+            The amount of VAT percentage. If the VAT percentage is unknown, this
+            should be left `NULL` or unspecified.
     CreatePaymentTerm:
       type: object
       required: [name, daysToPay]
@@ -2693,11 +2695,8 @@ components:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: |
-            The line item amount, excluding VAT or any other tax amount.
-            If VAT is unknown or the tax amount is unknown, the `vat` field
-            should be left `NULL` or unspecified.
-            If the VAT is known, that should be specified in the `vat.amount`
-            field.
+            The line item total amount including all tax amounts. This is used
+            to calculate the predicted total amount on the invoice in the UI.
         quantityInvoiced:
           description: The quantity of things that were invoiced.
           type: string
@@ -3736,11 +3735,8 @@ components:
         amount:
           type: number
           description: |
-            The line item amount, excluding VAT or any other tax amount.
-            If VAT is unknown or the tax amount is unknown, the
-            `invoiceLineItemInfo` field should be left `NULL` or unspecified.
-            If the VAT is known, that should be specified in the `vat.amount`
-            field.
+            The line item total amount including all tax amounts. This is used
+            to calculate the predicted total amount on the invoice.
         description:
           type: string
           description: The line item comment.
