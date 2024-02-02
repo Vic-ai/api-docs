@@ -12,7 +12,7 @@ To create or update a subscription with the Vic API, you can pass the following.
 
 ```sh
 curl --request PUT \
-  --url http://api.us.dev.vic.ai/subscription \
+  --url http://api.us.dev.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -28,7 +28,7 @@ names.
 
 ```sh
 curl --request PUT \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -46,7 +46,7 @@ itself.
 
 ```sh
 curl --request PUT \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -65,7 +65,7 @@ deleted, events will stop going to the callback url.
 
 ```sh
 curl --request DELETE \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN'
 ```
 
