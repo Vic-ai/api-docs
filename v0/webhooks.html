@@ -181,7 +181,7 @@ specified.</p>
 <h3 id="create-and-update-subscription"><a class="header" href="#create-and-update-subscription">Create and Update Subscription</a></h3>
 <p>To create or update a subscription with the Vic API, you can pass the following.</p>
 <pre><code class="language-sh">curl --request PUT \
-  --url http://api.us.dev.vic.ai/subscription \
+  --url http://api.us.dev.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -194,7 +194,7 @@ specified.</p>
 <p>If you wish to only subscribe to specific events you may pass an array of event
 names.</p>
 <pre><code class="language-sh">curl --request PUT \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -209,7 +209,7 @@ names.</p>
 down, you may pass <code>&quot;events&quot;:[&quot;all&quot;]</code>. When passing <code>all</code>, it must be set by
 itself.</p>
 <pre><code class="language-sh">curl --request PUT \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -224,7 +224,7 @@ itself.</p>
 <p>You can delete a subscription by doing the following. Once the subscription is
 deleted, events will stop going to the callback url.</p>
 <pre><code class="language-sh">curl --request DELETE \
-  --url http://api.us.stage.vic.ai/subscription \
+  --url http://api.us.stage.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN'
 </code></pre>
 <h2 id="events"><a class="header" href="#events">Events</a></h2>
