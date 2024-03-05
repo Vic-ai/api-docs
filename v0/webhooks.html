@@ -186,9 +186,9 @@ specified.</p>
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
   --data '{
-  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
-  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
-  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;
+  "callbackUrl": "https://yourCallbackUrl",
+  "accessToken": "unique-token-per-client",
+  "expiresAt": "2024-01-01T00:00:00Z"
 }'
 </code></pre>
 <p>If you wish to only subscribe to specific events you may pass an array of event
@@ -199,14 +199,14 @@ names.</p>
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
   --data '{
-  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
-  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
-  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;,
-  &quot;events&quot;: [&quot;payment_batch_processed&quot;]
+  "callbackUrl": "https://yourCallbackUrl",
+  "accessToken": "unique-token-per-client",
+  "expiresAt": "2024-01-01T00:00:00Z",
+  "events": ["payment_batch_processed"]
 }'
 </code></pre>
 <p>If you need to update your subscription to receive all events after trimming it
-down, you may pass <code>&quot;events&quot;:[&quot;all&quot;]</code>. When passing <code>all</code>, it must be set by
+down, you may pass <code>"events":["all"]</code>. When passing <code>all</code>, it must be set by
 itself.</p>
 <pre><code class="language-sh">curl --request PUT \
   --url http://api.us.stage.vic.ai/v0/subscription \
@@ -214,10 +214,10 @@ itself.</p>
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
   --data '{
-  &quot;callbackUrl&quot;: &quot;https://yourCallbackUrl&quot;,
-  &quot;accessToken&quot;: &quot;unique-token-per-client&quot;,
-  &quot;expiresAt&quot;: &quot;2024-01-01T00:00:00Z&quot;,
-  &quot;events&quot;: [&quot;all&quot;]
+  "callbackUrl": "https://yourCallbackUrl",
+  "accessToken": "unique-token-per-client",
+  "expiresAt": "2024-01-01T00:00:00Z",
+  "events": ["all"]
 }'
 </code></pre>
 <h3 id="unsubscribe"><a class="header" href="#unsubscribe">Unsubscribe</a></h3>
@@ -268,10 +268,10 @@ going to <code>https://yourCallbackUrl/events</code>.</p>
 </blockquote>
 <p>The general structure of the webhook event will be as follows.</p>
 <pre><code class="language-json">{
-  &quot;event&quot;: &quot;the_event_name&quot;,
-  &quot;data&quot;: {
-    &quot;id&quot;: &quot;123&quot;,
-    &quot;something&quot;: &quot;value&quot;
+  "event": "the_event_name",
+  "data": {
+    "id": "123",
+    "something": "value"
   }
 }
 </code></pre>
@@ -288,59 +288,59 @@ information about the structure of what is in the <code>data</code> envelope, se
 payments will be sent. Voided and rejected payments will not be sent. If you
 need these values, you should call <code>getPaymentBatch</code> in order to fetch them.</p>
 <pre><code class="language-json">{
-  &quot;event&quot;: &quot;payment_batch_processed&quot;,
-  &quot;data&quot;: {
-    &quot;id&quot;: &quot;f1c2384f-57d8-41fe-afa6-17caf62b2a3f&quot;,
-    &quot;name&quot;: &quot;Batch 2023-10-01 001&quot;,
-    &quot;processedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
-    &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
-    &quot;rejectedAt&quot;: null,
-    &quot;voidedAt&quot;: null,
-    &quot;status&quot;: &quot;approved&quot;,
-    &quot;companyId&quot;: &quot;123&quot;,
-    &quot;payments&quot;: [
+  "event": "payment_batch_processed",
+  "data": {
+    "id": "f1c2384f-57d8-41fe-afa6-17caf62b2a3f",
+    "name": "Batch 2023-10-01 001",
+    "processedAt": "2023-10-01T19:12:00Z",
+    "approvedAt": "2023-10-01T19:12:00Z",
+    "rejectedAt": null,
+    "voidedAt": null,
+    "status": "approved",
+    "companyId": "123",
+    "payments": [
       {
-        &quot;id&quot;: &quot;edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b&quot;,
-        &quot;amount&quot;: &quot;200.00&quot;,
-        &quot;discountAmount&quot;: &quot;0.00&quot;,
-        &quot;currencyId&quot;: &quot;USD&quot;,
-        &quot;status&quot;: &quot;approved&quot;,
-        &quot;voidedAt&quot;: null,
-        &quot;rejectedAt&quot;: null,
-        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
-        &quot;fundedAt&quot;: null,
-        &quot;costAccount&quot;: {
-          &quot;internalId&quot;: &quot;1&quot;,
-          &quot;externalId&quot;: &quot;cost-account-id-in-erp&quot;,
+        "id": "edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b",
+        "amount": "200.00",
+        "discountAmount": "0.00",
+        "currencyId": "USD",
+        "status": "approved",
+        "voidedAt": null,
+        "rejectedAt": null,
+        "approvedAt": "2023-10-01T19:12:00Z",
+        "fundedAt": null,
+        "costAccount": {
+          "internalId": "1",
+          "externalId": "cost-account-id-in-erp",
         },
-        &quot;invoice&quot;: {
-          &quot;internalId&quot;: &quot;876&quot;,
-          &quot;externalId&quot;: &quot;invoice-id-in-erp&quot;
+        "invoice": {
+          "internalId": "876",
+          "externalId": "invoice-id-in-erp"
         },
-        &quot;vendor&quot;: {
-          &quot;internalId&quot;: &quot;409&quot;,
-          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        "vendor": {
+          "internalId": "409",
+          "externalId": "vendor-id-in-erp"
         },
       }
     ],
-    &quot;credits&quot;: [
+    "credits": [
       {
-        &quot;id&quot;: &quot;091f257a-9b6e-4797-bcb6-ccd36dda260f&quot;,
-        &quot;amount&quot;: &quot;20.00&quot;,
-        &quot;discountAmount&quot;: &quot;0.00&quot;,
-        &quot;currencyId&quot;: &quot;USD&quot;,
-        &quot;status&quot;: &quot;approved&quot;,
-        &quot;voidedAt&quot;: null,
-        &quot;rejectedAt&quot;: null,
-        &quot;approvedAt&quot;: &quot;2023-10-01T19:12:00Z&quot;,
-        &quot;fundedAt&quot;: null,
-        &quot;invoice&quot;: {
-          &quot;internalId&quot;: &quot;900&quot;,
-          &quot;externalId&quot;: &quot;credit-note-id-in-erp&quot;
+        "id": "091f257a-9b6e-4797-bcb6-ccd36dda260f",
+        "amount": "20.00",
+        "discountAmount": "0.00",
+        "currencyId": "USD",
+        "status": "approved",
+        "voidedAt": null,
+        "rejectedAt": null,
+        "approvedAt": "2023-10-01T19:12:00Z",
+        "fundedAt": null,
+        "invoice": {
+          "internalId": "900",
+          "externalId": "credit-note-id-in-erp"
         },
-        &quot;vendor&quot;: {
-          &quot;internalId&quot;: &quot;409&quot;,
-          &quot;externalId&quot;: &quot;vendor-id-in-erp&quot;
+        "vendor": {
+          "internalId": "409",
+          "externalId": "vendor-id-in-erp"
         },
       }
     ]

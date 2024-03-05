@@ -191,40 +191,40 @@ document.</p>
     --header 'Content-Type: multipart/form-data' \
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer MYBEARERTOKEN' \
-    --form 'invoiceDocument=@&quot;/path/to/invoice/document.pdf&quot;' \
-    --form 'invoiceData=&quot;{
-        \&quot;externalUpdatedAt\&quot;: \&quot;2022-01-20 04:10:00\&quot;,
-        \&quot;transactionType\&quot;: \&quot;INVOICE\&quot;,
-        \&quot;refNumber\&quot;: \&quot;1000000\&quot;,
-        \&quot;poNumber\&quot;: \&quot;PO123\&quot;,
-        \&quot;description\&quot;: \&quot;The invoice description\&quot;,
-        \&quot;currency\&quot;: \&quot;USD\&quot;,
-        \&quot;language\&quot;: \&quot;EN\&quot;,
-        \&quot;issueDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;glDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;dueDate\&quot;: \&quot;2022-01-20\&quot;,
-        \&quot;paymentInfo\&quot;:{
-            \&quot;bankAccountNum\&quot;:\&quot;1234567890\&quot;
+    --form 'invoiceDocument=@"/path/to/invoice/document.pdf"' \
+    --form 'invoiceData="{
+        \"externalUpdatedAt\": \"2022-01-20 04:10:00\",
+        \"transactionType\": \"INVOICE\",
+        \"refNumber\": \"1000000\",
+        \"poNumber\": \"PO123\",
+        \"description\": \"The invoice description\",
+        \"currency\": \"USD\",
+        \"language\": \"EN\",
+        \"issueDate\": \"2022-01-20\",
+        \"glDate\": \"2022-01-20\",
+        \"dueDate\": \"2022-01-20\",
+        \"paymentInfo\":{
+            \"bankAccountNum\":\"1234567890\"
         },
-        \&quot;vendorExternalId\&quot;: \&quot;vendor-external-id-1\&quot;,
-        \&quot;lineItems\&quot;: [
+        \"vendorExternalId\": \"vendor-external-id-1\",
+        \"lineItems\": [
             {
-                \&quot;index\&quot;: 0,
-                \&quot;amount\&quot;: 123.53,
-                \&quot;description\&quot;: \&quot;Line item description\&quot;,
-                \&quot;comment\&quot;: \&quot;A quick comment about the line item\&quot;,
-                \&quot;accrual\&quot;:{
-                    \&quot;start\&quot;: \&quot;2022-01-20\&quot;,
-                    \&quot;count\&quot;: 3,
-                    \&quot;unit\&quot;: \&quot;MONTHS\&quot;
+                \"index\": 0,
+                \"amount\": 123.53,
+                \"description\": \"Line item description\",
+                \"comment\": \"A quick comment about the line item\",
+                \"accrual\":{
+                    \"start\": \"2022-01-20\",
+                    \"count\": 3,
+                    \"unit\": \"MONTHS\"
                 },
-                \&quot;billable\&quot;: false,
-                \&quot;dimensionsExternalIds\&quot;: [\&quot;dimension-external-id-1\&quot;],
-                \&quot;costAccountExternalId\&quot;: \&quot;cost-account-external-id-1\&quot;,
-                \&quot;lineType\&quot;: \&quot;item\&quot;
+                \"billable\": false,
+                \"dimensionsExternalIds\": [\"dimension-external-id-1\"],
+                \"costAccountExternalId\": \"cost-account-external-id-1\",
+                \"lineType\": \"item\"
             }
         ]
-    }&quot;;type=application/json'
+    }";type=application/json'
 </code></pre>
 <h3 id="updating-training-invoice"><a class="header" href="#updating-training-invoice">Updating Training Invoice</a></h3>
 <p>When updating a training invoice, the <code>invoiceDocument</code> is no longer required,
@@ -246,38 +246,38 @@ not be matched they will be deleted and replaced with the desired items.</li>
     --header 'Accept: application/json' \
     --header 'Authorization: Bearer MYBEARERTOKEN' \
     --data '{
-        &quot;externalUpdatedAt&quot;: &quot;2022-01-20 04:10:00&quot;,
-        &quot;transactionType&quot;: &quot;INVOICE&quot;,
-        &quot;refNumber&quot;: &quot;1000000&quot;,
-        &quot;poNumber&quot;: &quot;PO123&quot;,
-        &quot;description&quot;: &quot;The invoice description&quot;,
-        &quot;currency&quot;: &quot;USD&quot;,
-        &quot;language&quot;: &quot;EN&quot;,
-        &quot;issueDate&quot;: &quot;2022-01-20&quot;,
-        &quot;glDate&quot;: &quot;2022-01-20&quot;,
-        &quot;dueDate&quot;: &quot;2022-01-20&quot;,
-        &quot;paymentInfo&quot;:{
-            &quot;bankAccountNum&quot;:&quot;1234567890&quot;
+        "externalUpdatedAt": "2022-01-20 04:10:00",
+        "transactionType": "INVOICE",
+        "refNumber": "1000000",
+        "poNumber": "PO123",
+        "description": "The invoice description",
+        "currency": "USD",
+        "language": "EN",
+        "issueDate": "2022-01-20",
+        "glDate": "2022-01-20",
+        "dueDate": "2022-01-20",
+        "paymentInfo":{
+            "bankAccountNum":"1234567890"
         },
-        &quot;vendorExternalId&quot;: &quot;vendor-external-id-1&quot;,
-        &quot;lineItems&quot;: [
+        "vendorExternalId": "vendor-external-id-1",
+        "lineItems": [
             {
-                &quot;index&quot;: 0,
-                &quot;amount&quot;: 123.53,
-                &quot;description&quot;: &quot;Line item description&quot;,
-                &quot;comment&quot;: &quot;A quick comment about the line item&quot;,
-                &quot;accrual&quot;:{
-                    &quot;start&quot;: &quot;2022-01-20&quot;,
-                    &quot;count&quot;: 3,
-                    &quot;unit&quot;: &quot;MONTHS&quot;
+                "index": 0,
+                "amount": 123.53,
+                "description": "Line item description",
+                "comment": "A quick comment about the line item",
+                "accrual":{
+                    "start": "2022-01-20",
+                    "count": 3,
+                    "unit": "MONTHS"
                 },
-                &quot;billable&quot;: false,
-                &quot;dimensionsExternalIds&quot;: [&quot;dimension-external-id-1&quot;],
-                &quot;costAccountExternalId&quot;: &quot;cost-account-external-id-1&quot;,
-                &quot;lineType&quot;: &quot;expense&quot;
+                "billable": false,
+                "dimensionsExternalIds": ["dimension-external-id-1"],
+                "costAccountExternalId": "cost-account-external-id-1",
+                "lineType": "expense"
             }
         ]
-    }&quot;'
+    }"'
 </code></pre>
 
                     </main>

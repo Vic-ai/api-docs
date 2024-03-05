@@ -180,6 +180,8 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 <h2 id="unreleased"><a class="header" href="#unreleased">Unreleased</a></h2>
 <ul>
 <li>Add <code>vatRate</code> to <code>#/components/schemas/InvoiceLineItemInfo</code></li>
+<li>Add <code>totalAmount</code> to <code>#/components/schemas/CreateInvoice</code></li>
+<li>Add <code>totalAmount</code> to <code>#/components/schemas/TrainingInvoiceUpsert</code></li>
 <li>Fix incorrect documentation for <code>#/components/schemas/LineItemVat</code></li>
 <li>Fix incorrect documentation for <code>#/components/schemas/CreateInvoiceLineItem</code></li>
 <li>Fix incorrect documentation for <code>#/components/schemas/TrainingInvoiceLineItemUpsert</code></li>
@@ -606,9 +608,9 @@ and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semant
 </ul>
 <h2 id="removed-in-v0-2"><a class="header" href="#removed-in-v0-2">Removed in V0</a></h2>
 <ul>
-<li>Removed <code>NullableInternalId</code>. Replaced with <code>allOf: [&quot;#/components/schemas/InternalId&quot;]</code>; followed by a <code>nullable: true</code>.</li>
-<li>Removed <code>NullableExternalId</code>. Replaced with <code>allOf: [&quot;#/components/schemas/ExternalId&quot;]</code>; followed by a <code>nullable: true</code>.</li>
-<li>Removed <code>NullableObject</code>. Replaced with <code>allOf: [&quot;#/components/schemas/ExternalData&quot;]</code>; followed by a <code>nullable: true</code>.</li>
+<li>Removed <code>NullableInternalId</code>. Replaced with <code>allOf: ["#/components/schemas/InternalId"]</code>; followed by a <code>nullable: true</code>.</li>
+<li>Removed <code>NullableExternalId</code>. Replaced with <code>allOf: ["#/components/schemas/ExternalId"]</code>; followed by a <code>nullable: true</code>.</li>
+<li>Removed <code>NullableObject</code>. Replaced with <code>allOf: ["#/components/schemas/ExternalData"]</code>; followed by a <code>nullable: true</code>.</li>
 <li>Removed <code>NullableString</code>. Replaced with <code>type: string</code>; followed by a <code>nullable: true</code>.</li>
 <li>Removed <code>InvoiceInfoUS</code>. No replacement added.</li>
 <li>Removed <code>InvoiceInfoSE</code>. No replacement added.</li>
