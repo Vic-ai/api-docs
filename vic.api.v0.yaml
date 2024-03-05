@@ -2835,6 +2835,10 @@ components:
           description: The description of what the invoice is.
           type: string
           nullable: true
+        totalAmount:
+          allOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+          description: The total amount of the invoice, including tax/VAT.
         currency:
           description: The currency code the invoice is in.
           type: string
