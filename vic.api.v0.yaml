@@ -1665,6 +1665,13 @@ paths:
           $ref: '#/components/responses/VendorTagListResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
+      parameters:
+        - name: vendorId
+          in: path
+          required: true
+          description: The id of the vendor to filter by
+          schema:
+            type: string
     post:
       description: |
         Create a new vendor tag.
