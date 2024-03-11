@@ -503,7 +503,7 @@ paths:
         - application/vnd.openxmlformats-officedocument.wordprocessingml.document
         - application/vnd.openxmlformats-officedocument.wordprocessingml.template
         - image/tiff
-        - `text/xml`
+        - text/xml
         - image/jpg
         - image/jpeg
         - image/png
