@@ -35,6 +35,9 @@ servers:
   - url: https://api.no.vic.ai/v0
     description: production server, NO
 tags:
+  - name: Attachment
+    description: |
+      Attachments are documents that are associated with invoices. 
   - name: Accounts
     description: |
       GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
@@ -484,6 +487,57 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/VendorGroupDeletedResponse'
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /attachments:
+    post:
+      description: |
+        Use this to upload an attachment to Vic.ai. The attachment will be
+        created and processing enqueued automatically. The response is
+        a 201 with the attachment ID.
+        Supported content types are:
+        - application/msword
+        - application/pdf
+        - application/vnd.ms-word.document.macroEnabled.12
+        - application/vnd.ms-word.template.macroEnabled.12
+        - application/vnd.openxmlformats-officedocument.wordprocessingml.document
+        - application/vnd.openxmlformats-officedocument.wordprocessingml.template
+        - image/tiff
+        - `text/xml`
+        - image/jpg
+        - image/jpeg
+        - image/png
+        - image/gif
+        - application/vnd.ms-excel
+        - application/vnd.ms-excel.addin.macroenabled.12
+        - application/vnd.ms-excel.sheet.binary.macroenabled.12
+        - application/vnd.ms-excel.sheet.macroenabled.12
+        - application/vnd.ms-excel.template.macroenabled.12
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+        - application/vnd.openxmlformats-officedocument.spreadsheetml.template
+        Note that XML files are supported. 
+        However, they must be in a format that we support. 
+        Supported XML formats are:
+        - PEPPOL BIS Billing v3
+        - Svefaktura 1.0.
+      summary: Upload an attachment
+      operationId: uploadAttachment
+      tags: [Attachment]
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  nullable: false
+      responses:
+        '201':
+          $ref: '#/components/responses/AttachmentCreatedResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
   /invoices:
@@ -3173,6 +3227,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DimensionRef'
+    Attachment:
+      type: object
+      required: [id]
+      properties:
+        id:
+          $ref: '#/components/schemas/InternalId'
     Invoice:
       type: object
       required:
@@ -4864,6 +4924,12 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Invoice'
+    AttachmentCreatedResponse:
+      description: The shape of the response when an attachment is created.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Attachment'
     InvoiceResponse:
       description: A single invoice.
       content:
