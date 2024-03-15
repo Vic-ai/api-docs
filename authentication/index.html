@@ -173,7 +173,40 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="authentication"><a class="header" href="#authentication">Authentication</a></h1>
+                        <h1 id="authentication-process"><a class="header" href="#authentication-process">Authentication Process</a></h1>
+<p>To begin interacting with the Vic.ai API, you will need to have the following credentials:</p>
+<ul>
+<li><code>CLIENT_ID</code></li>
+<li><code>CLIENT_SECRET</code></li>
+</ul>
+<p>These can be provided to you by a Vic.ai representative.</p>
+<p>To initiate the authentication process, send a POST request to <code>/v0/token</code> with the payload as shown in the example below:</p>
+<pre><code class="language-json">{
+    "client_id": "CLIENT_ID",
+    "client_secret": "CLIENT_SECRET"
+}
+</code></pre>
+<p>Here is an example of how to do this:</p>
+<pre><code class="language-bash">curl -X POST https://api.us.vic.ai/v0/token \
+    -H "Content-Type: application/json" \
+    -d '{"client_id": "CLIENT_ID", "client_secret": "CLIENT_SECRET"}'
+</code></pre>
+<p>Upon providing a valid client ID and client secret, you should receive a response similar to the following:</p>
+<pre><code class="language-json">{
+    "access_token": "YOUR_ACCESS_TOKEN",
+    "token_type": "Bearer",
+    "expires_in": 3600
+}
+</code></pre>
+<p>For subsequent calls, use the value in <code>access_token</code> in the <code>Authorization</code> field.</p>
+<p>Here is an example:</p>
+<pre><code class="language-bash">curl https://api.us.vic.ai/v0/healthCheck \
+    -H "Content-Type: application/json" \
+    -H "Authorization: YOUR_ACCESS_TOKEN"
+</code></pre>
+<p>The response should resemble the following:</p>
+<pre><code class="language-bash">{"company":"Your Company Name","status":"PASS","version":"0.19.0"}
+</code></pre>
 
                     </main>
 
