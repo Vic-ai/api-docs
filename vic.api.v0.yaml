@@ -558,8 +558,8 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
     post:
       summary: Create an invoice.
-      description: |
-        Creates an invoice within the Vic system.
+      description:
+        $ref: 'docs/create_invoice.md'
       operationId: createInvoice
       tags: [Invoices]
       requestBody:
@@ -869,19 +869,8 @@ paths:
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
-      description: |
-        Use this request to *upsert* training invoice data for one invoice into
-        Vic.ai.
-        When putting a new invoice into the system, an `invoiceDocument` will be
-        required. If the training invoice already exists, an `invoiceDocument`
-        will not be required.
-        All requests that need to have the `invoiceDocument` updated should have
-        a `multipart/form-data` content type.
-        If the training invoice just needs to be updated without a document
-        specified a content type of `application/json` is permitted.
-        If the invoice is known by Vic.ai, the `externalId` supplied will be
-        used to resolve the invoice and perform an update of the data,
-        otherwise, a new invoice will be created.
+      description:
+        $ref: 'docs/upsert_training_invoice.md'
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
       tags: [Invoices for training]
@@ -1373,10 +1362,8 @@ paths:
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
-      description: |
-        Create a purchase order.
-        Once the purchase order is created and no longer needs further alterations. You
-        will need to call `processPurchaseOrder`.
+      description:
+        $ref: 'docs/create_purchase_order.md'
       summary: Create a purchase order
       operationId: createPurchaseOrder
       tags: [Purchase orders]
@@ -1391,8 +1378,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        '4XX':
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}:
     get:
       description: Get a purchase order.
@@ -1533,10 +1518,8 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
   /purchaseOrderLineItems:
     post:
-      description: |
-        Add a line item to a purchase order.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/create_purchase_order_line_item.md'
       summary: Add a line item to a purchase order.
       operationId: createPurchaseOrderLineItem
       tags: [Purchase orders]
@@ -1553,10 +1536,8 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
   /purchaseOrderLineItems/{purchaseOrderLineItemId}:
     put:
-      description: |
-        Update a purchase order's line item.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/update_purchase_order_line_item.md'
       summary: Update a purchase order's line item
       operationId: updatePurchaseOrderLineItem
       tags: [Purchase orders]
@@ -1579,10 +1560,8 @@ paths:
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
     delete:
-      description: |
-        Delete a purchase order's line item.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/delete_purchase_order_line_item.md'
       summary: Delete a purchase order's line item
       operationId: deletePurchaseOrderLineItem
       tags: [Purchase orders]
