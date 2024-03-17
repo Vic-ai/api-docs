@@ -1,5 +1,3 @@
-# Webhooks
-
 ## Subscriptions
 
 You can subscribe to all events in the Vic API system or a subset of the
@@ -10,9 +8,9 @@ specified.
 
 To create or update a subscription with the Vic API, you can pass the following.
 
-```sh
+```bash
 curl --request PUT \
-  --url http://api.us.dev.vic.ai/v0/subscription \
+  --url http://api.us.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -26,9 +24,9 @@ curl --request PUT \
 If you wish to only subscribe to specific events you may pass an array of event
 names.
 
-```sh
+```bash
 curl --request PUT \
-  --url http://api.us.stage.vic.ai/v0/subscription \
+  --url http://api.us.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -44,9 +42,9 @@ If you need to update your subscription to receive all events after trimming it
 down, you may pass `"events":["all"]`. When passing `all`, it must be set by
 itself.
 
-```sh
+```bash
 curl --request PUT \
-  --url http://api.us.stage.vic.ai/v0/subscription \
+  --url http://api.us.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN' \
   --header 'Accept: application/json' \
   --header 'Content-Type: application/json' \
@@ -63,9 +61,9 @@ curl --request PUT \
 You can delete a subscription by doing the following. Once the subscription is
 deleted, events will stop going to the callback url.
 
-```sh
+```bash
 curl --request DELETE \
-  --url http://api.us.stage.vic.ai/v0/subscription \
+  --url http://api.us.vic.ai/v0/subscription \
   --header 'Authorization: Bearer MYBEARERTOKEN'
 ```
 

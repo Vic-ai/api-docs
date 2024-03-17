@@ -1,5 +1,3 @@
-# Authentication Process
-
 To begin interacting with the Vic.ai API, you will need to have the following credentials:
 
 * `CLIENT_ID`

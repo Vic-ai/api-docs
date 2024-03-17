@@ -1,6 +1,6 @@
 # Vic.ai API Documentation
 
-This is where the API documentation for Vic resides.
+This is where the API documentation for Vic.ai resides.
 
 Please open a Github issue if more clarification is needed for certain topics
 and please open issues if you see areas that could be improved.
@@ -8,17 +8,13 @@ and please open issues if you see areas that could be improved.
 ## Requirements
 
 * Python
-* Rust
-* [mdBook](https://github.com/rust-lang/mdBook)
+* Node
 
-```
-cargo install mdbook
-```
+Please ensure that you have the correct software versions as indicated in the `.tool-versions` file. 
 
-Please ensure that you have the correct software versions as indicated in the `.tool-versions` file.
 Consider using [asdf](https://asdf-vm.com/) to streamline this process:
 
-```sh 
+```sh
 $ asdf install
 ```
 
@@ -28,25 +24,20 @@ $ asdf install
 make setup
 ```
 
+## Preview
+
+To view and develop the API documentation generated using redocly:
+
+```sh
+make preview
+```
+
+Open [http://localhost:8080](http://localhost:8080).
+
 ## Build
 
 ```sh
 make build
-```
-
-## Viewing
-
-To view the supplemental api documentation open the `index.html` in the
-`public/` directory after building.
-
-```sh
-open public/index.html
-```
-
-To view the V0 openapi spec
-
-```sh
-open public/vic.api.v0.html
 ```
 
 ## Deployment

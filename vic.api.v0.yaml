@@ -1,22 +1,11 @@
 ---
-openapi: 3.0.3
+openapi: 3.1.0
 info:
   version: 0.19.0
   contact: {}
-  title: Vic.Api
-  description: |
-    Vic.Api allows you to connect an *ERP* to the Vic.ai product suite.
-    The API is structured to provide 3 categories of functionality:
-    - **Masterdata:** Masterdata are data in the ERP that Vic.ai interacts with.
-      So you must provide and update this masterdata in Vic.ai, and you may also
-      verify the masterdata copy in Vic.ai
-    - **Training Data:** AI requires historical data to train its data model. So
-      you can put historical invoices into Vic.ai to train it, and verify that
-      they are in Vic.ai.
-    - **Webhooks:** Users or automated tasks could take various actions in the
-      Vic.ai product suite that result in an interaction with the ERP (for
-      example, posting an invoice, or requesting synchronization). We'll tell
-      you when such an action has occurred, via a webhook.
+  title: Vic.ai API
+  description:
+    $ref: 'docs/main.md'
   license:
     name: MIT
 security:
@@ -35,75 +24,83 @@ servers:
   - url: https://api.no.vic.ai/v0
     description: production server, NO
 tags:
-  - name: Attachment
-    description: |
-      Attachments are documents that are associated with invoices. 
   - name: Accounts
     description: |
       GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
       order to be associated with an invoice line item, key data about the
       account must be stored in Vic.ai.  These operations allow querying and
       manipulation of these GL account data.
-  - name: Auth
+  - name: Attachments
     description: |
-      Authorization-related routes.  These passthrough to our third-party
-      authorization system.
-  - name: CostAccounts
+      Attachments are documents that are associated with invoices.
+  - name: Authentication
+    description:
+      $ref: 'docs/authentication.md'
   - name: Dimensions
     description: |
       Dimensions are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with invoice line items, that Vic.ai can
       automatically assign to invoice line items. These operations allow
       querying and manipulation of the dimension data.
-  - name: General
-    description: |
-      General requests on the state of the Vic.ai system
   - name: Invoices
     description: |
       These routes give you read-only access to two types of invoices:
-      - Invoices which have not yet been posted to the ERP system.
+      - Invoices which have not yet been posted to the ERP system (restricted access).
       - Invoices which have been posted to the ERP system.
-      By default, access to unposted invoices is restricted.
-  - name: Payments
-    description: The payment module of the Vic.ai system.
-  - name: PaymentTerms
+  - name: Invoices for training
     description: |
-      Payment Terms are part of your *ERP* **Masterdata**, that represent
+      Invoices used for training AI models.
+  - name: Payment batches
+    description: |
+      Payment batches are a collection of payments that are made to vendors.
+  - name: Payment terms
+    description: |
+      Payment terms are part of your *ERP* **Masterdata**, and represent
       payment terms that Vic.ai can automatically assign to invoices. Some
       vendors may have a default payment term, and some invoices may have a
       specific payment term. In either case, Vic.ai can automatically assign
       payment terms to invoices.
-  - name: PurchaseOrders
-  - name: Subscriptions
+  - name: Purchase orders
+    description: The purchase orders.
+  - name: Status
     description: |
-      These requests represents a user’s action in the Vic.ai system and
-      repsonses to those actions.
+      Status requests on the state of the Vic.ai system.
   - name: Tags
     description: |
       Tags are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with certain entities, like Vendor.
-  - name: TaxCodes
-  - name: TrainingInvoices
+  - name: Tax codes
+    description: The tax codes.
+  - name: VAT codes
     description: |
-      Invoices that are being used to train Vic.ai's machine learning system.
+      In some regions, VAT codes are part of your *ERP* **Masterdata**, that
+      represent timeboxed VAT codes and VAT values that Vic.ai can automatically
+      assign to invoice line items.
   - name: Vendors
     description: |
       Vendors are part of your *ERP* **Masterdata**, and represent companies
       that produce invoices.  In order to be associated with an invoice, key
       data about the vendor must be stored in Vic.ai. These operations allow
       querying and manipulation of the vendor data.
-  - name: VatCodes
+  - name: Vendor groups
     description: |
-      In some regions, Vat Codes are part of your *ERP* **Masterdata**, that
-      represent timeboxed VAT codes and VAT values that Vic.ai can automatically
-      assign to invoice line items.
+      Vendors can be grouped together in Vic.ai. This is especially useful
+      for purchase order matching where you want to match a purchase order
+      to a group of vendors.
+  - name: Vendor tags
+    description: |
+      Vendor tags are used to categorize vendors using tags.
+  - name: Webhooks
+    description:
+      $ref: 'docs/webhooks.md'
 paths:
   /token:
     post:
-      description: Use this request to obtain an authorization token
-      summary: Token service
+      description: |
+        Use this endpoint to obtain an access token that can be used to authenticate subsequent requests to the API.
+      summary: Obtain an access token
       operationId: obtainToken
-      tags: [Auth]
+      tags: [Authentication]
       security: []
       requestBody:
         required: true
@@ -114,18 +111,19 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TokenCreatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /healthCheck:
     get:
-      description: Use this request to obtain a health check statement.
+      description: |
+        Use this request to obtain a health check statement.
       summary: Health check
       operationId: healthCheck
-      tags: [General]
+      tags: [Status]
       responses:
         '200':
           $ref: '#/components/responses/HealthyResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /accounts:
     get:
@@ -143,7 +141,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /accounts/{id}:
     get:
@@ -159,7 +157,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
@@ -186,7 +184,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/AccountUpsertedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
@@ -201,7 +199,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/AccountDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /dimensions:
     get:
@@ -219,7 +217,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DimensionsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       description: Create a new dimension in Vic.ai.
@@ -231,7 +229,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DimensionCreatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /dimensions/{id}:
     get:
@@ -247,7 +245,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/DimensionResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
@@ -278,7 +276,7 @@ paths:
           $ref: '#/components/responses/DimensionUpdatedResponse'
         '201':
           $ref: '#/components/responses/DimensionCreatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: Use this request to delete data for a single dimension that is
@@ -292,14 +290,14 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DimensionDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendors:
     get:
       description: Use this request to query the vendor data that are stored in Vic.ai.
       summary: List all vendors
       operationId: listVendors
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -323,7 +321,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendors/{id}:
     get:
@@ -338,7 +336,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
@@ -368,7 +366,7 @@ paths:
           $ref: '#/components/responses/VendorUpdatedResponse'
         '201':
           $ref: '#/components/responses/VendorCreatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
@@ -383,7 +381,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/VendorDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendors/{id}/errors:
     post:
@@ -408,7 +406,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorRemoteErrorsUpdatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       summary: Clears errors on the Vendor.
@@ -422,40 +420,40 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorRemoteErrorsClearedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendorGroups:
     get:
       description: List all vendor groups.
       summary: List all vendor groups
       operationId: listVendorGroups
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
       responses:
         '200':
           $ref: '#/components/responses/VendorGroupsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       description: Create a vendor group.
       summary: Create a vendor group
       operationId: createVendorGroup
-      tags: [Vendors]
+      tags: [Vendor groups]
       requestBody:
         $ref: '#/components/requestBodies/CreateVendorGroupRequest'
       responses:
         '201':
           $ref: '#/components/responses/VendorGroupResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendorGroups/{id}:
     put:
       description: Update the vendor group.
       summary: Update the vendor group
       operationId: updateVendorGroup
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - name: id
           in: path
@@ -469,7 +467,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VendorGroupResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: Delete vendor group.
@@ -487,7 +485,7 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/VendorGroupDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /attachments:
     post:
@@ -515,14 +513,14 @@ paths:
         - application/vnd.ms-excel.template.macroenabled.12
         - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
         - application/vnd.openxmlformats-officedocument.spreadsheetml.template
-        Note that XML files are supported. 
-        However, they must be in a format that we support. 
+        Note that XML files are supported.
+        **However, they must be in a format that we support.**
         Supported XML formats are:
         - PEPPOL BIS Billing v3
         - Svefaktura 1.0.
       summary: Upload an attachment
       operationId: uploadAttachment
-      tags: [Attachment]
+      tags: [Attachments]
       requestBody:
         required: true
         content:
@@ -534,11 +532,10 @@ paths:
                 file:
                   type: string
                   format: binary
-                  nullable: false
       responses:
         '201':
           $ref: '#/components/responses/AttachmentCreatedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /invoices:
     get:
@@ -557,12 +554,12 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/InvoicesResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       summary: Create an invoice.
-      description: |
-        Creates an invoice within the Vic system.
+      description:
+        $ref: 'docs/create_invoice.md'
       operationId: createInvoice
       tags: [Invoices]
       requestBody:
@@ -580,8 +577,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}:
     get:
       description: |
@@ -596,7 +591,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/InvoiceResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     patch:
       description: |
@@ -645,7 +640,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/InvoiceResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
@@ -661,7 +656,7 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/InvoiceDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}/process:
     post:
@@ -688,8 +683,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}/document:
     get:
       description: |
@@ -709,7 +702,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/InvoiceDocumentResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       summary: Upload document invoice
@@ -741,7 +734,6 @@ paths:
                 document:
                   type: string
                   format: binary
-                  nullable: false
       responses:
         '200':
           $ref: '#/components/responses/InvoiceResponse'
@@ -751,8 +743,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}/confirm:
     post:
       description: |
@@ -789,8 +779,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}/reject:
     post:
       description: |
@@ -826,8 +814,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /invoices/{id}/lineItems:
     get:
       description: |
@@ -848,15 +834,15 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/InvoiceLineItemsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /trainingInvoices:
     get:
       description: |
-        Use this request to query the invoice data that are stored in Vic.ai.
-      summary: List all invoices
+        Use this request to query the training invoice data that are stored in Vic.ai.
+      summary: List all training invoices
       operationId: listTrainingInvoices
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -865,40 +851,29 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TrainingInvoicesResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /trainingInvoices/{id}:
     get:
       description: |
         Use this request to get data for a single training invoice that is
         stored in Vic.ai
-      summary: Info for a specific invoice
+      summary: Info for a specific training invoice
       operationId: getTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
         '200':
           $ref: '#/components/responses/TrainingInvoiceResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
-      description: |
-        Use this request to *upsert* training invoice data for one invoice into
-        Vic.ai.
-        When putting a new invoice into the system, an `invoiceDocument` will be
-        required. If the training invoice already exists, an `invoiceDocument`
-        will not be required.
-        All requests that need to have the `invoiceDocument` updated should have
-        a `multipart/form-data` content type.
-        If the training invoice just needs to be updated without a document
-        specified a content type of `application/json` is permitted.
-        If the invoice is known by Vic.ai, the `externalId` supplied will be
-        used to resolve the invoice and perform an update of the data,
-        otherwise, a new invoice will be created.
+      description:
+        $ref: 'docs/upsert_training_invoice.md'
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       requestBody:
@@ -932,7 +907,7 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/TrainingInvoiceUpsertedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
@@ -940,37 +915,37 @@ paths:
         stored in Vic.ai
       summary: Deletes a training invoice
       operationId: deleteTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
         '201':
           $ref: '#/components/responses/TrainingInvoiceDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /trainingInvoices/{id}/document:
     get:
       description: |
         Use this request to get the document associated with a training invoice
         that is stored in Vic.ai
-      summary: Document for a specific invoice
+      summary: Document for a specific training invoice
       operationId: getTrainingInvoiceDocument
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
         '200':
           $ref: '#/components/responses/TrainingInvoiceDocumentResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vatCodes:
     get:
       description: |
-        Use this request to query all the vat code data that are stored in
+        Use this request to query all the VAT code data that are stored in
         Vic.ai.
-      summary: List all vat codes
+      summary: List all VAT codes
       operationId: listVatCodes
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -980,34 +955,34 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/VatCodesResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vatCodes/{id}:
     get:
       description: |
-        Use this request to get data for a single vat code that is stored in
+        Use this request to get data for a single VAT code that is stored in
         Vic.ai
-      summary: Info for a specific vat code
+      summary: Info for a specific VAT code
       operationId: getVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           $ref: '#/components/responses/VatCodeResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
-        Use this request to *upsert* vat code into Vic.ai.
-        The request body should contain the vat code object as JSON.
-        If the vat code is known by Vic.ai, the id supplied will be used to
-        resolve the vat code and perform an update of the data, otherwise, a new
-        vat code will be inserted.
-      summary: Upserts a vat code
+        Use this request to *upsert* VAT code into Vic.ai.
+        The request body should contain the VAT code object as JSON.
+        If the VAT code is known by Vic.ai, the id supplied will be used to
+        resolve the VAT code and perform an update of the data, otherwise, a new
+        VAT code will be inserted.
+      summary: Upserts a VAT code
       operationId: upsertVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -1020,56 +995,57 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/VatCodeUpsertedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
-        Use this request to delete data for a single vat code that is stored in
+        Use this request to delete data for a single VAT code that is stored in
         Vic.ai
-      summary: Deletes a vat code
+      summary: Deletes a VAT code
       operationId: deleteVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
       responses:
         '201':
           $ref: '#/components/responses/VatCodeDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /taxCodes:
     post:
       description: Creates a company's tax code
       summary: Creates a company's tax code
       operationId: createTaxCode
-      tags: [TaxCodes]
+      tags: [Tax codes]
       requestBody:
         $ref: '#/components/requestBodies/CreateTaxCode'
       responses:
         '201':
           $ref: '#/components/responses/TaxCodeResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     get:
       description: Get the list of tax codes for a company
       summary: Get the list of tax codes for a company
       operationId: getTaxCodes
-      tags: [TaxCodes]
+      tags: [Tax codes]
       responses:
         '200':
           $ref: '#/components/responses/TaxCodeResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /subscription:
     get:
-      description: Get the current status of the subscription that is set.
-      summary: Get subscription info
+      description: |
+        Get the current webhook subscription if one exists.
+      summary: Get current webhook subscription
       operationId: getSubscription
-      tags: [Subscriptions]
+      tags: [Webhooks]
       responses:
         '200':
           $ref: '#/components/responses/SubscriptionResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
@@ -1079,9 +1055,9 @@ paths:
         use to authenticate itself in your system. Notifications of user actions
         will proceed via the documented schema.
         The callback url must be https.
-      summary: Subscribe to callback notifications
+      summary: Create new webhook subscription
       operationId: subscribe
-      tags: [Subscriptions]
+      tags: [Webhooks]
       requestBody:
         required: true
         content:
@@ -1091,12 +1067,13 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/SubscriptionUpsertedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
       callbacks:
         events:
           https://mycallbackurl.com/events:
             post:
+              summary: An event has occurred in Vic
               description: |
                 This is the end point where all newer `V1` events will be sent
                 to. The integration must respond to this callback quickly and if
@@ -1126,21 +1103,22 @@ paths:
                     schema:
                       $ref: '#/components/schemas/WebhookEvent'
               responses:
-                2XX:
+                '2XX':
                   description: |
                     Event was received successfully. The body of the response
                     will be ingored.
-                4XX:
+                '4XX':
                   description: |
                     Event was received successfully. The body of the response
                     will be ingored.
-                default:
+                '5XX':
                   description: |
                     Event was not received and a retry will be attempted later.
                     The body of the response will be ingored.
         vendorNew:
           https://mycallbackurl.com/vendorNew:
             post:
+              summary: User has added a new vendor in Vic.
               description: |
                 This request is sent when a user in Vic.ai adds a new vendor to
                 the system.
@@ -1175,7 +1153,7 @@ paths:
                     application/json:
                       schema:
                         enum: [OK]
-                4XX:
+                '4XX':
                   description: |
                     Error when posting vendor.  If this is a generic error,
                     use the `Error` schema; if it's an error reported by the
@@ -1186,7 +1164,7 @@ paths:
                         oneOf:
                           - $ref: '#/components/schemas/Error'
                           - $ref: '#/components/schemas/VendorError'
-                default:
+                '5XX':
                   description: unexpected error
                   content:
                     application/json:
@@ -1195,6 +1173,7 @@ paths:
         invoicePost:
           https://mycallbackurl.com/invoicePost:
             post:
+              summary: User has selected to post an invoice to the ERP.
               description: |
                 This request is sent when a user in Vic.ai posts an invoice
                 object to the system.
@@ -1247,13 +1226,13 @@ paths:
                           - $ref: '#/components/schemas/InvoiceConfirm'
                 '202':
                   description: Deferred post, confirmation asynchronous
-                '400':
+                '4XX':
                   description: invalid invoice data
                   content:
                     application/json:
                       schema:
                         $ref: '#/components/schemas/Error'
-                default:
+                '5XX':
                   description: unexpected error
                   content:
                     application/json:
@@ -1262,6 +1241,7 @@ paths:
         invoiceTransfer:
           https://mycallbackurl.com/invoiceTransfer:
             post:
+              summary: User has selected to transfer an invoice to the ERP.
               description: |
                 This request is sent when a user in Vic.ai selects and invoice
                 document and *transfers* it to the ERP.
@@ -1312,7 +1292,7 @@ paths:
                         enum: [OK]
                 '202':
                   description: Deferred post, confirmation asynchronous
-                default:
+                '4XX':
                   description: Unexpected error
                   content:
                     application/json:
@@ -1321,6 +1301,7 @@ paths:
         syncRequest:
           https://mycallbackurl.com/syncRequest:
             post:
+              summary: A request to sync all masterdata.
               description: |
                 This request is sent when a user in Vic.ai triggers a sync of all
                 masterdata.
@@ -1344,7 +1325,7 @@ paths:
               responses:
                 '200':
                   description: Request acknowleged
-                default:
+                '4XX':
                   description: Request unservicable
                   content:
                     application/json:
@@ -1355,37 +1336,20 @@ paths:
         This request is used to cancel a subscription to user actions. In
         conjunction with a post requst, you may use this as a first step to
         update subscription URLs or authorization tokens.
-      summary: Unsubscribe from callback notifications
+      summary: Delete webhook subscription
       operationId: unsubscribe
-      tags: [Subscriptions]
+      tags: [Webhooks]
       responses:
         '201':
           $ref: '#/components/responses/SubscriptionDeletedResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
-  /costAccounts:
-    get:
-      description: |
-        Use this request to query all the cost accounts for a specific client.
-      summary: List all cost accounts
-      operationId: getCostAccounts
-      tags: [CostAccounts]
-      parameters:
-        - $ref: '#/components/parameters/PagingLimit'
-        - $ref: '#/components/parameters/PagingCursor'
-        - $ref: '#/components/parameters/SinceFilter'
-        - $ref: '#/components/parameters/SortOrder'
-      responses:
-        '200':
-          $ref: '#/components/responses/CostAccountsResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders:
     get:
       description: List purchase orders.
       summary: List purchase orders
       operationId: listPurchaseOrders
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -1395,16 +1359,14 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PurchaseOrdersResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
-      description: |
-        Create a purchase order.
-        Once the purchase order is created and no longer needs further alterations. You
-        will need to call `processPurchaseOrder`.
+      description:
+        $ref: 'docs/create_purchase_order.md'
       summary: Create a purchase order
       operationId: createPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       requestBody:
         $ref: '#/components/requestBodies/CreatePurchaseOrderRequest'
       responses:
@@ -1416,14 +1378,12 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}:
     get:
       description: Get a purchase order.
       summary: Get a purchase order
       operationId: getPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1438,8 +1398,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/ResourceNotFoundResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
         Update a purchase order.
@@ -1447,7 +1405,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Update a purchase order
       operationId: updatePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1466,8 +1424,6 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
         Delete a purchase order.
@@ -1475,7 +1431,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Delete a purchase order
       operationId: deletePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1490,8 +1446,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/ResourceNotFoundResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}/process:
     post:
       description: |
@@ -1501,7 +1455,7 @@ paths:
         completed.
       summary: Process the purchase order
       operationId: processPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1518,14 +1472,12 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}/close:
     post:
       description: Closes a purchase order.
       summary: Close a purchase order
       operationId: closePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1542,14 +1494,12 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}/open:
     post:
       description: Opens a purchase order.
       summary: Opens a purchase order
       operationId: openPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1566,17 +1516,13 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrderLineItems:
     post:
-      description: |
-        Add a line item to a purchase order.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/create_purchase_order_line_item.md'
       summary: Add a line item to a purchase order.
       operationId: createPurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       requestBody:
         $ref: '#/components/requestBodies/CreatePurchaseOrderLineItemRequest'
       responses:
@@ -1588,17 +1534,13 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrderLineItems/{purchaseOrderLineItemId}:
     put:
-      description: |
-        Update a purchase order's line item.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/update_purchase_order_line_item.md'
       summary: Update a purchase order's line item
       operationId: updatePurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderLineItemId
           in: path
@@ -1617,16 +1559,12 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
     delete:
-      description: |
-        Delete a purchase order's line item.
-        Once finished updating the purchase order you should also also call
-        `processPurchaseOrder` to kick off reprocessing purchase order matching.
+      description:
+        $ref: 'docs/delete_purchase_order_line_item.md'
       summary: Delete a purchase order's line item
       operationId: deletePurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderLineItemId
           in: path
@@ -1641,8 +1579,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/ResourceNotFoundResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /tags:
     get:
       description: |
@@ -1654,7 +1590,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/TagListResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       description: |
@@ -1671,8 +1607,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /tags/{id}:
     put:
       description: |
@@ -1691,8 +1625,6 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
         Delete a tag.
@@ -1704,34 +1636,26 @@ paths:
       responses:
         '204':
           $ref: '#/components/responses/TagDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /vendorTags:
     get:
       description: |
         Get a list of vendor tags.
-        Vendor tags are used to categorize vendors using tags.
       summary: Get a list of vendor tags
       operationId: listVendorTags
-      tags: [Tags]
+      tags: [Vendor tags]
       responses:
         '200':
           $ref: '#/components/responses/VendorTagListResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
-      parameters:
-        - name: vendorId
-          in: path
-          required: true
-          description: The id of the vendor to filter by
-          schema:
-            type: string
     post:
       description: |
         Create a new vendor tag.
       summary: Create a new vendor tag
       operationId: createVendorTag
-      tags: [Tags]
+      tags: [Vendor tags]
       requestBody:
         $ref: '#/components/requestBodies/CreateVendorTagRequest'
       responses:
@@ -1741,21 +1665,19 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /vendorTags/{id}:
     delete:
       description: |
         Delete a vendor tag.
       summary: Delete a vendor tag
       operationId: deleteVendorTag
-      tags: [Tags]
+      tags: [Vendor tags]
       parameters:
         - $ref: '#/components/parameters/VendorTagId'
       responses:
         '204':
           $ref: '#/components/responses/VendorTagDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /paymentTerms:
     get:
@@ -1763,18 +1685,18 @@ paths:
         Get a list of payment terms.
       summary: Get a list of payment terms
       operationId: listPaymentTerms
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       responses:
         '200':
           $ref: '#/components/responses/PaymentTermListResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
       description: |
         Create a new payment term.
       summary: Create a new payment term
       operationId: createPaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       requestBody:
         $ref: '#/components/requestBodies/CreatePaymentTermRequest'
       responses:
@@ -1784,15 +1706,13 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
   /paymentTerms/{id}:
     put:
       description: |
         Update a payment term.
       summary: Update a payment term
       operationId: updatePaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       parameters:
         - $ref: '#/components/parameters/PaymentTermId'
       requestBody:
@@ -1804,27 +1724,25 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
         Delete a payment term.
       summary: Delete a payment term
       operationId: deletePaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       parameters:
         - $ref: '#/components/parameters/PaymentTermId'
       responses:
         '204':
           $ref: '#/components/responses/PaymentTermDeletedResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /paymentBatches:
     get:
       description: List all payment batches.
       summary: List all payment batches
       operationId: listPaymentBatches
-      tags: [Payments]
+      tags: [Payment batches]
       parameters:
         - name: completedAtOrAfter
           in: query
@@ -1850,7 +1768,7 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/PaymentBatchListResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /paymentBatches/{id}:
     get:
@@ -1873,13 +1791,13 @@ paths:
         reach out to support.
       summary: Get a payment batch
       operationId: getPaymentBatch
-      tags: [Payments]
+      tags: [Payment batches]
       parameters:
         - $ref: '#/components/parameters/PaymentBatchId'
       responses:
         '200':
           $ref: '#/components/responses/PaymentBatchResponse'
-        default:
+        '4XX':
           $ref: '#/components/responses/ErrorResponse'
 components:
   securitySchemes:
@@ -1992,7 +1910,7 @@ components:
     VatCodeFilter:
       name: vatCode
       in: query
-      description: selects the vat code which is to be displayed
+      description: selects the VAT code which is to be displayed
       required: false
       schema:
         type: string
@@ -2002,9 +1920,10 @@ components:
       description: selects the comment which is to be displayed
       required: false
       schema:
-        type: string
-        maxLength: 255
-        nullable: true
+        oneOf:
+          - type: string
+            maxLength: 255
+          - type: 'null'
     UseSystem:
       name: useSystem
       in: query
@@ -2079,6 +1998,10 @@ components:
       type: string
       example: 21b31bc7-1267-4335-893c-d7fe4706a238
       maxLength: 255
+    Email:
+      type: string
+      format: email
+      maxLength: 255
     CountryCode:
       description: |
         The ISO-3166 country code. The acceptable values are Alpha-2 codes.
@@ -2140,9 +2063,9 @@ components:
           type: string
           maxLength: 255
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
     AccountUpsert:
       type: object
       required: [number, name, externalUpdatedAt]
@@ -2161,9 +2084,9 @@ components:
           type: string
           maxLength: 255
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
     Accounts:
       type: array
       items:
@@ -2191,9 +2114,9 @@ components:
           type: string
           maxLength: 255
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         displayName:
           type: string
         internalId:
@@ -2235,16 +2158,16 @@ components:
         typeExternalId:
           type: string
           maxLength: 255
-          description: |-
+          description: |
             The type's external ID in the ERP system. If left unspecified, it
             will clear the existing value.
         shortName:
           type: string
           maxLength: 255
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
     DimensionUpsert:
       type: object
       required: [externalUpdatedAt, name]
@@ -2271,16 +2194,16 @@ components:
         typeExternalId:
           type: string
           maxLength: 255
-          description: |-
+          description: |
             The type's external ID in the ERP system. If left unspecified, it
             will clear the existing value.
         shortName:
           type: string
           maxLength: 255
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
     Dimensions:
       type: array
       items:
@@ -2302,91 +2225,77 @@ components:
         returned.
       properties:
         internalId:
-          description: |
-            Vic's id of the dimension.
-            Takes precedence over all other fields. Other fields are ignored if
-            this is specified.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                Vic's id of the dimension.
+                Takes precedence over all other fields. Other fields are ignored if
+                this is specified.
+            - type: 'null'
         externalId:
-          description: |
-            The id of the dimension in the ERP.
-            Takes precedence over `name`. Can be used in combination with
-            `typeExternalId`.
-            If more than one dimension is found meeting the criteria specified,
-            an error will be returned.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                The id of the dimension in the ERP.
+                Takes precedence over `name`. Can be used in combination with
+                `typeExternalId`.
+                If more than one dimension is found meeting the criteria specified,
+                an error will be returned.
+            - type: 'null'
         name:
-          description: |
-            The name of the dimension.
-            Can be used in combination with `typeExternalId`.
-            If more than one dimension is found meeting the criteria specified,
-            an error will be returned.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                The name of the dimension.
+                Can be used in combination with `typeExternalId`.
+                If more than one dimension is found meeting the criteria specified,
+                an error will be returned.
+            - type: 'null'
         typeExternalId:
-          description: |
-            The type id in the ERP.
-            This is a supplemental field to be used with `externalId` or `name`.
-          type: string
-          maxLength: 255
-          nullable: true
-    CostAccounts:
-      type: array
-      items:
-        $ref: '#/components/schemas/CostAccount'
-    CostAccount:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        externalId:
-          type: string
-          maxLength: 255
-        subType:
-          type: string
-          maxLength: 255
-        externalData:
-          allOf:
-            - $ref: '#/components/schemas/ExternalData'
-          nullable: true
-        externalUpdatedAt:
-          type: string
-          format: date-time
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                The type id in the ERP.
+                This is a supplemental field to be used with `externalId` or `name`.
+            - type: 'null'
     CreditAccountRef:
       type: object
       properties:
         internalId:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         externalId:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     CostAccountInfo:
       type: object
       properties:
         internalId:
-          description: The cost account's internal id.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The cost account's internal id.
+            - type: 'null'
         externalId:
-          description: The cost account's external id.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The cost account's external id.
+            - type: 'null'
         number:
-          description: The cost account's number.
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The cost account's number.
+            - type: 'null'
     CreditStatus:
       type: string
       enum: [pending_approval, rejected, approved, acknowledged, voided]
@@ -2404,31 +2313,35 @@ components:
         status:
           $ref: '#/components/schemas/CreditStatus'
         approvedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: The payment approver has approved the credit.
+          oneOf:
+            - type: string
+              format: date-time
+              description: The payment approver has approved the credit.
+            - type: 'null'
         fundedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            The date time when the credit was applied to the payments when funds
-            were withdrawn.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The date time when the credit was applied to the payments when funds
+                were withdrawn.
+            - type: 'null'
         rejectedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: The payment approver has rejected the credit payment.
+          oneOf:
+            - type: string
+              format: date-time
+              description: The payment approver has rejected the credit payment.
+            - type: 'null'
         voidedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            This is set when a credit has been voided by the payment processor.
-            Generally this would happen due to a `Vendor` missing address
-            information or a malformed `Invoice` was trying to be paid. Other
-            cases could cause this to be voided due to insufficient funds.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                This is set when a credit has been voided by the payment processor.
+                Generally this would happen due to a `Vendor` missing address
+                information or a malformed `Invoice` was trying to be paid. Other
+                cases could cause this to be voided due to insufficient funds.
+            - type: 'null'
         invoice:
           $ref: '#/components/schemas/InvoiceRef'
         vendor:
@@ -2447,7 +2360,7 @@ components:
     Payment:
       type: object
       description: |
-        The payment made for an `Invoice`. The `CostAccount` assigned to the
+        The payment made for an `Invoice`. The `Account` assigned to the
         payment is where the funds are being debited from.
       properties:
         id:
@@ -2463,40 +2376,44 @@ components:
             amount due in most cases. Accountants are allowed to make partial
             payments. Typically when partial payments are made, `discountAmount`
             will be `0.00`.
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
         currencyId:
           $ref: '#/components/schemas/Currency'
         status:
           $ref: '#/components/schemas/PaymentStatus'
         approvedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: The payment approver has approved the payment.
+          oneOf:
+            - type: string
+              format: date-time
+              description: The payment approver has approved the payment.
+            - type: 'null'
         fundedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            A rough date time when the funds were withdrawn.
-            **Note**: This is not an exact date time of when the funds were
-            withdrawn. This is the date the payments were submitted to the bank
-            and were accepted by the bank.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                A rough date time when the funds were withdrawn.
+                **Note**: This is not an exact date time of when the funds were
+                withdrawn. This is the date the payments were submitted to the
+                bank and were accepted by the bank.
+            - type: 'null'
         rejectedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: The payment approver has rejected the payment.
+          oneOf:
+            - type: string
+              format: date-time
+              description: The payment approver has rejected the payment.
+            - type: 'null'
         voidedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            This is set when a credit has been voided by the payment processor.
-            Generally this would happen due to a `Vendor` missing address
-            information or a malformed `Invoice` was trying to be paid. Other
-            cases could cause this to be voided due to insufficient funds.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                This is set when a credit has been voided by the payment processor.
+                Generally this would happen due to a `Vendor` missing address
+                information or a malformed `Invoice` was trying to be paid. Other
+                cases could cause this to be voided due to insufficient funds.
+            - type: 'null'
         invoice:
           $ref: '#/components/schemas/InvoiceRef'
         costAccount:
@@ -2518,42 +2435,48 @@ components:
           type: string
           description: The id of the `Company` in Vic.
         processedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            The date time of when the payment was sent to the payment processor.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The date time of when the payment was sent to the payment
+                processor.
+            - type: 'null'
         completedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            The date time of when all of the payments have been submitted to the
-            bank accounts.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The date time of when all of the payments have been submitted to
+                the bank accounts.
+            - type: 'null'
         approvedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            The payment approver has approved the batch of payments and will be
-            scheduled to be processed.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The payment approver has approved the batch of payments and will
+                be scheduled to be processed.
+            - type: 'null'
         rejectedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            This is set when the payment approver has rejected the entire batch
-            of payments. Each `Payment` and `Credit` will have their
-            `rejectedAt` fields also set.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                This is set when the payment approver has rejected the entire
+                batch of payments. Each `Payment` and `Credit` will have their
+                `rejectedAt` fields also set.
+            - type: 'null'
         voidedAt:
-          type: string
-          format: date-time
-          nullable: true
-          description: |
-            This is set when an entire batch of payments was voided.
-            Generally this would happen due to a `Vendor` missing address
-            information or a malformed `Invoice` was trying to be paid. Other
-            cases could cause this to be voided due to insufficient funds.
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                This is set when an entire batch of payments was voided.
+                Generally this would happen due to a `Vendor` missing address
+                information or a malformed `Invoice` was trying to be paid. Other
+                cases could cause this to be voided due to insufficient funds.
+            - type: 'null'
         status:
           $ref: '#/components/schemas/PaymentBatchStatus'
         payments:
@@ -2583,21 +2506,25 @@ components:
         kind:
           $ref: '#/components/schemas/PaymentKind'
         accountHolderName:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         accountNumber:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         routingNumber:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         bic:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     InvoicePaymentTerm:
       type: object
       required: [count, unit]
@@ -2612,28 +2539,31 @@ components:
       type: object
       properties:
         internalId:
-          type: string
-          maxLength: 255
-          nullable: true
-          description: |
-            The internal id of the VAT code. If specified, it will take
-            precedence over the `externalId` and `code`.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                The internal id of the VAT code. If specified, it will take
+                precedence over the `externalId` and `code`.
+            - type: 'null'
         externalId:
-          type: string
-          maxLength: 255
-          nullable: true
-          description: |
-            The external id of the VAT code. If specified, it will take
-            precedence over the `code`.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: |
+                The external id of the VAT code. If specified, it will take
+                precedence over the `code`.
+            - type: 'null'
         code:
-          type: string
-          maxLength: 255
-          nullable: true
-          description: The VAT code.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The VAT code.
+            - type: 'null'
         amount:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
           description: |
             The amount of VAT. This will be added to the line item's total. If
             the VAT amount is unknown, this should be left `NULL` or
@@ -2641,7 +2571,7 @@ components:
         rate:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
           description: |
             The amount of VAT percentage. If the VAT percentage is unknown, this
             should be left `NULL` or unspecified.
@@ -2650,61 +2580,75 @@ components:
       required: [name, daysToPay]
       properties:
         name:
-          type: string
-          nullable: false
-          maxLength: 255
-          description: The name of the payment term
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The name of the payment term
+            - type: 'null'
         daysToPay:
           type: integer
           minimum: 1
           description: The number of days the invoice should be paid in.
         description:
-          type: string
-          nullable: true
-          maxLength: 255
-          description: A description of the payment term.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: A description of the payment term.
+            - type: 'null'
         discountDays:
-          type: integer
-          nullable: true
-          minimum: 0
-          description: The number of days the invoice should be paid in to get a discount.
+          oneOf:
+            - type: integer
+              minimum: 0
+              description: |
+                The number of days the invoice should be paid in to get a
+                discount.
+            - type: 'null'
         discountPercentage:
-          type: string
-          format: decimal
-          nullable: true
-          minimum: 0
-          description: The discount percentage if paid within the number of discount
-            days.
+          oneOf:
+            - type: string
+              format: decimal
+              description: |
+                The discount percentage if paid within the number of discount
+                days.
+              minimum: 0
+            - type: 'null'
     UpdatePaymentTerm:
       type: object
       required: [name, daysToPay]
       properties:
         name:
-          type: string
-          nullable: false
-          maxLength: 255
-          description: The name of the payment term
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The name of the payment term
+            - type: 'null'
         daysToPay:
           type: integer
           minimum: 1
           description: The number of days the invoice should be paid in.
         description:
-          type: string
-          nullable: true
-          maxLength: 255
-          description: A description of the payment term.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: A description of the payment term.
+            - type: 'null'
         discountDays:
-          type: integer
-          nullable: true
-          minimum: 0
-          description: The number of days the invoice should be paid in to get a discount.
+          oneOf:
+            - type: integer
+              minimum: 0
+              description: |
+                The number of days the invoice should be paid in to get a
+                discount.
+            - type: 'null'
         discountPercentage:
-          type: string
-          format: decimal
-          nullable: true
-          minimum: 0
-          description: The discount percentage if paid within the number of discount
-            days.
+          oneOf:
+            - type: string
+              format: decimal
+              minimum: 0
+              description: |
+                The discount percentage if paid within the number of discount
+                days.
+            - type: 'null'
     PaymentTerm:
       type: object
       required: [name, daysToPay]
@@ -2714,7 +2658,6 @@ components:
           description: The payment term's id.
         name:
           type: string
-          nullable: false
           maxLength: 255
           description: The name of the payment term
         daysToPay:
@@ -2722,36 +2665,43 @@ components:
           minimum: 1
           description: The number of days the invoice should be paid in.
         description:
-          type: string
-          nullable: true
-          maxLength: 255
-          description: A description of the payment term.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: A description of the payment term.
+            - type: 'null'
         discountDays:
-          type: integer
-          nullable: true
-          minimum: 0
-          description: The number of days the invoice should be paid in to get a discount.
+          oneOf:
+            - type: integer
+              minimum: 0
+              description: |
+                The number of days the invoice should be paid in to get a
+                discount.
+            - type: 'null'
         discountPercentage:
-          type: string
-          format: decimal
-          nullable: true
-          minimum: 0
-          description: The discount percentage if paid within the number of discount
-            days.
+          oneOf:
+            - type: string
+              format: decimal
+              minimum: 0
+              description: |
+                The discount percentage if paid within the number of discount
+                days.
+            - type: 'null'
     CreateInvoiceLineItem:
       type: object
       required: [amount]
       properties:
         index:
-          description: |
-            A non-negative integer indicating where the line item is in the
-            document. No two line items shall be allowed to have the same index.
-            If unspecified, it will be inferred based on its position. If
-            another line item has an index set, and the current line item is
-            left null, it will take the next highest value.
-          type: integer
-          nullable: true
-          minimum: 0
+          oneOf:
+            - type: integer
+              minimum: 0
+              description: |
+                A non-negative integer indicating where the line item is in the
+                document. No two line items shall be allowed to have the same index.
+                If unspecified, it will be inferred based on its position. If
+                another line item has an index set, and the current line item is
+                left null, it will take the next highest value.
+            - type: 'null'
         amount:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
@@ -2759,113 +2709,138 @@ components:
             The line item total amount including all tax amounts. This is used
             to calculate the predicted total amount on the invoice in the UI.
         quantityInvoiced:
-          description: The quantity of things that were invoiced.
-          type: string
-          format: decimal
-          nullable: true
+          oneOf:
+            - type: string
+              format: decimal
+              description: The quantity of things that were invoiced.
+            - type: 'null'
         comment:
-          type: string
-          maxLength: 255
-          nullable: true
-          description: The line item comment.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The line item comment.
+            - type: 'null'
         description:
-          type: string
-          maxLength: 255
-          nullable: true
-          description: The description of the line item.
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The description of the line item.
+            - type: 'null'
         billable:
-          type: boolean
-          nullable: true
+          oneOf:
+            - type: boolean
+            - type: 'null'
         taxCodeId:
-          type: string
-          format: uuid
-          nullable: true
-          description: ID of Tax Code to use for the line item.
+          oneOf:
+            - type: string
+              format: uuid
+              description: ID of Tax Code to use for the line item.
+            - type: 'null'
         vat:
           oneOf:
             - $ref: '#/components/schemas/LineItemVat'
-          nullable: true
+            - type: 'null'
           description: |
             The VAT information for the specific line item.
             If this value is unknown, it should be left `NULL` or unspecified.
         costAccount:
           oneOf:
             - $ref: '#/components/schemas/CostAccountInfo'
-          nullable: true
+            - type: 'null'
         dimensions:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/DimensionRef'
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/DimensionRef'
+            - type: 'null'
+    InvoiceIneternalId:
+      type: string
+      description: The id of the `Invoice` in Vic.
+      maxLength: 255
+    InvoiceExternalId:
+      type: string
+      description: The id of the `Invoice` in the ERP.
+      maxLength: 255
     InvoiceRef:
       type: object
       description: A reference to an `Invoice`.
       properties:
         internalId:
-          description: The id of the `Invoice` in Vic.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/InvoiceIneternalId'
+            - type: 'null'
         externalId:
-          description: The id of the `Invoice` in the ERP.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/InvoiceExternalId'
+            - type: 'null'
     CostAccountRef:
       type: object
-      description: A reference to a `CostAccount`.
+      description: A reference to a `Account`.
       properties:
         internalId:
-          description: The id of the `CostAccount` in Vic.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The id of the `Account` in Vic.
+            - type: 'null'
         externalId:
-          description: The id of the `CostAccount` in the ERP.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+              description: The id of the `Account` in the ERP.
+            - type: 'null'
+    VendorInternalId:
+      type: string
+      description: The id of the `Vendor` in Vic.
+      maxLength: 255
+    VendorExternalId:
+      description: The id of the `Vendor` in the ERP.
+      type: string
+      maxLength: 255
     VendorRef:
       type: object
       description: A reference to a `Vendor`.
       properties:
         internalId:
-          description: The id of the `Vendor` in Vic.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/VendorInternalId'
+            - type: 'null'
         externalId:
-          description: The id of the `Vendor` in the ERP.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/VendorExternalId'
+            - type: 'null'
     VendorLookup:
       type: object
       properties:
         internalId:
+          oneOf:
+            - $ref: '#/components/schemas/VendorInternalId'
+            - type: 'null'
           description: |
             The existing vendor internal id. This field takes precedence over
             all other fields when present and not null.
-          type: string
-          nullable: true
-          maxLength: 255
         externalId:
+          oneOf:
+            - $ref: '#/components/schemas/VendorExternalId'
+            - type: 'null'
           description: |
             The existing vendor external id. This field takes precedence over
             `orgNumber`.
-          type: string
-          nullable: true
-          maxLength: 255
         orgNumber:
-          description: The org number of the vendor to aid in the predictions.
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              description: The org number of the vendor to aid in the predictions.
+              maxLength: 255
+            - type: 'null'
         countryCode:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/CountryCode'
+            - type: 'null'
           description: The country code of the vendor
-          nullable: true
+    Language:
+      type: string
+      maxLength: 2
+      example: en
     CreateInvoice:
       description: The shape of the request to create an invoice.
       type: object
@@ -2873,16 +2848,18 @@ components:
       properties:
         externalId:
           oneOf:
-            - $ref: '#/components/schemas/ExternalId'
+            - $ref: '#/components/schemas/InvoiceExternalId'
+            - type: 'null'
           description: |
             The external id if it is known within the external system. This
             field can be null.
-          nullable: true
         source:
+          oneOf:
+            - type: string
+              example: Millum
+              maxLength: 255
+            - type: 'null'
           description: Where the invoice originated from.
-          type: string
-          nullable: true
-          example: Millum
         transactionType:
           $ref: '#/components/schemas/TransactionType'
         refNumber:
@@ -2890,14 +2867,16 @@ components:
           type: string
           maxLength: 255
         poNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         description:
-          description: The description of what the invoice is.
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              description: The description of what the invoice is.
+            - type: 'null'
         totalAmount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of the invoice, including tax/VAT.
         currency:
@@ -2906,10 +2885,9 @@ components:
           format: ISO-4217
           maxLength: 3
         language:
-          type: string
-          nullable: true
-          maxLength: 2
-          example: en
+          oneOf:
+            - $ref: '#/components/schemas/Language'
+            - type: 'null'
         issueDate:
           description: The date the invoice was issued on.
           type: string
@@ -2922,16 +2900,19 @@ components:
           type: string
           format: date
         accountNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         servicePeriodStart:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         servicePeriodEnd:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         paymentRef:
           description: |
             The payment reference number. The KID is a customer identification
@@ -2941,23 +2922,23 @@ components:
         paymentInfo:
           oneOf:
             - $ref: '#/components/schemas/InvoicePaymentInfo'
-          nullable: true
+            - type: 'null'
         paymentTerm:
           oneOf:
             - $ref: '#/components/schemas/InvoicePaymentTerm'
+            - type: 'null'
           description: |
             The payment term the invoice should be paid in. If the term is not
             known, pass `null` here.
-          nullable: true
         creditAccount:
           oneOf:
             - $ref: '#/components/schemas/CreditAccountRef'
-          nullable: true
+            - type: 'null'
         vendor:
           oneOf:
             - $ref: '#/components/schemas/VendorLookup'
+            - type: 'null'
           description: The vendor information that the invoice is from.
-          nullable: true
         lineItems:
           type: array
           items:
@@ -3001,50 +2982,57 @@ components:
           type: string
           format: decimal
           example: '0.25'
+    PurchaseOrderExternalId:
+      type: string
+      maxLength: 255
+      description: The id of the purchase order within the ERP system.
     CreatePurchaseOrder:
       required: [poNumber, amount, vendor, lineItems, issuedOn]
       properties:
         externalId:
-          type: string
-          nullable: true
-          maxLength: 255
-          description: The id of the purchase order within the ERP system.
+          oneOf:
+            - $ref: '#/components/schemas/PurchaseOrderExternalId'
+            - type: 'null'
         issuedOn:
-          type: string
-          format: date
-          nullable: false
-          description: When the purchase order was issued.
+          oneOf:
+            - type: string
+              format: date
+              description: When the purchase order was issued.
+            - type: 'null'
         poNumber:
           type: string
           maxLength: 255
           example: '12003400'
           description: The purchase order number. This is used to match against invoices.
         deliverOn:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         amount:
           $ref: '#/components/schemas/MonetaryValue'
         currencyId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/Currency'
           description: The currency that the purchase order uses.
         description:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
           description: The description of the purchase order.
         requestor:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/PurchaseOrderRequestor'
-          nullable: true
+            - type: 'null'
         createdOn:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
           description: When the purchase order was created.
         vendor:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/VendorLookup'
           description: The vendor of the purchase order.
         lineItems:
@@ -3056,14 +3044,14 @@ components:
       required: [poNumber, amount, vendor]
       properties:
         externalId:
-          type: string
-          nullable: true
-          maxLength: 255
-          description: The id of the purchase order within the ERP system.
+          oneOf:
+            - $ref: '#/components/schemas/PurchaseOrderExternalId'
+            - type: 'null'
         issuedOn:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
           description: When the purchase order was issued.
         poNumber:
           type: string
@@ -3071,31 +3059,34 @@ components:
           example: '12003400'
           description: The purchase order number. This is used to match against invoices.
         deliverOn:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         amount:
           $ref: '#/components/schemas/MonetaryValue'
         currencyId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/Currency'
           description: The currency that the purchase order uses.
         description:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
           description: The description of the purchase order.
         requestor:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/PurchaseOrderRequestor'
-          nullable: true
+            - type: 'null'
         createdOn:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
           description: When the purchase order was created.
         vendor:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/VendorLookup'
           description: The vendor of the purchase order.
     CreatePurchaseOrderItem:
@@ -3109,18 +3100,19 @@ components:
         - lineNumber
       properties:
         productNumber:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         productDescription:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         unitOfMeasure:
-          type: string
-          nullable: true
-          example: kg
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/UnitOfMeasure'
+            - type: 'null'
         quantityReceived:
           description: The quantity received.
           type: string
@@ -3142,6 +3134,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DimensionRef'
+    UnitOfMeasure:
+      type: string
+      example: kg
+      maxLength: 255
+      description: The unit of measure used.
     CreatePurchaseOrderLineItem:
       type: object
       required:
@@ -3157,18 +3154,19 @@ components:
           type: string
           description: The ID of the purchase order to attach this line item to.
         productNumber:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         productDescription:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         unitOfMeasure:
-          type: string
-          nullable: true
-          example: kg
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/UnitOfMeasure'
+            - type: 'null'
         quantityReceived:
           description: The quantity received.
           type: string
@@ -3201,18 +3199,19 @@ components:
         - lineNumber
       properties:
         productNumber:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         productDescription:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         unitOfMeasure:
-          type: string
-          nullable: true
-          example: kg
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/UnitOfMeasure'
+            - type: 'null'
         quantityReceived:
           description: The quantity received.
           type: string
@@ -3253,15 +3252,15 @@ components:
         - status
       properties:
         totalAmount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of the invoice, including tax/VAT.
         amountWithoutTax:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of the invoice, excluding tax.
         amountTax:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of tax on the invoice.
         transactionType:
@@ -3271,15 +3270,17 @@ components:
           type: string
           maxLength: 255
         poNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         description:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         currency:
-          type: string
-          format: ISO-4217
-          maxLength: 255
+          $ref: '#/components/schemas/Currency'
         customFields:
           type: array
           items:
@@ -3289,8 +3290,9 @@ components:
           items:
             $ref: '#/components/schemas/InvoiceField'
         language:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Language'
+            - type: 'null'
         issueDate:
           type: string
           format: date
@@ -3305,10 +3307,12 @@ components:
         invoiceInfo:
           $ref: '#/components/schemas/InvoiceInfoNO'
         source:
+          oneOf:
+            - type: string
+              example: Millum
+              maxLength: 255
+            - type: 'null'
           description: Where the invoice originates from.
-          type: string
-          nullable: true
-          example: Millum
         internalId:
           type: string
         internalUpdatedAt:
@@ -3316,15 +3320,17 @@ components:
           description: The date time in UTC when the record was updated at.
           format: date-time
         externalId:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
           description: The id of the invoice within the ERP system.
         paymentTermId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The id of the `PaymentTerm` a vendor uses.
-          type: string
-          format: uuid
-          nullable: true
         externalUpdatedAt:
           type: string
           description: |
@@ -3334,10 +3340,10 @@ components:
         paymentTerm:
           oneOf:
             - $ref: '#/components/schemas/InvoicePaymentTerm'
+            - type: 'null'
           description: |
             The payment term the invoice should be paid in. If the term is not
             known, pass `null` here.
-          nullable: true
         paymentRef:
           description: |
             The payment reference number. The KID is a customer identification
@@ -3347,15 +3353,15 @@ components:
         vendorInternalId:
           oneOf:
             - $ref: '#/components/schemas/InternalId'
-          nullable: true
+            - type: 'null'
         vendorExternalId:
           oneOf:
             - $ref: '#/components/schemas/ExternalId'
-          nullable: true
+            - type: 'null'
         vendor:
           oneOf:
             - $ref: '#/components/schemas/SparseVendor'
-          nullable: true
+            - type: 'null'
         lineItems:
           type: array
           minItems: 1
@@ -3374,13 +3380,14 @@ components:
           items:
             $ref: '#/components/schemas/BillOfLadingNumber'
         selfAssessedUseTaxAmount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
         selfAssessedUseTaxAccount:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     InvoiceConfirm:
       type: object
       required: [externalId, externalUpdatedAt]
@@ -3397,12 +3404,14 @@ components:
       required: [item, field, reason]
       properties:
         item:
-          type: integer
-          minimum: 0
-          nullable: true
+          oneOf:
+            - type: integer
+              minimum: 0
+            - type: 'null'
         field:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         reason:
           type: string
     InvoiceState:
@@ -3427,16 +3436,17 @@ components:
           type: string
           maxLength: 255
         productNumber:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         productDescription:
           type: string
           maxLength: 255
         unitOfMeasure:
-          type: string
-          maxLength: 255
-          description: The unit of measure used.
+          oneOf:
+            - $ref: '#/components/schemas/UnitOfMeasure'
+            - type: 'null'
         quantityRequested:
           description: The quantity requested.
           type: string
@@ -3448,15 +3458,15 @@ components:
           format: decimal
           example: '1.0'
         unitAmount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
+            - type: 'null'
           description: The per-unit amount.
-          nullable: true
         lineItemTotal:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
+            - type: 'null'
           description: The line item total.
-          nullable: true
         lineNumber:
           description: The line number of the item in the purchase order.
           type: integer
@@ -3495,13 +3505,13 @@ components:
           type: string
           format: date
         amount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
         currencyId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/Currency'
-          nullable: true
+            - type: 'null'
         status:
           $ref: '#/components/schemas/PurchaseOrderStatus'
         description:
@@ -3520,13 +3530,14 @@ components:
       description: The person or entity who requested the purchase order.
       properties:
         email:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
         name:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     TrainingInvoice:
       type: object
       required:
@@ -3546,18 +3557,21 @@ components:
           type: string
           maxLength: 255
         poNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         description:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         currency:
           type: string
           format: ISO-4217
           maxLength: 255
         language:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Language'
+            - type: 'null'
         issueDate:
           type: string
           format: date
@@ -3580,9 +3594,9 @@ components:
           items:
             $ref: '#/components/schemas/InvoiceLineItem'
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         externalUpdatedAt:
           type: string
           description: |
@@ -3608,47 +3622,58 @@ components:
         transactionType:
           $ref: '#/components/schemas/TransactionType'
         refNumber:
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
           description: number that appears on the invoice
-          type: string
-          maxLength: 255
-          nullable: true
         poNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         description:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         currency:
-          type: string
-          format: ISO-4217
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Currency'
+            - type: 'null'
         language:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Language'
+            - type: 'null'
         issueDate:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         glDate:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         dueDate:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         accountNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         servicePeriodStart:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         servicePeriodEnd:
-          type: string
-          format: date
-          nullable: true
+          oneOf:
+            - type: string
+              format: date
+            - type: 'null'
         paymentInfo:
           $ref: '#/components/schemas/PaymentInfo'
         invoiceInfo:
@@ -3656,9 +3681,9 @@ components:
         vendorExternalId:
           oneOf:
             - $ref: '#/components/schemas/ExternalId'
-          nullable: true
+            - type: 'null'
         totalAmount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The total amount of the invoice, including tax/VAT.
         lineItems:
@@ -3670,7 +3695,7 @@ components:
         externalData:
           oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         externalId:
           $ref: '#/components/schemas/ExternalId'
         externalUpdatedAt:
@@ -3711,7 +3736,7 @@ components:
         amount:
           type: number
         amountTax:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
           description: The amount of tax on the invoice line item.
         description:
@@ -3724,29 +3749,29 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/InvoiceLineItemInfo'
-          nullable: true
+            - type: 'null'
         vat:
           oneOf:
             - $ref: '#/components/schemas/LineItemVat'
-          nullable: true
+            - type: 'null'
         costAccountInternalId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/InternalId'
-          nullable: true
+            - type: 'null'
           deprecated: true
           description: Use `costAccount` instead.
         costAccountExternalId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalId'
-          nullable: true
+            - type: 'null'
           deprecated: true
           description: Use `costAccount` instead.
         costAccount:
           oneOf:
             - $ref: '#/components/schemas/CostAccountInfo'
-          nullable: true
+            - type: 'null'
         dimensions:
           type: array
           items:
@@ -3769,31 +3794,33 @@ components:
           format: decimal
         lineItemTotal:
           description: The line item total
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
         lineType:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/InvoiceItemLineType'
-          nullable: true
+            - type: 'null'
         poLineNumber:
+          oneOf:
+            - type: integer
+            - type: 'null'
           description: The line number in a matched purchase order.
-          type: integer
-          nullable: true
         poNumber:
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
           description: The matched purchase order number.
-          type: string
-          maxLength: 255
-          nullable: true
         poItemsMatched:
           type: array
           uniqueItems: true
           items:
             $ref: '#/components/schemas/MatchItem'
         unitPrice:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
     TrainingInvoiceLineItemUpsert:
       type: object
       required: [amount]
@@ -3824,13 +3851,13 @@ components:
         accrual:
           $ref: '#/components/schemas/AccrualInfo'
         invoiceLineItemInfo:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/InvoiceLineItemInfo'
-          nullable: true
+            - type: 'null'
         costAccountExternalId:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalId'
-          nullable: true
+            - type: 'null'
         dimensionsExternalIds:
           description: |
             This has been deprecated. Please use the `dimensions` field to
@@ -3840,20 +3867,22 @@ components:
           items:
             $ref: '#/components/schemas/ExternalId'
         dimensions:
-          type: array
-          nullable: true
-          items:
-            $ref: '#/components/schemas/DimensionRef'
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/DimensionRef'
+            - type: 'null'
         lineItemIsVatOnly:
           type: boolean
           default: false
         lineType:
           $ref: '#/components/schemas/InvoiceItemLineType'
         quantityInvoiced:
+          oneOf:
+            - type: string
+              format: decimal
+            - type: 'null'
           description: The quantity of things that were invoiced.
-          type: string
-          format: decimal
-          nullable: true
     VatCode:
       type: object
       required: [internalId, internalUpdatedAt, code, description]
@@ -3990,16 +4019,19 @@ components:
         externalId:
           oneOf:
             - $ref: '#/components/schemas/ExternalId'
-          nullable: true
+            - type: 'null'
         orgNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         countryCode:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/CountryCode'
+            - type: 'null'
         name:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
     Vendor:
       type: object
       required:
@@ -4033,39 +4065,50 @@ components:
           type: string
           maxLength: 255
         email:
-          type: string
-          format: email
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
         description:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         phone:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressStreet:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressCity:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressState:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressPostalCode:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         countryCode:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/CountryCode'
+            - type: 'null'
         currency:
-          type: string
-          format: ISO-4217
-          maxLength: 3
+          $ref: '#/components/schemas/Currency'
         confirmedAt:
-          type: string
-          format: date-time
-          nullable: true
+          oneOf:
+            - type: string
+              format: date-time
+            - type: 'null'
         state:
           $ref: '#/components/schemas/VendorState'
         taxInfo:
@@ -4073,19 +4116,21 @@ components:
         defaultPaymentInfo:
           $ref: '#/components/schemas/PaymentInfo'
         paymentTermId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The id of the `PaymentTerm` a vendor uses.
-          type: string
-          format: uuid
-          nullable: true
         vendorGroupId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The `VendorGroup` id the vendor is attached to.
-          type: string
-          format: uuid
-          nullable: true
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         errors:
           description: The errors that occurred in the external ERP system.
           items:
@@ -4111,36 +4156,45 @@ components:
           type: string
           maxLength: 255
         email:
-          type: string
-          format: email
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
         phone:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressStreet:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressCity:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressState:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressPostalCode:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         countryCode:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/CountryCode'
+            - type: 'null'
         currency:
-          type: string
-          format: ISO-4217
-          maxLength: 3
+          $ref: '#/components/schemas/Currency'
         confirmedAt:
-          type: string
-          format: date-time
-          nullable: true
+          oneOf:
+            - type: string
+              format: date-time
+            - type: 'null'
         state:
           $ref: '#/components/schemas/VendorState'
         taxInfo:
@@ -4148,19 +4202,21 @@ components:
         defaultPaymentInfo:
           $ref: '#/components/schemas/PaymentInfo'
         paymentTermId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The id of the `PaymentTerm` a vendor uses.
-          type: string
-          format: uuid
-          nullable: true
         vendorGroupId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The `VendorGroup` id the vendor is attached to.
-          type: string
-          format: uuid
-          nullable: true
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         managers:
           type: array
           items:
@@ -4188,36 +4244,47 @@ components:
           type: string
           maxLength: 255
         email:
-          type: string
-          format: email
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
         phone:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressStreet:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressCity:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressState:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         addressPostalCode:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         countryCode:
-          type: string
-          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/CountryCode'
+            - type: 'null'
         currency:
-          type: string
-          format: ISO-4217
-          maxLength: 3
+          oneOf:
+            - $ref: '#/components/schemas/Currency'
+            - type: 'null'
         confirmedAt:
-          type: string
-          format: date-time
-          nullable: true
+          oneOf:
+            - type: string
+              format: date-time
+            - type: 'null'
         state:
           $ref: '#/components/schemas/VendorState'
         taxInfo:
@@ -4225,19 +4292,21 @@ components:
         defaultPaymentInfo:
           $ref: '#/components/schemas/PaymentInfo'
         paymentTermId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The id of the `PaymentTerm` a vendor uses.
-          type: string
-          format: uuid
-          nullable: true
         vendorGroupId:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: 'null'
           description: The `VendorGroup` id the vendor is attached to.
-          type: string
-          format: uuid
-          nullable: true
         externalData:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/ExternalData'
-          nullable: true
+            - type: 'null'
         errors:
           description: The errors that occurred in the external ERP system.
           items:
@@ -4268,15 +4337,16 @@ components:
           type: string
           format: date-time
         events:
+          oneOf:
+            - type: array
+              items:
+                $ref: '#/components/schemas/WebhookEventName'
+            - type: 'null'
           description: |
             The list of events to subscribe to. If you wish to subscribe to all
             events simply pass `["all"]`. If you are updating the subscription
             and wish to leave the events subscribed to alone, this field should
             be left unspecified or null.
-          nullable: true
-          type: array
-          items:
-            $ref: '#/components/schemas/WebhookEventName'
     Error:
       description: |
         generic error message in JSON format.  Note the 'code' field should
@@ -4299,13 +4369,14 @@ components:
         fallback. If neither are found, the api will return an error.
       properties:
         email:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
         name:
-          type: string
-          nullable: true
-          maxLength: 255
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     VendorRemoteError:
       description: |
         The remote error on a Vendor.
@@ -4393,8 +4464,9 @@ components:
           type: string
           format: date
         count:
-          type: integer
-          nullable: true
+          oneOf:
+            - type: integer
+            - type: 'null'
           description: |
             The number of units from the `start`. The system _may_ have this field as
             `null` due to incomplete information or a user has cleared the information.
@@ -4430,53 +4502,55 @@ components:
         label:
           type: string
           maxLength: 255
-          nullable: false
         title:
           type: string
           maxLength: 255
-          nullable: false
         type:
           type: string
           maxLength: 255
-          nullable: false
         value:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     InvoiceFieldInput:
       type: object
       required: [label, value]
       properties:
         label:
           maxLength: 255
-          nullable: false
           type: string
         value:
-          maxLength: 255
-          nullable: true
-          type: string
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     VendorTaxInfo:
       type: object
       properties:
         taxId:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         is1099vendor:
           type: boolean
         orgNumber:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
     InternationalBankAccount:
       type: object
       properties:
         iban:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         bic:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     PaymentInfoMethod:
       type: string
       description: |
@@ -4487,32 +4561,38 @@ components:
       type: object
       properties:
         bankAccountNum:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         bankCode:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         paymentTerm:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/PaymentInfoTerm'
-          nullable: true
+            - type: 'null'
         bankGiro:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         plusGiro:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         bban:
-          type: string
-          maxLength: 255
-          nullable: true
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         internationalBankAccount:
-          allOf:
+          oneOf:
             - $ref: '#/components/schemas/InternationalBankAccount'
-          nullable: true
+            - type: 'null'
         defaultMethod:
           $ref: '#/components/schemas/PaymentInfoMethod'
     InvoiceInfoNO:
@@ -4535,17 +4615,20 @@ components:
       type: object
       properties:
         vatCode:
-          type: string
-          nullable: true
+          oneOf:
+            - type: string
+            - type: 'null'
         vatAmount:
-          type: number
-          nullable: true
+          oneOf:
+            - type: number
+            - type: 'null'
         vatRate:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
-          nullable: true
+            - type: 'null'
           description: |
-            The amount of VAT percentage. If the VAT percentage is unknown, this should be left `NULL` or unspecified.
+            The amount of VAT percentage. If the VAT percentage is unknown, this
+            should be left `NULL` or unspecified.
     RequestIdCallback:
       type: object
       required: [requestId]
@@ -5004,13 +5087,13 @@ components:
       content:
         application/pdf: {}
     VatCodesResponse:
-      description: An array of vat codes
+      description: An array of VAT codes
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/VatCodes'
     VatCodeResponse:
-      description: A single vat code.
+      description: A single VAT code.
       content:
         application/json:
           schema:
@@ -5045,12 +5128,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UnsubscribeResult'
-    CostAccountsResponse:
-      description: An array of cost accounts
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CostAccounts'
     PurchaseOrdersResponse:
       description: A paged array of purchase orders
       headers:
@@ -5125,7 +5202,7 @@ components:
     PaymentTermDeletedResponse:
       description: Payment term was successfully deleted.
     PaymentBatchListResponse:
-      description: A paged array of Payment Batches
+      description: A paged array of Payment batches
       headers:
         x-next:
           $ref: '#/components/headers/NextPageToken'
