@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - run: make setup
+      - run: make validate
       - run: make build
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

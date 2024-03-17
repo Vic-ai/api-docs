@@ -1,5 +1,8 @@
 all: build
 
+setup:
+	npm i -g @redocly/cli@latest
+
 build:
 	npx --yes @redocly/cli build-docs vic.api.v0.yaml --output public/index.html
 
