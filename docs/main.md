@@ -1,6 +1,7 @@
 The Vic.ai API allows you to connect an *ERP* to the Vic.ai product suite.
 
 The API is structured to provide 3 categories of functionality:
+
 - **Masterdata:** Masterdata are data in the ERP that Vic.ai interacts with.
   So you must provide and update this masterdata in Vic.ai, and you may also
   verify the masterdata copy in Vic.ai
