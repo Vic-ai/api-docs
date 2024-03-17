@@ -25,4 +25,4 @@ Attachments are original invoice documents that can be processed by Vic.ai.
 ### Supported EDI formats:
 
 - PEPPOL BIS Billing v3
-- Svefaktura 1.0.
+- Svefaktura 1.0
