@@ -3,20 +3,9 @@ openapi: 3.0.3
 info:
   version: 0.19.0
   contact: {}
-  title: Vic.Api
-  description: |
-    Vic.Api allows you to connect an *ERP* to the Vic.ai product suite.
-    The API is structured to provide 3 categories of functionality:
-    - **Masterdata:** Masterdata are data in the ERP that Vic.ai interacts with.
-      So you must provide and update this masterdata in Vic.ai, and you may also
-      verify the masterdata copy in Vic.ai
-    - **Training Data:** AI requires historical data to train its data model. So
-      you can put historical invoices into Vic.ai to train it, and verify that
-      they are in Vic.ai.
-    - **Webhooks:** Users or automated tasks could take various actions in the
-      Vic.ai product suite that result in an interaction with the ERP (for
-      example, posting an invoice, or requesting synchronization). We'll tell
-      you when such an action has occurred, via a webhook.
+  title: Vic.ai API
+  description:
+    $ref: 'docs/main.md'
   license:
     name: MIT
 security:
@@ -35,75 +24,81 @@ servers:
   - url: https://api.no.vic.ai/v0
     description: production server, NO
 tags:
-  - name: Attachment
-    description: |
-      Attachments are documents that are associated with invoices. 
   - name: Accounts
     description: |
       GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
       order to be associated with an invoice line item, key data about the
       account must be stored in Vic.ai.  These operations allow querying and
       manipulation of these GL account data.
-  - name: Auth
+  - name: Attachments
     description: |
-      Authorization-related routes.  These passthrough to our third-party
-      authorization system.
-  - name: CostAccounts
+      Attachments are documents that are associated with invoices. 
+  - name: Authentication
+    description:
+      $ref: 'docs/authentication.md'
   - name: Dimensions
     description: |
       Dimensions are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with invoice line items, that Vic.ai can
       automatically assign to invoice line items. These operations allow
       querying and manipulation of the dimension data.
-  - name: General
-    description: |
-      General requests on the state of the Vic.ai system
   - name: Invoices
     description: |
       These routes give you read-only access to two types of invoices:
-      - Invoices which have not yet been posted to the ERP system.
+      - Invoices which have not yet been posted to the ERP system (restricted access).
       - Invoices which have been posted to the ERP system.
-      By default, access to unposted invoices is restricted.
-  - name: Payments
-    description: The payment module of the Vic.ai system.
-  - name: PaymentTerms
+  - name: Invoices for training
     description: |
-      Payment Terms are part of your *ERP* **Masterdata**, that represent
+      Invoices used for training AI models. 
+  - name: Payment batches
+    description: |
+      Payment batches are a collection of payments that are made to vendors.
+  - name: Payment terms
+    description: |
+      Payment terms are part of your *ERP* **Masterdata**, and represent
       payment terms that Vic.ai can automatically assign to invoices. Some
       vendors may have a default payment term, and some invoices may have a
       specific payment term. In either case, Vic.ai can automatically assign
       payment terms to invoices.
-  - name: PurchaseOrders
-  - name: Subscriptions
+  - name: Purchase orders
+  - name: Status
     description: |
-      These requests represents a user’s action in the Vic.ai system and
-      repsonses to those actions.
+      Status requests on the state of the Vic.ai system.
   - name: Tags
     description: |
       Tags are part of your *ERP* **Masterdata**, and represent business
       categories that are associated with certain entities, like Vendor.
-  - name: TaxCodes
-  - name: TrainingInvoices
+  - name: Tax codes
+  - name: VAT codes
     description: |
-      Invoices that are being used to train Vic.ai's machine learning system.
+      In some regions, VAT codes are part of your *ERP* **Masterdata**, that
+      represent timeboxed VAT codes and VAT values that Vic.ai can automatically
+      assign to invoice line items.
   - name: Vendors
     description: |
       Vendors are part of your *ERP* **Masterdata**, and represent companies
       that produce invoices.  In order to be associated with an invoice, key
       data about the vendor must be stored in Vic.ai. These operations allow
       querying and manipulation of the vendor data.
-  - name: VatCodes
+  - name: Vendor groups
     description: |
-      In some regions, Vat Codes are part of your *ERP* **Masterdata**, that
-      represent timeboxed VAT codes and VAT values that Vic.ai can automatically
-      assign to invoice line items.
+      Vendors can be grouped together in Vic.ai. This is especially useful 
+      for purchase order matching where you want to match a purchase order 
+      to a group of vendors.
+  - name: Vendor tags
+    description: |
+      Vendor tags are used to categorize vendors using tags.
+  - name: Webhooks
+    description:
+      $ref: 'docs/webhooks.md'
 paths:
   /token:
     post:
-      description: Use this request to obtain an authorization token
-      summary: Token service
+      description: |
+        Use this endpoint to obtain an access token that can be used to authenticate subsequent requests to the API.
+      summary: Obtain an access token
       operationId: obtainToken
-      tags: [Auth]
+      tags: [Authentication]
       security: []
       requestBody:
         required: true
@@ -118,10 +113,11 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
   /healthCheck:
     get:
-      description: Use this request to obtain a health check statement.
+      description: |
+        Use this request to obtain a health check statement. 
       summary: Health check
       operationId: healthCheck
-      tags: [General]
+      tags: [Status]
       responses:
         '200':
           $ref: '#/components/responses/HealthyResponse'
@@ -299,7 +295,7 @@ paths:
       description: Use this request to query the vendor data that are stored in Vic.ai.
       summary: List all vendors
       operationId: listVendors
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -429,7 +425,7 @@ paths:
       description: List all vendor groups.
       summary: List all vendor groups
       operationId: listVendorGroups
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -442,7 +438,7 @@ paths:
       description: Create a vendor group.
       summary: Create a vendor group
       operationId: createVendorGroup
-      tags: [Vendors]
+      tags: [Vendor groups]
       requestBody:
         $ref: '#/components/requestBodies/CreateVendorGroupRequest'
       responses:
@@ -455,7 +451,7 @@ paths:
       description: Update the vendor group.
       summary: Update the vendor group
       operationId: updateVendorGroup
-      tags: [Vendors]
+      tags: [Vendor groups]
       parameters:
         - name: id
           in: path
@@ -515,14 +511,17 @@ paths:
         - application/vnd.ms-excel.template.macroenabled.12
         - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
         - application/vnd.openxmlformats-officedocument.spreadsheetml.template
+        
         Note that XML files are supported. 
-        However, they must be in a format that we support. 
+
+        **However, they must be in a format that we support.**
+
         Supported XML formats are:
         - PEPPOL BIS Billing v3
         - Svefaktura 1.0.
       summary: Upload an attachment
       operationId: uploadAttachment
-      tags: [Attachment]
+      tags: [Attachments]
       requestBody:
         required: true
         content:
@@ -853,10 +852,10 @@ paths:
   /trainingInvoices:
     get:
       description: |
-        Use this request to query the invoice data that are stored in Vic.ai.
-      summary: List all invoices
+        Use this request to query the training invoice data that are stored in Vic.ai.
+      summary: List all training invoices
       operationId: listTrainingInvoices
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -872,9 +871,9 @@ paths:
       description: |
         Use this request to get data for a single training invoice that is
         stored in Vic.ai
-      summary: Info for a specific invoice
+      summary: Info for a specific training invoice
       operationId: getTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -898,7 +897,7 @@ paths:
         otherwise, a new invoice will be created.
       summary: Upserts a training invoice
       operationId: upsertTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       requestBody:
@@ -940,7 +939,7 @@ paths:
         stored in Vic.ai
       summary: Deletes a training invoice
       operationId: deleteTrainingInvoice
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -953,9 +952,9 @@ paths:
       description: |
         Use this request to get the document associated with a training invoice
         that is stored in Vic.ai
-      summary: Document for a specific invoice
+      summary: Document for a specific training invoice
       operationId: getTrainingInvoiceDocument
-      tags: [TrainingInvoices]
+      tags: [Invoices for training]
       parameters:
         - $ref: '#/components/parameters/PathId'
       responses:
@@ -966,11 +965,11 @@ paths:
   /vatCodes:
     get:
       description: |
-        Use this request to query all the vat code data that are stored in
+        Use this request to query all the VAT code data that are stored in
         Vic.ai.
-      summary: List all vat codes
+      summary: List all VAT codes
       operationId: listVatCodes
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -985,11 +984,11 @@ paths:
   /vatCodes/{id}:
     get:
       description: |
-        Use this request to get data for a single vat code that is stored in
+        Use this request to get data for a single VAT code that is stored in
         Vic.ai
-      summary: Info for a specific vat code
+      summary: Info for a specific VAT code
       operationId: getVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -1000,14 +999,14 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
     put:
       description: |
-        Use this request to *upsert* vat code into Vic.ai.
-        The request body should contain the vat code object as JSON.
-        If the vat code is known by Vic.ai, the id supplied will be used to
-        resolve the vat code and perform an update of the data, otherwise, a new
-        vat code will be inserted.
-      summary: Upserts a vat code
+        Use this request to *upsert* VAT code into Vic.ai.
+        The request body should contain the VAT code object as JSON.
+        If the VAT code is known by Vic.ai, the id supplied will be used to
+        resolve the VAT code and perform an update of the data, otherwise, a new
+        VAT code will be inserted.
+      summary: Upserts a VAT code
       operationId: upsertVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -1024,11 +1023,11 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
     delete:
       description: |
-        Use this request to delete data for a single vat code that is stored in
+        Use this request to delete data for a single VAT code that is stored in
         Vic.ai
-      summary: Deletes a vat code
+      summary: Deletes a VAT code
       operationId: deleteVatCode
-      tags: [VatCodes]
+      tags: [VAT codes]
       parameters:
         - $ref: '#/components/parameters/PathId'
         - $ref: '#/components/parameters/UseSystem'
@@ -1042,7 +1041,7 @@ paths:
       description: Creates a company's tax code
       summary: Creates a company's tax code
       operationId: createTaxCode
-      tags: [TaxCodes]
+      tags: [Tax codes]
       requestBody:
         $ref: '#/components/requestBodies/CreateTaxCode'
       responses:
@@ -1054,7 +1053,7 @@ paths:
       description: Get the list of tax codes for a company
       summary: Get the list of tax codes for a company
       operationId: getTaxCodes
-      tags: [TaxCodes]
+      tags: [Tax codes]
       responses:
         '200':
           $ref: '#/components/responses/TaxCodeResponse'
@@ -1062,10 +1061,11 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
   /subscription:
     get:
-      description: Get the current status of the subscription that is set.
-      summary: Get subscription info
+      description: |
+        Get the current webhook subscription if one exists.
+      summary: Get current webhook subscription
       operationId: getSubscription
-      tags: [Subscriptions]
+      tags: [Webhooks]
       responses:
         '200':
           $ref: '#/components/responses/SubscriptionResponse'
@@ -1079,9 +1079,9 @@ paths:
         use to authenticate itself in your system. Notifications of user actions
         will proceed via the documented schema.
         The callback url must be https.
-      summary: Subscribe to callback notifications
+      summary: Create new webhook subscription
       operationId: subscribe
-      tags: [Subscriptions]
+      tags: [Webhooks]
       requestBody:
         required: true
         content:
@@ -1355,29 +1355,12 @@ paths:
         This request is used to cancel a subscription to user actions. In
         conjunction with a post requst, you may use this as a first step to
         update subscription URLs or authorization tokens.
-      summary: Unsubscribe from callback notifications
+      summary: Delete webhook subscription
       operationId: unsubscribe
-      tags: [Subscriptions]
+      tags: [Webhooks]
       responses:
         '201':
           $ref: '#/components/responses/SubscriptionDeletedResponse'
-        default:
-          $ref: '#/components/responses/ErrorResponse'
-  /costAccounts:
-    get:
-      description: |
-        Use this request to query all the cost accounts for a specific client.
-      summary: List all cost accounts
-      operationId: getCostAccounts
-      tags: [CostAccounts]
-      parameters:
-        - $ref: '#/components/parameters/PagingLimit'
-        - $ref: '#/components/parameters/PagingCursor'
-        - $ref: '#/components/parameters/SinceFilter'
-        - $ref: '#/components/parameters/SortOrder'
-      responses:
-        '200':
-          $ref: '#/components/responses/CostAccountsResponse'
         default:
           $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders:
@@ -1385,7 +1368,7 @@ paths:
       description: List purchase orders.
       summary: List purchase orders
       operationId: listPurchaseOrders
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - $ref: '#/components/parameters/PagingLimit'
         - $ref: '#/components/parameters/PagingCursor'
@@ -1404,7 +1387,7 @@ paths:
         will need to call `processPurchaseOrder`.
       summary: Create a purchase order
       operationId: createPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       requestBody:
         $ref: '#/components/requestBodies/CreatePurchaseOrderRequest'
       responses:
@@ -1423,7 +1406,7 @@ paths:
       description: Get a purchase order.
       summary: Get a purchase order
       operationId: getPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1447,7 +1430,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Update a purchase order
       operationId: updatePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1475,7 +1458,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Delete a purchase order
       operationId: deletePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1501,7 +1484,7 @@ paths:
         completed.
       summary: Process the purchase order
       operationId: processPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1525,7 +1508,7 @@ paths:
       description: Closes a purchase order.
       summary: Close a purchase order
       operationId: closePurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1549,7 +1532,7 @@ paths:
       description: Opens a purchase order.
       summary: Opens a purchase order
       operationId: openPurchaseOrder
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderId
           in: path
@@ -1576,7 +1559,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Add a line item to a purchase order.
       operationId: createPurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       requestBody:
         $ref: '#/components/requestBodies/CreatePurchaseOrderLineItemRequest'
       responses:
@@ -1598,7 +1581,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Update a purchase order's line item
       operationId: updatePurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderLineItemId
           in: path
@@ -1626,7 +1609,7 @@ paths:
         `processPurchaseOrder` to kick off reprocessing purchase order matching.
       summary: Delete a purchase order's line item
       operationId: deletePurchaseOrderLineItem
-      tags: [PurchaseOrders]
+      tags: [Purchase orders]
       parameters:
         - name: purchaseOrderLineItemId
           in: path
@@ -1710,10 +1693,9 @@ paths:
     get:
       description: |
         Get a list of vendor tags.
-        Vendor tags are used to categorize vendors using tags.
       summary: Get a list of vendor tags
       operationId: listVendorTags
-      tags: [Tags]
+      tags: [Vendor tags]
       responses:
         '200':
           $ref: '#/components/responses/VendorTagListResponse'
@@ -1731,7 +1713,7 @@ paths:
         Create a new vendor tag.
       summary: Create a new vendor tag
       operationId: createVendorTag
-      tags: [Tags]
+      tags: [Vendor tags]
       requestBody:
         $ref: '#/components/requestBodies/CreateVendorTagRequest'
       responses:
@@ -1749,7 +1731,7 @@ paths:
         Delete a vendor tag.
       summary: Delete a vendor tag
       operationId: deleteVendorTag
-      tags: [Tags]
+      tags: [Vendor tags]
       parameters:
         - $ref: '#/components/parameters/VendorTagId'
       responses:
@@ -1763,7 +1745,7 @@ paths:
         Get a list of payment terms.
       summary: Get a list of payment terms
       operationId: listPaymentTerms
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       responses:
         '200':
           $ref: '#/components/responses/PaymentTermListResponse'
@@ -1774,7 +1756,7 @@ paths:
         Create a new payment term.
       summary: Create a new payment term
       operationId: createPaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       requestBody:
         $ref: '#/components/requestBodies/CreatePaymentTermRequest'
       responses:
@@ -1792,7 +1774,7 @@ paths:
         Update a payment term.
       summary: Update a payment term
       operationId: updatePaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       parameters:
         - $ref: '#/components/parameters/PaymentTermId'
       requestBody:
@@ -1811,7 +1793,7 @@ paths:
         Delete a payment term.
       summary: Delete a payment term
       operationId: deletePaymentTerm
-      tags: [PaymentTerms]
+      tags: [Payment terms]
       parameters:
         - $ref: '#/components/parameters/PaymentTermId'
       responses:
@@ -1824,7 +1806,7 @@ paths:
       description: List all payment batches.
       summary: List all payment batches
       operationId: listPaymentBatches
-      tags: [Payments]
+      tags: [Payment batches]
       parameters:
         - name: completedAtOrAfter
           in: query
@@ -1873,7 +1855,7 @@ paths:
         reach out to support.
       summary: Get a payment batch
       operationId: getPaymentBatch
-      tags: [Payments]
+      tags: [Payment batches]
       parameters:
         - $ref: '#/components/parameters/PaymentBatchId'
       responses:
@@ -1992,7 +1974,7 @@ components:
     VatCodeFilter:
       name: vatCode
       in: query
-      description: selects the vat code which is to be displayed
+      description: selects the VAT code which is to be displayed
       required: false
       schema:
         type: string
@@ -2335,29 +2317,6 @@ components:
           type: string
           maxLength: 255
           nullable: true
-    CostAccounts:
-      type: array
-      items:
-        $ref: '#/components/schemas/CostAccount'
-    CostAccount:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 255
-        externalId:
-          type: string
-          maxLength: 255
-        subType:
-          type: string
-          maxLength: 255
-        externalData:
-          allOf:
-            - $ref: '#/components/schemas/ExternalData'
-          nullable: true
-        externalUpdatedAt:
-          type: string
-          format: date-time
     CreditAccountRef:
       type: object
       properties:
@@ -2447,7 +2406,7 @@ components:
     Payment:
       type: object
       description: |
-        The payment made for an `Invoice`. The `CostAccount` assigned to the
+        The payment made for an `Invoice`. The `Account` assigned to the
         payment is where the funds are being debited from.
       properties:
         id:
@@ -2813,15 +2772,15 @@ components:
           maxLength: 255
     CostAccountRef:
       type: object
-      description: A reference to a `CostAccount`.
+      description: A reference to a `Account`.
       properties:
         internalId:
-          description: The id of the `CostAccount` in Vic.
+          description: The id of the `Account` in Vic.
           type: string
           nullable: true
           maxLength: 255
         externalId:
-          description: The id of the `CostAccount` in the ERP.
+          description: The id of the `Account` in the ERP.
           type: string
           nullable: true
           maxLength: 255
@@ -5004,13 +4963,13 @@ components:
       content:
         application/pdf: {}
     VatCodesResponse:
-      description: An array of vat codes
+      description: An array of VAT codes
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/VatCodes'
     VatCodeResponse:
-      description: A single vat code.
+      description: A single VAT code.
       content:
         application/json:
           schema:
@@ -5045,12 +5004,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/UnsubscribeResult'
-    CostAccountsResponse:
-      description: An array of cost accounts
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/CostAccounts'
     PurchaseOrdersResponse:
       description: A paged array of purchase orders
       headers:
@@ -5125,7 +5078,7 @@ components:
     PaymentTermDeletedResponse:
       description: Payment term was successfully deleted.
     PaymentBatchListResponse:
-      description: A paged array of Payment Batches
+      description: A paged array of Payment batches
       headers:
         x-next:
           $ref: '#/components/headers/NextPageToken'
