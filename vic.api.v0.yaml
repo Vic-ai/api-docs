@@ -31,8 +31,8 @@ tags:
       account must be stored in Vic.ai.  These operations allow querying and
       manipulation of these GL account data.
   - name: Attachments
-    description: |
-      Attachments are documents that are associated with invoices.
+    description: 
+      $ref: 'docs/attachments.md'
   - name: Authentication
     description:
       $ref: 'docs/authentication.md'
@@ -490,34 +490,9 @@ paths:
   /attachments:
     post:
       description: |
-        Use this to upload an attachment to Vic.ai. The attachment will be
-        created and processing enqueued automatically. The response is
-        a 201 with the attachment ID.
-        Supported content types are:
-        - application/msword
-        - application/pdf
-        - application/vnd.ms-word.document.macroEnabled.12
-        - application/vnd.ms-word.template.macroEnabled.12
-        - application/vnd.openxmlformats-officedocument.wordprocessingml.document
-        - application/vnd.openxmlformats-officedocument.wordprocessingml.template
-        - image/tiff
-        - text/xml
-        - image/jpg
-        - image/jpeg
-        - image/png
-        - image/gif
-        - application/vnd.ms-excel
-        - application/vnd.ms-excel.addin.macroenabled.12
-        - application/vnd.ms-excel.sheet.binary.macroenabled.12
-        - application/vnd.ms-excel.sheet.macroenabled.12
-        - application/vnd.ms-excel.template.macroenabled.12
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
-        - application/vnd.openxmlformats-officedocument.spreadsheetml.template
-        Note that XML files are supported.
-        **However, they must be in a format that we support.**
-        Supported XML formats are:
-        - PEPPOL BIS Billing v3
-        - Svefaktura 1.0.
+        Use this to upload an attachment to Vic.ai. The attachment will be created and processing enqueued automatically. 
+        
+        The response is a 201 with the attachment ID.
       summary: Upload an attachment
       operationId: uploadAttachment
       tags: [Attachments]
