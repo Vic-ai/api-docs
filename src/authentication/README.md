@@ -41,7 +41,7 @@ Here is an example:
 ```bash
 curl https://api.us.vic.ai/v0/healthCheck \
     -H "Content-Type: application/json" \
-    -H "Authorization: YOUR_ACCESS_TOKEN"
+    -H "Authorization: Bearer YOUR_ACCESS_TOKEN"
 ```
 
 The response should resemble the following:
