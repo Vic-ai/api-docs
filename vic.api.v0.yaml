@@ -6,8 +6,6 @@ info:
   title: Vic.ai API
   description:
     $ref: 'docs/main.md'
-  license:
-    name: MIT
 security:
   - BearerAuth: []
 servers:
