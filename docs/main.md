@@ -34,7 +34,7 @@ curl https://api.us.vic.ai/v0/healthCheck \
 
 ## Getting Started
 
-Visit the [Authentication](/#tag/Authentication) page to learn how to make authenticated requests to the Vic.ai API.
+Visit the [Authentication](#tag/Authentication) page to learn how to start making authenticated requests to the API.
 
 ## Pagination
 

@@ -1807,7 +1807,7 @@ components:
     PagingCursor:
       name: cursor
       in: query
-      description: Which item to start from. See [Pagination](/#section/Pagination) for more information.
+      description: Which item to start from. See [Pagination](#section/Pagination) for more information.
       required: false
       schema:
         type: string
