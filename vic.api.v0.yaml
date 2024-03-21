@@ -22,6 +22,12 @@ servers:
   - url: https://api.no.vic.ai/v0
     description: production server, NO
 tags:
+  - name: Authentication
+    description:
+      $ref: 'docs/authentication.md'
+  - name: Pagination
+    description: 
+      $ref: 'docs/pagination.md'
   - name: Accounts
     description: |
       GL (General Ledger) accounts are part of your *ERP* **Masterdata**. In
@@ -31,9 +37,6 @@ tags:
   - name: Attachments
     description: 
       $ref: 'docs/attachments.md'
-  - name: Authentication
-    description:
-      $ref: 'docs/authentication.md'
   - name: Dimensions
     description: |
       Dimensions are part of your *ERP* **Masterdata**, and represent business
