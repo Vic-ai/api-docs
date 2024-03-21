@@ -2,13 +2,14 @@
 
 The Vic.ai API provides a seamless connection between your Enterprise Resource Planning (ERP) system and the Vic.ai product suite. 
 
-The API is designed to offer three main functionalities:
+The API is designed to offer three main areas of functionality:
 
-- **Master data:** This refers to the data in your ERP that Vic.ai interacts with. You are required to supply and update this data in Vic.ai, and you also have the option to verify the copy of the masterdata in Vic.ai.
+- **Syncing master data:** This refers to the data in your ERP that Vic.ai interacts with. You are required to supply and update this data in Vic.ai, and you also have the option to verify the copy of the masterdata in Vic.ai.
 
-- **Training data:** AI needs historical data to train its data model. Therefore, you can input historical invoices into Vic.ai for training purposes and confirm their presence in Vic.ai.
+- **Syncing training data:** We need historical data to train your AI model. To that end, the API provides endpoints to sync historical invoices into Vic.ai and to confirm their presence.
 
-- **Webhooks:** These allow users or automated tasks to perform various actions in the Vic.ai product suite that result in an interaction with the ERP. Examples include posting an invoice or requesting synchronization. You will be notified when such an action takes place via a webhook.
+- **Subscribing to and receiving webhooks:** Webhooks enable users or automated tasks to interact with your ERP through various actions in the Vic.ai product suite, such as posting an invoice, payment or purchase order or requesting synchronization. You will receive a notification via a webhook when these actions occur.
+
 
 For US-based integrations, please use the following base API URL:
 
@@ -34,18 +35,11 @@ curl https://api.us.vic.ai/v0/healthCheck \
 
 ## Getting Started
 
-Visit the [Authentication](#tag/Authentication) page to learn how to start making authenticated requests to the API.
+To begin interacting with the Vic.ai API, you will need the following credentials:
 
-## Pagination
+* A Vic.ai client ID
+* A Vic.ai client secret.
 
-The Vic.ai API leverages cursor-based pagination for traversing through data.
+These can be provided to you securely by a Vic.ai representative <a href="mailto:sales@vic.ai">upon request</a>.
 
-To fetch the next page of information, include the `cursor` parameter to the request. This value can be obtained from the `X-next` field in a previous response. 
-
-Example:
-
-```bash
-curl https://api.us.vic.ai/v0/accounts?cursor=foobar \
-    -H "Content-Type: application/json" \
-    -H "Authorization: Bearer YOUR_ACCESS_TOKEN" \
-```
+**Please note:** These credentials are essentially the keys to your ERP integration. If they fall into the wrong hands, unauthorized parties could impersonate you, gain access to sensitive data, and potentially perform malicious actions. Therefore, it's crucial to keep these credentials safe at all times to protect your application's integrity and your clients' data.
