@@ -40,6 +40,6 @@ To begin interacting with the Vic.ai API, you will need the following credential
 * A Vic.ai client ID
 * A Vic.ai client secret.
 
-These can be provided to you securely by a Vic.ai representative <a href="mailto:sales@vic.ai">upon request</a>.
+These can be provided to you securely by a Vic.ai representative <a href="https://www.vic.ai/book-a-demo">upon request</a>.
 
 **Please note:** These credentials are essentially the keys to your ERP integration. If they fall into the wrong hands, unauthorized parties could impersonate you, gain access to sensitive data, and potentially perform malicious actions. Therefore, it's crucial to keep these credentials safe at all times to protect your application's integrity and your clients' data.
