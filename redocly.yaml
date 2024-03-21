@@ -7,3 +7,4 @@ rules:
 theme:
   openapi:
     hideDownloadButton: true
+  hideLoading: true
