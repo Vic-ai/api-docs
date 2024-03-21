@@ -5,6 +5,4 @@ rules:
   info-license-url: off
 
 theme:
-  openapi:
-    hideDownloadButton: true
   hideLoading: true
