@@ -9,7 +9,7 @@ Attachments are original invoice documents that can be processed by Vic.ai.
 - `application/vnd.openxmlformats-officedocument.wordprocessingml.document`
 - `application/vnd.openxmlformats-officedocument.wordprocessingml.template`
 - `image/tiff`
-- `text/xml*`
+- `text/xml` **(See note below about supported EDI formats)**
 - `image/jpg`
 - `image/jpeg`
 - `image/png`
@@ -24,5 +24,13 @@ Attachments are original invoice documents that can be processed by Vic.ai.
 
 ### Supported EDI formats:
 
-- PEPPOL BIS Billing v3
-- Svefaktura 1.0
+#### PEPPOL BIS Billing v3 
+
+Supported embedded attachment MIME codes: 
+
+- `application/pdf`
+- `image/jpeg`
+- `image/png`
+- `image/tiff`
+
+The API will ignore other attachment types.
