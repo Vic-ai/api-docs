@@ -3089,16 +3089,23 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
+        quantityAccepted:
+          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          type: string
+          format: decimal
+          example: '1.0'
         quantityReceived:
-          description: The quantity received.
+          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
           type: string
           format: decimal
           example: '12.3'
         quantityRequested:
-          description: The quantity requested.
+          description: The quantity requested. Required for all `matchingType` values.
           type: string
           format: decimal
           example: '1.0'
+        matchingType:
+          $ref: "#/components/schemas/PurchaseOrderLineItemMatchingType"
         unitAmount:
           $ref: '#/components/schemas/MonetaryValue'
         lineItemTotal:
@@ -3143,16 +3150,23 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
+        quantityAccepted:
+          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          type: string
+          format: decimal
+          example: '1.0'
         quantityReceived:
-          description: The quantity received.
+          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
           type: string
           format: decimal
           example: '12.3'
         quantityRequested:
-          description: The quantity requested.
+          description: The quantity requested. Required for all `matchingType` values.
           type: string
           format: decimal
           example: '1.0'
+        matchingType:
+          $ref: "#/components/schemas/PurchaseOrderLineItemMatchingType"
         unitAmount:
           $ref: '#/components/schemas/MonetaryValue'
         lineItemTotal:
@@ -3188,16 +3202,23 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
+        quantityAccepted:
+          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          type: string
+          format: decimal
+          example: '1.0'
         quantityReceived:
-          description: The quantity received.
+          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
           type: string
           format: decimal
           example: '12.3'
         quantityRequested:
-          description: The quantity requested.
+          description: The quantity requested. Required for all `matchingType` values.
           type: string
           format: decimal
           example: '1.0'
+        matchingType:
+          $ref: "#/components/schemas/PurchaseOrderLineItemMatchingType"
         unitAmount:
           $ref: '#/components/schemas/MonetaryValue'
         lineItemTotal:
@@ -3404,6 +3425,15 @@ components:
       description: The status of the purchase order.
       enum: [open, closed]
       default: open
+    PurchaseOrderLineItemMatchingType:
+      type: string
+      description: |
+        The type of matching that should be done on the line item. Determines which quantity fields are required.
+        `TWO_WAY` - Only the `quantityRequested` field is required.
+        `THREE_WAY` (default) - The `quantityRequested` and `quantityReceived` fields are required.
+        `FOUR_WAY` - The `quantityRequested`, `quantityReceived`, and `quantityAccepted` fields are required.
+      enum: [TWO_WAY, THREE_WAY, FOUR_WAY]
+      default: THREE_WAY
     PurchaseOrderLineItem:
       type: object
       required: [internalId]
@@ -3423,16 +3453,23 @@ components:
           oneOf:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
+        quantityAccepted:
+          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          type: string
+          format: decimal
+          example: '1.0'
         quantityRequested:
-          description: The quantity requested.
+          description: The quantity requested. Required for all `matchingType` values.
           type: string
           format: decimal
           example: '1.0'
         quantityReceived:
-          description: The quantity received.
+          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
           type: string
           format: decimal
           example: '1.0'
+        matchingType:
+          $ref: "#/components/schemas/PurchaseOrderLineItemMatchingType"
         unitAmount:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
