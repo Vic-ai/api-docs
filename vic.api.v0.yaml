@@ -3069,7 +3069,6 @@ components:
       type: object
       required:
         - productNumber
-        - quantityReceived
         - quantityRequested
         - unitAmount
         - lineItemTotal
@@ -3127,7 +3126,6 @@ components:
       required:
         - purchaseOrderId
         - productNumber
-        - quantityReceived
         - quantityRequested
         - unitAmount
         - lineItemTotal
@@ -3182,7 +3180,6 @@ components:
       type: object
       required:
         - productNumber
-        - quantityReceived
         - quantityRequested
         - unitAmount
         - lineItemTotal
