@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `vatRate` to `#/components/schemas/InvoiceLineItemInfo`
 - Add `totalAmount` to `#/components/schemas/CreateInvoice`
 - Add `totalAmount` to `#/components/schemas/TrainingInvoiceUpsert`
+- Add `settlementAmount` to `#/components/schemas/Payment`
+- Add `settlementAmount` to `#/components/schemas/Credit`
+- Add `settlementCurrencyId` to `#/components/schemas/Payment`
+- Add `settlementCurrencyId` to `#/components/schemas/Credit`
+- Add `exchangeRate` to `#/components/schemas/Credit`
+- Add `exchangeRate` to `#/components/schemas/Payment`
 - Fix incorrect documentation for `#/components/schemas/LineItemVat`
 - Fix incorrect documentation for `#/components/schemas/CreateInvoiceLineItem`
 - Fix incorrect documentation for `#/components/schemas/TrainingInvoiceLineItemUpsert`
