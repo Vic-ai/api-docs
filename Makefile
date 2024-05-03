@@ -3,7 +3,7 @@ all: build
 setup:
 	npm i -g @redocly/cli@latest
 
-build:
+build: validate
 	npx --yes @redocly/cli build-docs --template index.hbs vic.api.v0.yaml --output public/index.html
 
 preview:
