@@ -11,7 +11,7 @@ preview:
 
 # Cleans the entire project of generated files.
 clean:
-	rm -rf public
+	rm -rf public/index.html
 
 # Runs validations for the openapi specs
 validate:
