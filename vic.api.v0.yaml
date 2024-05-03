@@ -2284,8 +2284,14 @@ components:
           description: The id of the credit.
         amount:
           $ref: '#/components/schemas/MonetaryValue'
+        settlementAmount:
+          $ref: '#/components/schemas/MonetaryValue'
         currencyId:
           $ref: '#/components/schemas/Currency'
+        settlementCurrencyId:
+          $ref: '#/components/schemas/Currency'
+        exchangeRate:
+          $ref: '#/components/schemas/MonetaryValue'
         status:
           $ref: '#/components/schemas/CreditStatus'
         approvedAt:
@@ -2345,6 +2351,8 @@ components:
           description: The id of the credit.
         amount:
           $ref: '#/components/schemas/MonetaryValue'
+        settlementAmount:
+          $ref: '#/components/schemas/MonetaryValue'
         discountAmount:
           description: |
             The discount amount applied using the `PaymentTerm` on the vendor.
@@ -2356,6 +2364,10 @@ components:
             - $ref: '#/components/schemas/MonetaryValue'
         currencyId:
           $ref: '#/components/schemas/Currency'
+        settlementCurrencyId:
+          $ref: '#/components/schemas/Currency'
+        exchangeRate:
+          $ref: '#/components/schemas/MonetaryValue'
         status:
           $ref: '#/components/schemas/PaymentStatus'
         approvedAt:
