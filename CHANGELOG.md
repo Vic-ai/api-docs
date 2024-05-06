@@ -7,18 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Add `vatRate` to `#/components/schemas/InvoiceLineItemInfo`
-- Add `totalAmount` to `#/components/schemas/CreateInvoice`
-- Add `totalAmount` to `#/components/schemas/TrainingInvoiceUpsert`
-- Add `settlementAmount` to `#/components/schemas/Payment`
-- Add `settlementAmount` to `#/components/schemas/Credit`
-- Add `settlementCurrencyId` to `#/components/schemas/Payment`
-- Add `settlementCurrencyId` to `#/components/schemas/Credit`
-- Add `exchangeRate` to `#/components/schemas/Credit`
-- Add `exchangeRate` to `#/components/schemas/Payment`
-- Fix incorrect documentation for `#/components/schemas/LineItemVat`
-- Fix incorrect documentation for `#/components/schemas/CreateInvoiceLineItem`
-- Fix incorrect documentation for `#/components/schemas/TrainingInvoiceLineItemUpsert`
+- Add `vatRate` to `#/components/schemas/InvoiceLineItemInfo`.
+- Add `totalAmount` to `#/components/schemas/CreateInvoice`.
+- Add `totalAmount` to `#/components/schemas/TrainingInvoiceUpsert`.
+- Add `settlementAmount` to `#/components/schemas/Payment`.
+- Add `settlementAmount` to `#/components/schemas/Credit`.
+- Add `settlementCurrencyId` to `#/components/schemas/Payment`.
+- Add `settlementCurrencyId` to `#/components/schemas/Credit`.
+- Add `exchangeRate` to `#/components/schemas/Credit`.
+- Add `exchangeRate` to `#/components/schemas/Payment`.
+- Fix incorrect documentation for `#/components/schemas/LineItemVat`.
+- Fix incorrect documentation for `#/components/schemas/CreateInvoiceLineItem`.
+- Fix incorrect documentation for `#/components/schemas/TrainingInvoiceLineItemUpsert`.
+- Add `#/components/schemas/VendorLookupByInternalId`.
+- Add `#/components/schemas/VendorLookupByExternalId`.
+- Add `#/components/schemas/VendorLookupByName`.
+- Add `#/components/schemas/VendorLookupByOrgNumberAndBankAccount`.
+- Add `#/components/schemas/VendorLookupByOrgNumber`.
+- Replace `#/components/schemas/VendorLookup` to be one of the new vendor lookups.
 - Upgrade OpenAPI Spec to `3.1.0`.
 
 ## v0.19.0

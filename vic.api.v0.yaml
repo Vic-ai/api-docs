@@ -2067,6 +2067,9 @@ components:
       type: array
       items:
         $ref: '#/components/schemas/Account'
+    BankAccountType:
+      description: The type of bank account.
+      enum: [ach, iban, bban, plusgiro, bankgiro]
     Dimension:
       type: object
       properties:
@@ -2797,34 +2800,73 @@ components:
           oneOf:
             - $ref: '#/components/schemas/VendorExternalId'
             - type: 'null'
-    VendorLookup:
+    VendorLookupByInternalId:
       type: object
+      required:
+        - internalId
       properties:
         internalId:
-          oneOf:
-            - $ref: '#/components/schemas/VendorInternalId'
-            - type: 'null'
-          description: |
-            The existing vendor internal id. This field takes precedence over
-            all other fields when present and not null.
+          $ref: '#/components/schemas/VendorInternalId'
+    VendorLookupByExternalId:
+      type: object
+      required:
+        - externalId
+      properties:
         externalId:
-          oneOf:
-            - $ref: '#/components/schemas/VendorExternalId'
-            - type: 'null'
+          $ref: '#/components/schemas/VendorExternalId'
+    VendorLookupByName:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          maxLength: 255
           description: |
-            The existing vendor external id. This field takes precedence over
-            `orgNumber`.
+            The exact name of the vendor. This is a case sensitive match.
+    VendorLookupByOrgNumberAndBankAccount:
+      type: object
+      required:
+        - orgNumber
+        - countryCode
+        - bankAccount
+        - bankAccountType
+      properties:
         orgNumber:
-          oneOf:
-            - type: string
-              description: The org number of the vendor to aid in the predictions.
-              maxLength: 255
-            - type: 'null'
+          type: string
+          maxLength: 255
+          description: The org number of the vendor to aid in the predictions.
+        countryCode:
+          $ref: '#/components/schemas/CountryCode'
+        bankAccount:
+          type: string
+          maxLength: 255
+          description: The bank account number that is attached to the vendor.
+        bankAccountType:
+          $ref: '#/components/schemas/BankAccountType'
+          description: The type of bank account the bank account number is.
+    VendorLookupByOrgNumber:
+      type: object
+      required:
+        - orgNumber
+      properties:
+        orgNumber:
+          type: string
+          maxLength: 255
+          description: The org number of the vendor to aid in the predictions.
         countryCode:
           oneOf:
             - $ref: '#/components/schemas/CountryCode'
             - type: 'null'
-          description: The country code of the vendor
+          description: The country code of the vendor.
+    VendorLookup:
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/VendorLookupByInternalId'
+        - $ref: '#/components/schemas/VendorLookupByExternalId'
+        - $ref: '#/components/schemas/VendorLookupByName'
+        - $ref: '#/components/schemas/VendorLookupByOrgNumberAndBankAccount'
+        - $ref: '#/components/schemas/VendorLookupByOrgNumber'
     Language:
       type: string
       maxLength: 2
@@ -2926,7 +2968,6 @@ components:
           oneOf:
             - $ref: '#/components/schemas/VendorLookup'
             - type: 'null'
-          description: The vendor information that the invoice is from.
         lineItems:
           type: array
           items:
