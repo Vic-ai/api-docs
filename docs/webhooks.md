@@ -126,14 +126,19 @@ event.
 ### Payment Batch Processed
 
 This event is emitted from the Vic system when a batch of payments has been sent
-to the payment processor and a successful response has been obtained. For more
-information about the structure of what is in the `data` envelope, see
-[the payments](./payments.md) documentation.
+to the payment processor and a successful response has been obtained. The
+payload for this event matches almost exactly what you will receive in the
+`getPaymentBatch` operation.
 
-The payload for this event matches almost exactly what you will receive in the
-`getPaymentBatch` operation. With one caveat, only the approved credits and
-payments will be sent. Voided and rejected payments will not be sent. If you
-need these values, you should call `getPaymentBatch` in order to fetch them.
+Only approved credits and payments will be emitted with the event. Voided and
+rejected payments will not be sent. If you need these values, you should call
+`getPaymentBatch` in order to fetch them.
+
+Here is an example of an $200 invoice being paid in full with a $20 credit note
+being applied. This will bring the total batch payment to $180. The credit note
+applied is not subtracted from the payment in this breakdown because ERPs
+typically need entries of the payment being applied and the credit note being
+used in conjunction with that credit note.
 
 ```json
 {
@@ -151,6 +156,9 @@ need these values, you should call `getPaymentBatch` in order to fetch them.
       {
         "id": "edb3a624-9f12-4cd8-adb8-4d9a5ec0b48b",
         "amount": "200.00",
+        "settlementAmount": "200.00",
+        "settlementCurrencyId": "USD",
+        "exchangeRate": "1.0",
         "discountAmount": "0.00",
         "currencyId": "USD",
         "status": "approved",
@@ -176,6 +184,9 @@ need these values, you should call `getPaymentBatch` in order to fetch them.
       {
         "id": "091f257a-9b6e-4797-bcb6-ccd36dda260f",
         "amount": "20.00",
+        "settlementAmount": "20.00",
+        "settlementCurrencyId": "USD",
+        "exchangeRate": "1.0",
         "discountAmount": "0.00",
         "currencyId": "USD",
         "status": "approved",
