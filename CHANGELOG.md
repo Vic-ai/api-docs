@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add `number` to `#/components/schemas/CreateInvoiceLineItem`
+- Add `number` to `#/components/schemas/InvoiceLineItem`
+- Add `number` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
+- Add `unitPrice` to `#/components/schemas/CreateInvoiceLineItem`
+- Add `unitPrice` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
+
 ## v0.20.0
 
 - Add `vatRate` to `#/components/schemas/InvoiceLineItemInfo`.

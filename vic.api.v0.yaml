@@ -2744,6 +2744,17 @@ components:
               items:
                 $ref: '#/components/schemas/DimensionRef'
             - type: 'null'
+        unitPrice:
+          description: The price per unit of the item.
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+            - type: 'null'
+        number:
+          description: The item number
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     InvoiceIneternalId:
       type: string
       description: The id of the `Invoice` in Vic.
@@ -3884,6 +3895,12 @@ components:
           oneOf:
             - $ref: '#/components/schemas/MonetaryValue'
             - type: 'null'
+        number:
+          description: The item number
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     TrainingInvoiceLineItemUpsert:
       type: object
       required: [amount]
@@ -3946,6 +3963,17 @@ components:
               format: decimal
             - type: 'null'
           description: The quantity of things that were invoiced.
+        unitPrice:
+          description: The price per unit of the item.
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+            - type: 'null'
+        number:
+          description: The item number
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     VatCode:
       type: object
       required: [internalId, internalUpdatedAt, code, description]
