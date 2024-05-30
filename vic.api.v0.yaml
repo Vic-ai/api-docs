@@ -1559,7 +1559,9 @@ paths:
     get:
       description: |
         Get a list of tags.
-        Tags are used to categorize entities.
+        Tags are used to categorize entities. Currently the only entity that is
+        taggable are Vendors using the `/vendorTags` endpoint. These are not the
+        tags that are used to describe a group of companies.
       summary: Get a list of tags
       operationId: listTags
       tags: [Tags]
@@ -1569,8 +1571,7 @@ paths:
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
     post:
-      description: |
-        Create a new tag.
+      description: Create a new tag.
       summary: Create a new tag
       operationId: createTag
       tags: [Tags]
@@ -1585,8 +1586,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
   /tags/{id}:
     put:
-      description: |
-        Update a tag.
+      description: Update a tag.
       summary: Update a tag
       operationId: updateTag
       tags: [Tags]
@@ -1603,7 +1603,8 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
     delete:
       description: |
-        Delete a tag.
+        Delete a tag. If you delete a tag, any entities that the tags is
+        attached to will be deleted as well. This action can not be undone.
       summary: Delete a tag
       operationId: deleteTag
       tags: [Tags]
@@ -1628,7 +1629,8 @@ paths:
           $ref: '#/components/responses/ErrorResponse'
     post:
       description: |
-        Create a new vendor tag.
+        Create a new vendor tag. A vendor is not allowed to have the same tag
+        attached multiple times.
       summary: Create a new vendor tag
       operationId: createVendorTag
       tags: [Vendor tags]
@@ -1643,8 +1645,7 @@ paths:
           $ref: '#/components/responses/UnprocessableEntityResponse'
   /vendorTags/{id}:
     delete:
-      description: |
-        Delete a vendor tag.
+      description: Delete a vendor tag.
       summary: Delete a vendor tag
       operationId: deleteVendorTag
       tags: [Vendor tags]
