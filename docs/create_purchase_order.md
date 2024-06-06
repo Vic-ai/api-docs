@@ -8,3 +8,7 @@ must call the `processPurchaseOrder` operation.
 
 Optionally, to set a requestor, you can pass a `requestor` object with `email`
 or `name`.
+
+Optionally, to set a site owner, you can pass a `siteOwner` object with `email`
+or `name` If passed, ensure that feature flag "Support `:site_owner` PO Approver type"
+is turned on.

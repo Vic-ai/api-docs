@@ -3066,6 +3066,10 @@ components:
           oneOf:
             - $ref: '#/components/schemas/PurchaseOrderRequestor'
             - type: 'null'
+        siteOwner:
+          oneOf:
+            - $ref: '#/components/schemas/PurchaseOrderSiteOwner'
+            - type: 'null'
         createdOn:
           oneOf:
             - type: string
@@ -3119,6 +3123,10 @@ components:
         requestor:
           oneOf:
             - $ref: '#/components/schemas/PurchaseOrderRequestor'
+            - type: 'null'
+        siteOwner:
+          oneOf:
+            - $ref: '#/components/schemas/PurchaseOrderSiteOwner'
             - type: 'null'
         createdOn:
           oneOf:
@@ -3603,6 +3611,19 @@ components:
     PurchaseOrderRequestor:
       type: object
       description: The person or entity who requested the purchase order.
+      properties:
+        email:
+          oneOf:
+            - $ref: '#/components/schemas/Email'
+            - type: 'null'
+        name:
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
+    PurchaseOrderSiteOwner:
+      type: object
+      description: The person or entity who is in charge of the purchase order site.
       properties:
         email:
           oneOf:
