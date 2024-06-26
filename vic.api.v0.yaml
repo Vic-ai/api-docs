@@ -2756,6 +2756,10 @@ components:
             - type: string
               maxLength: 255
             - type: 'null'
+        lineType:
+          oneOf:
+            - $ref: '#/components/schemas/InvoiceItemLineType'
+            - type: 'null'
     InvoiceIneternalId:
       type: string
       description: The id of the `Invoice` in Vic.
