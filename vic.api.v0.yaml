@@ -9,10 +9,6 @@ info:
 security:
   - BearerAuth: []
 servers:
-  - url: https://api.us.dev.vic.ai/v0
-    description: development server, US
-  - url: https://api.no.dev.vic.ai/v0
-    description: development server, NO
   - url: https://api.us.stage.vic.ai/v0
     description: staging server, US
   - url: https://api.no.stage.vic.ai/v0
@@ -26,7 +22,7 @@ tags:
     description:
       $ref: 'docs/authentication.md'
   - name: Pagination
-    description: 
+    description:
       $ref: 'docs/pagination.md'
   - name: Accounts
     description: |
@@ -35,7 +31,7 @@ tags:
       account must be stored in Vic.ai.  These operations allow querying and
       manipulation of these GL account data.
   - name: Attachments
-    description: 
+    description:
       $ref: 'docs/attachments.md'
   - name: Dimensions
     description: |
@@ -388,7 +384,7 @@ paths:
     post:
       description: |
         Use this post to report vendor update failure errors back to Vic.ai.
-        Strictly a repsonse to the callbacks.
+        Strictly a response to the callbacks.
         * The `X-Request-Id` header is required.
         * The `id` MUST be a Vendor `internalId`.
       summary: Completes the response callback cycle resulting from a 202
@@ -491,8 +487,8 @@ paths:
   /attachments:
     post:
       description: |
-        Use this to upload an attachment to Vic.ai. The attachment will be created and processing enqueued automatically. 
-        
+        Use this to upload an attachment to Vic.ai. The attachment will be created and processing enqueued automatically.
+
         The response is a 201 with the attachment ID.
       summary: Upload an attachment
       operationId: uploadAttachment
@@ -1082,15 +1078,15 @@ paths:
                 '2XX':
                   description: |
                     Event was received successfully. The body of the response
-                    will be ingored.
+                    will be ignored.
                 '4XX':
                   description: |
                     Event was received successfully. The body of the response
-                    will be ingored.
+                    will be ignored.
                 '5XX':
                   description: |
                     Event was not received and a retry will be attempted later.
-                    The body of the response will be ingored.
+                    The body of the response will be ignored.
         vendorNew:
           https://mycallbackurl.com/vendorNew:
             post:
@@ -1300,7 +1296,7 @@ paths:
                       $ref: '#/components/schemas/RequestIdCallback'
               responses:
                 '200':
-                  description: Request acknowleged
+                  description: Request acknowledged
                 '4XX':
                   description: Request unservicable
                   content:
@@ -1310,7 +1306,7 @@ paths:
     delete:
       description: |
         This request is used to cancel a subscription to user actions. In
-        conjunction with a post requst, you may use this as a first step to
+        conjunction with a post reqeust, you may use this as a first step to
         update subscription URLs or authorization tokens.
       summary: Delete webhook subscription
       operationId: unsubscribe
@@ -2760,7 +2756,7 @@ components:
           oneOf:
             - $ref: '#/components/schemas/InvoiceItemLineType'
             - type: 'null'
-    InvoiceIneternalId:
+    InvoiceInternalId:
       type: string
       description: The id of the `Invoice` in Vic.
       maxLength: 255
@@ -2774,7 +2770,7 @@ components:
       properties:
         internalId:
           oneOf:
-            - $ref: '#/components/schemas/InvoiceIneternalId'
+            - $ref: '#/components/schemas/InvoiceInternalId'
             - type: 'null'
         externalId:
           oneOf:
