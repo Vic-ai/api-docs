@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `unitPrice` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
 - Add `siteOwner` to `#/components/schemas/CreatePurchaseOrder`
 - Add `siteOwner` to `#/components/schemas/UpdatePurchaseOrder`
+- Add `taxCode` to `#/components/schemas/InvoiceLineItem`
 
 
 ## v0.20.0

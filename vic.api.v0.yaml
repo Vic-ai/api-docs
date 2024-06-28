@@ -3852,6 +3852,10 @@ components:
           oneOf:
             - $ref: '#/components/schemas/LineItemVat'
             - type: 'null'
+        taxCode:
+          oneOf:
+            - $ref: '#/components/schemas/TaxCode'
+            - type: 'null'
         costAccountInternalId:
           oneOf:
             - $ref: '#/components/schemas/InternalId'
