@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `number` to `#/components/schemas/CreateInvoiceLineItem`
 - Add `number` to `#/components/schemas/InvoiceLineItem`
 - Add `number` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
+- Add `amountTax` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
 - Add `unitPrice` to `#/components/schemas/CreateInvoiceLineItem`
 - Add `unitPrice` to `#/components/schemas/TrainingInvoiceLineItemUpsert`
 - Add `siteOwner` to `#/components/schemas/CreatePurchaseOrder`

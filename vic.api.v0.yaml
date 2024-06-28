@@ -3941,6 +3941,11 @@ components:
           description: |
             The line item total amount including all tax amounts. This is used
             to calculate the predicted total amount on the invoice.
+        amountTax:
+          description: The line item amount tax.
+          oneOf:
+            - $ref: '#/components/schemas/MonetaryValue'
+            - type: 'null'
         description:
           type: string
           description: The line item comment.
