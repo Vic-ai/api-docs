@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add `acceptedAt` to `#/components/schemas/Payment`.
+- Add `acceptedAt` to `#/components/schemas/Credit`.
 
 ## v0.21.0
 

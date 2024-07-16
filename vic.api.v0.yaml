@@ -2305,8 +2305,21 @@ components:
             - type: string
               format: date-time
               description: |
-                The date time when the credit was applied to the payments when funds
-                were withdrawn.
+                A rough date time when the funds were withdrawn. There is no
+                guarantee on when this will be set. The times can vary between
+                15 minutes to 4 hours and beyond. If you need a time when the
+                payment was submitted, see the `acceptedAt` field.
+                **Note**: This is not an exact date time of when the funds were
+                withdrawn. This is the date the payments were submitted to the
+                bank and were accepted by the bank.
+            - type: 'null'
+        acceptedAt:
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The time the payment processor has accepted the payment request
+                and is currently processing the payment.
             - type: 'null'
         rejectedAt:
           oneOf:
@@ -2381,11 +2394,21 @@ components:
             - type: string
               format: date-time
               description: |
-                A rough date time when the funds were withdrawn.
+                A rough date time when the funds were withdrawn. There is no
+                guarantee on when this will be set. The times can vary between
+                15 minutes to 4 hours and beyond. If you need a time when the
+                payment was submitted, see the `acceptedAt` field.
                 **Note**: This is not an exact date time of when the funds were
                 withdrawn. This is the date the payments were submitted to the
                 bank and were accepted by the bank.
             - type: 'null'
+        acceptedAt:
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The time the payment processor has accepted the payment request
+                and is currently processing the payment.
         rejectedAt:
           oneOf:
             - type: string
