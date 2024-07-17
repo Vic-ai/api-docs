@@ -2407,8 +2407,9 @@ components:
             - type: string
               format: date-time
               description: |
-                The time the payment processor has accepted the payment request
-                and is currently processing the payment.
+                The date time the payment request was submitted and accepted
+                for processing.
+            - type: 'null'
         rejectedAt:
           oneOf:
             - type: string
