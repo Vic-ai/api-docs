@@ -2305,8 +2305,21 @@ components:
             - type: string
               format: date-time
               description: |
-                The date time when the credit was applied to the payments when funds
-                were withdrawn.
+                The date time the payment request began to be processed.
+                
+                **Note**: This is not the actual date time that the funds were
+                withdrawn from the bank. The payment request can take 15
+                minutes to 4 hours or more to be processed. See the `acceptedAt`
+                field for the date time that the payment was submitted and
+                accepted.
+            - type: 'null'
+        acceptedAt:
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The date time the payment request was submitted and accepted
+                for processing.
             - type: 'null'
         rejectedAt:
           oneOf:
@@ -2381,10 +2394,21 @@ components:
             - type: string
               format: date-time
               description: |
-                A rough date time when the funds were withdrawn.
-                **Note**: This is not an exact date time of when the funds were
-                withdrawn. This is the date the payments were submitted to the
-                bank and were accepted by the bank.
+                The date time the payment request began to be processed.
+                
+                **Note**: This is not the actual date time that the funds were
+                withdrawn from the bank. The payment request can take 15
+                minutes to 4 hours or more to be processed. See the `acceptedAt`
+                field for the date time that the payment was submitted and
+                accepted.
+            - type: 'null'
+        acceptedAt:
+          oneOf:
+            - type: string
+              format: date-time
+              description: |
+                The date time the payment request was submitted and accepted
+                for processing.
             - type: 'null'
         rejectedAt:
           oneOf:
