@@ -2305,13 +2305,13 @@ components:
             - type: string
               format: date-time
               description: |
-                A rough date time when the funds were withdrawn. There is no
-                guarantee on when this will be set. The times can vary between
-                15 minutes to 4 hours and beyond. If you need a time when the
-                payment was submitted, see the `acceptedAt` field.
-                **Note**: This is not an exact date time of when the funds were
-                withdrawn. This is the date the payments were submitted to the
-                bank and were accepted by the bank.
+                The date time the payment request began to be processed.
+                
+                **Note**: This is not the actual date time that the funds were
+                withdrawn from the bank. The payment request can take 15
+                minutes to 4 hours or more to be processed. See the `acceptedAt`
+                field for the date time that the payment was submitted and
+                accepted.
             - type: 'null'
         acceptedAt:
           oneOf:
