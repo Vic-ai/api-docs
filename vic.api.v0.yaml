@@ -3186,12 +3186,12 @@ components:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
         quantityAccepted:
-          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          description: The quantity accepted. Required when `matchingType` set to `four_way`.
           type: string
           format: decimal
           example: '1.0'
         quantityReceived:
-          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
+          description: The quantity received. Required when `matchingType` set to `three_way` (default) or `four_way`.
           type: string
           format: decimal
           example: '12.3'
@@ -3246,12 +3246,12 @@ components:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
         quantityAccepted:
-          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          description: The quantity accepted. Required when `matchingType` set to `four_way`.
           type: string
           format: decimal
           example: '1.0'
         quantityReceived:
-          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
+          description: The quantity received. Required when `matchingType` set to `three_way` (default) or `four_way`.
           type: string
           format: decimal
           example: '12.3'
@@ -3297,12 +3297,12 @@ components:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
         quantityAccepted:
-          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          description: The quantity accepted. Required when `matchingType` set to `four_way`.
           type: string
           format: decimal
           example: '1.0'
         quantityReceived:
-          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
+          description: The quantity received. Required when `matchingType` set to `three_way` (default) or `four_way`.
           type: string
           format: decimal
           example: '12.3'
@@ -3523,11 +3523,11 @@ components:
       type: string
       description: |
         The type of matching that should be done on the line item. Determines which quantity fields are required.
-        `TWO_WAY` - Only the `quantityRequested` field is required.
-        `THREE_WAY` (default) - The `quantityRequested` and `quantityReceived` fields are required.
-        `FOUR_WAY` - The `quantityRequested`, `quantityReceived`, and `quantityAccepted` fields are required.
-      enum: [TWO_WAY, THREE_WAY, FOUR_WAY]
-      default: THREE_WAY
+        `two_way` - Only the `quantityRequested` field is required.
+        `three_way` (default) - The `quantityRequested` and `quantityReceived` fields are required.
+        `four_way` - The `quantityRequested`, `quantityReceived`, and `quantityAccepted` fields are required.
+      enum: [two_way, three_way, four_way]
+      default: three_way
     PurchaseOrderLineItem:
       type: object
       required: [internalId]
@@ -3548,7 +3548,7 @@ components:
             - $ref: '#/components/schemas/UnitOfMeasure'
             - type: 'null'
         quantityAccepted:
-          description: The quantity accepted. Required when `matchingType` set to `FOUR_WAY`.
+          description: The quantity accepted. Required when `matchingType` set to `four_way`.
           type: string
           format: decimal
           example: '1.0'
@@ -3558,7 +3558,7 @@ components:
           format: decimal
           example: '1.0'
         quantityReceived:
-          description: The quantity received. Required when `matchingType` set to `THREE_WAY` (default) or `FOUR_WAY`.
+          description: The quantity received. Required when `matchingType` set to `three_way` (default) or `four_way`.
           type: string
           format: decimal
           example: '1.0'

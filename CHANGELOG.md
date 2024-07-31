@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Add `acceptedAt` to `#/components/schemas/Payment`.
 - Add `acceptedAt` to `#/components/schemas/Credit`.
+- Fix incorrect documentation for PO Match types.
+  - `FOUR_WAY` renamed to `four_way`
+  - `THREE_WAY` renamed to `three_way`
+  - `TWO_WAY` renamed to `two_way`
 
 ## v0.21.0
 
