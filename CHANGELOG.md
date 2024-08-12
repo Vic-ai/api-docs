@@ -13,6 +13,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `FOUR_WAY` renamed to `four_way`
   - `THREE_WAY` renamed to `three_way`
   - `TWO_WAY` renamed to `two_way`
+- Add `POST - /v0/accounts/synchronize` to synchronize GL Accounts.
+- Add `POST - /v0/dimensions/synchronize` to synchronize Dimensions.
+- Add `POST - /v0/paymentTerms/synchronize` to synchronize Payment Terms.
+- Add `POST - /v0/purchaseOrders/synchronize` to synchronize Purchase Orders.
+- Add `POST - /v0/vatCodes/synchronize` to synchronize Vat Codes.
+- Add `POST - /v0/vendors/synchronize` to synchronize Vendors.
+
 
 ## v0.21.0
 
