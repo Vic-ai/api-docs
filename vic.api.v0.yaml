@@ -87,6 +87,9 @@ tags:
   - name: Vendor tags
     description: |
       Vendor tags are used to categorize vendors using tags.
+  - name: Synchronizing
+    description:
+      $ref: 'docs/synchronizing.md'
   - name: Webhooks
     description:
       $ref: 'docs/webhooks.md'
@@ -138,6 +141,21 @@ paths:
       responses:
         '200':
           $ref: '#/components/responses/AccountsResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+  /accounts/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Account resource. If the ERP is
+        using the API, the call will be sent via the normal webhook methods. If
+        the ERP is not using this API then this will call the native
+        integration's synchronize functionality.
+      summary: Synchronize Accounts
+      operationId: synchronizeAccounts
+      tags: [Accounts, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizeAccountsResponse'
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /accounts/{id}:
@@ -226,6 +244,21 @@ paths:
       responses:
         '201':
           $ref: '#/components/responses/DimensionCreatedResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
+  /dimensions/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Dimension resource. If the ERP is
+        using the API, the call will be sent via the normal webhook methods. If
+        the ERP is not using this API then this will call the native
+        integration's synchronize functionality.
+      summary: Synchronize Dimensions
+      operationId: synchronizeDimensions
+      tags: [Dimensions, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizeDimensionsResponse'
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /dimensions/{id}:
@@ -320,10 +353,25 @@ paths:
           $ref: '#/components/responses/VendorsResponse'
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
+  /vendors/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Vendor resource. If the ERP is using
+        the API, the call will be sent via the normal webhook methods. If the
+        ERP is not using this API then this will call the native integration's
+        synchronize functionality.
+      summary: Synchronize Vendors
+      operationId: synchronizeVendors
+      tags: [Vendors, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizeVendorsResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
   /vendors/{id}:
     get:
-      description: Use this request to get data for a single vendor that is stored
-        in Vic.ai.
+      description: |
+        Use this request to get data for a single vendor that is stored in Vic.ai.
       summary: Info for a specific vendor
       operationId: getVendor
       tags: [Vendors]
@@ -487,7 +535,8 @@ paths:
   /attachments:
     post:
       description: |
-        Use this to upload an attachment to Vic.ai. The attachment will be created and processing enqueued automatically.
+        Use this to upload an attachment to Vic.ai. The attachment will be
+        created and processing enqueued automatically.
 
         The response is a 201 with the attachment ID.
       summary: Upload an attachment
@@ -929,6 +978,21 @@ paths:
           $ref: '#/components/responses/VatCodesResponse'
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
+  /vatCodes/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Vat Code resource. If the ERP is using
+        the API, the call will be sent via the normal webhook methods. If the
+        ERP is not using this API then this will call the native integration's
+        synchronize functionality.
+      summary: Synchronize Vat Codes
+      operationId: synchronizeVatCodes
+      tags: [VAT codes, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizeVatCodesResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
   /vatCodes/{id}:
     get:
       description: |
@@ -1350,6 +1414,21 @@ paths:
           $ref: '#/components/responses/ResourceNotFoundResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
+  /purchaseOrders/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Purchase Orders resource. If the ERP is
+        using the API, the call will be sent via the normal webhook methods. If
+        the ERP is not using this API then this will call the native
+        integration's synchronize functionality.
+      summary: Synchronize Purchase Orders
+      operationId: synchronizePurchaseOrders
+      tags: [Purchase orders, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizePurchaseOrdersResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
   /purchaseOrders/{purchaseOrderId}:
     get:
       description: Get a purchase order.
@@ -1679,6 +1758,21 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '422':
           $ref: '#/components/responses/UnprocessableEntityResponse'
+  /paymentTerms/synchronize:
+    post:
+      description: |
+        Tells the ERP to synchronize the Payment Terms resource. If the ERP is
+        using the API, the call will be sent via the normal webhook methods. If
+        the ERP is not using this API then this will call the native
+        integration's synchronize functionality.
+      summary: Synchronize Payment Terms
+      operationId: synchronizePaymentTerms
+      tags: [Payment terms, Synchronizing]
+      responses:
+        '204':
+          $ref: '#/components/responses/SynchronizePaymentTermsResponse'
+        '4XX':
+          $ref: '#/components/responses/ErrorResponse'
   /paymentTerms/{id}:
     put:
       description: |
@@ -5339,6 +5433,30 @@ components:
             $ref: '#/components/schemas/VendorTag'
     VendorTagDeletedResponse:
       description: Vendor tag was successfully deleted.
+    SynchronizeAccountsResponse:
+      description: |
+        A request to synchronize the GL Accounts was acknowledged and is in the
+        process of being ran.
+    SynchronizeDimensionsResponse:
+      description: |
+        A request to synchronize the Dimensions was acknowledged and is in the
+        process of being ran.
+    SynchronizeVatCodesResponse:
+      description: |
+        A request to synchronize the vat codes was acknowledged and is in the
+        process of being ran.
+    SynchronizeVendorsResponse:
+      description: |
+        A request to synchronize the vendors was acknowledged and is in the
+        process of being ran.
+    SynchronizePurchaseOrdersResponse:
+      description: |
+        A request to synchronize the purchase orders was acknowledged and is in
+        the process of being ran.
+    SynchronizePaymentTermsResponse:
+      description: |
+        A request to synchronize the payment terms was acknowledged and is in
+        the process of being ran.
     PaymentTermListResponse:
       description: A list of payment terms.
       content:
