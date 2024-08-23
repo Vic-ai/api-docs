@@ -19,7 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add `POST - /v0/purchaseOrders/synchronize` to synchronize Purchase Orders.
 - Add `POST - /v0/vatCodes/synchronize` to synchronize Vat Codes.
 - Add `POST - /v0/vendors/synchronize` to synchronize Vendors.
-
+- Add `GET - /v0/paymentTerms/{id}` to fetch a payment term using the internal
+  id or external id if `useSystem=external` is passed.
+- Add support for `useSystem=external` for `updatePaymentTerm` and
+  `deletePaymentTerm`.
 
 ## v0.21.0
 

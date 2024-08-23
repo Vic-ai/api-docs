@@ -1774,14 +1774,37 @@ paths:
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /paymentTerms/{id}:
+    get:
+      description: |
+        Get a payment term.
+        You may use the `externalId` in the, but must pass `useSystem=external`
+        in order to fetch the payment term.
+      summary: Get a payment term
+      operationId: getPaymentTerm
+      tags: [Payment terms]
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentTermResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
     put:
       description: |
         Update a payment term.
+        You may use the `externalId` in the, but must pass `useSystem=external`
+        in order to fetch the payment term. You are permitted to update the
+        `externalId` as well when updating the payment term. Leaving it
+        unspecified **WILL** clear the `externalId`.
       summary: Update a payment term
       operationId: updatePaymentTerm
       tags: [Payment terms]
       parameters:
-        - $ref: '#/components/parameters/PaymentTermId'
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePaymentTermRequest'
       responses:
@@ -1794,11 +1817,14 @@ paths:
     delete:
       description: |
         Delete a payment term.
+        You may use the `externalId` in the, but must pass `useSystem=external`
+        in order to fetch the payment term.
       summary: Delete a payment term
       operationId: deletePaymentTerm
       tags: [Payment terms]
       parameters:
-        - $ref: '#/components/parameters/PaymentTermId'
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '204':
           $ref: '#/components/responses/PaymentTermDeletedResponse'
