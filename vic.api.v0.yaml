@@ -2781,6 +2781,12 @@ components:
                 The discount percentage if paid within the number of discount
                 days.
             - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     PaymentTerm:
       type: object
       required: [name, daysToPay]
@@ -2818,6 +2824,12 @@ components:
               description: |
                 The discount percentage if paid within the number of discount
                 days.
+            - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
             - type: 'null'
     CreateInvoiceLineItem:
       type: object
