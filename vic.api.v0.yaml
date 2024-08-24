@@ -2069,13 +2069,6 @@ components:
       description: The id of the vendor tag
       schema:
         type: string
-    PaymentTermId:
-      name: id
-      in: path
-      required: true
-      description: The id of the payment term
-      schema:
-        type: string
   #
   # Shared Schemas
   #
