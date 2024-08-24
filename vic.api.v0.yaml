@@ -1777,8 +1777,8 @@ paths:
     get:
       description: |
         Get a payment term.
-        You may use the `externalId` in the, but must pass `useSystem=external`
-        in order to fetch the payment term.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the query string.
       summary: Get a payment term
       operationId: getPaymentTerm
       tags: [Payment terms]
@@ -1795,10 +1795,11 @@ paths:
     put:
       description: |
         Update a payment term.
-        You may use the `externalId` in the, but must pass `useSystem=external`
-        in order to fetch the payment term. You are permitted to update the
-        `externalId` as well when updating the payment term. Leaving it
-        unspecified **WILL** clear the `externalId`.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the request. The
+        Payment Term's external ID can be updated by including `externalId={value}`
+        in the request body. If the `externalId` key is present without a value,
+        the Payment Term's `externalId` **WILL** be cleared.
       summary: Update a payment term
       operationId: updatePaymentTerm
       tags: [Payment terms]
@@ -1817,8 +1818,8 @@ paths:
     delete:
       description: |
         Delete a payment term.
-        You may use the `externalId` in the, but must pass `useSystem=external`
-        in order to fetch the payment term.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the query string.
       summary: Delete a payment term
       operationId: deletePaymentTerm
       tags: [Payment terms]
