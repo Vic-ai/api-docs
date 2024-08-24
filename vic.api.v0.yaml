@@ -2738,6 +2738,12 @@ components:
                 days.
               minimum: 0
             - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     UpdatePaymentTerm:
       type: object
       required: [name, daysToPay]
