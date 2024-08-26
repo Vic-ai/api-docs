@@ -23,6 +23,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   id or external id if `useSystem=external` is passed.
 - Add support for `useSystem=external` for `updatePaymentTerm` and
   `deletePaymentTerm`.
+- Add support for `useSystem=external` for `getPurchaseOrder`,
+  `updatePurchaseOrder`, `deletePurchaseOrder`, `getPurchaseOrderItem`, and
+  `deletePurchaseOrderItem`
 
 ## v0.21.0
 
