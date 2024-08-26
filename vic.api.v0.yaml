@@ -1774,14 +1774,38 @@ paths:
         '4XX':
           $ref: '#/components/responses/ErrorResponse'
   /paymentTerms/{id}:
+    get:
+      description: |
+        Get a payment term.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the query string.
+      summary: Get a payment term
+      operationId: getPaymentTerm
+      tags: [Payment terms]
+      parameters:
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          $ref: '#/components/responses/PaymentTermResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
     put:
       description: |
         Update a payment term.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the request. The
+        Payment Term's external ID can be updated by including `externalId={value}`
+        in the request body. If the `externalId` key is present without a value,
+        the Payment Term's `externalId` **WILL** be cleared.
       summary: Update a payment term
       operationId: updatePaymentTerm
       tags: [Payment terms]
       parameters:
-        - $ref: '#/components/parameters/PaymentTermId'
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePaymentTermRequest'
       responses:
@@ -1794,11 +1818,14 @@ paths:
     delete:
       description: |
         Delete a payment term.
+        The `id` in the path can be either the Payment Term's internal ID or its
+        external ID when `useSystem=external` is included in the query string.
       summary: Delete a payment term
       operationId: deletePaymentTerm
       tags: [Payment terms]
       parameters:
-        - $ref: '#/components/parameters/PaymentTermId'
+        - $ref: '#/components/parameters/PathId'
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '204':
           $ref: '#/components/responses/PaymentTermDeletedResponse'
@@ -2040,13 +2067,6 @@ components:
       in: path
       required: true
       description: The id of the vendor tag
-      schema:
-        type: string
-    PaymentTermId:
-      name: id
-      in: path
-      required: true
-      description: The id of the payment term
       schema:
         type: string
   #
@@ -2718,6 +2738,12 @@ components:
                 days.
               minimum: 0
             - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     UpdatePaymentTerm:
       type: object
       required: [name, daysToPay]
@@ -2754,6 +2780,12 @@ components:
               description: |
                 The discount percentage if paid within the number of discount
                 days.
+            - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
             - type: 'null'
     PaymentTerm:
       type: object
@@ -2792,6 +2824,12 @@ components:
               description: |
                 The discount percentage if paid within the number of discount
                 days.
+            - type: 'null'
+        externalId:
+          description: The ID of the payment term in the ERP if it has one.
+          oneOf:
+            - type: string
+              maxLength: 255
             - type: 'null'
     CreateInvoiceLineItem:
       type: object
