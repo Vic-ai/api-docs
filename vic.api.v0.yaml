@@ -3487,6 +3487,9 @@ components:
           type: integer
           minimum: 1
         externalId:
+          description: |
+            The ID of the purchase order item within the ERP. If left unspecified when
+            updating, it **will** be cleared.
           oneOf:
             - type: string
               maxLength: 255
