@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## v0.22.0
+
 - Add `acceptedAt` to `#/components/schemas/Payment`.
 - Add `acceptedAt` to `#/components/schemas/Credit`.
 - Fix incorrect documentation for PO Match types.
