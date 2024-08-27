@@ -1439,9 +1439,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The internal id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           $ref: '#/components/responses/PurchaseOrderResponse'
@@ -1461,9 +1464,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePurchaseOrderRequest'
       responses:
@@ -1487,9 +1493,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The internal id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '204':
           $ref: '#/components/responses/PurchaseOrderDeletedResponse'
@@ -1511,9 +1520,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The internal id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           $ref: '#/components/responses/PurchaseOrderResponse'
@@ -1533,9 +1545,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The internal id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           $ref: '#/components/responses/PurchaseOrderResponse'
@@ -1555,9 +1570,12 @@ paths:
         - name: purchaseOrderId
           in: path
           required: true
-          description: The internal id of the purchase order.
+          description: |
+            The internal id or external id of the purchase order. If using the
+            external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '200':
           $ref: '#/components/responses/PurchaseOrderResponse'
@@ -1596,9 +1614,12 @@ paths:
         - name: purchaseOrderLineItemId
           in: path
           required: true
-          description: The id of the purchase order line item.
+          description: |
+            The internal id or external id of the purchase order line item. If using
+            the external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       requestBody:
         $ref: '#/components/requestBodies/UpdatePurchaseOrderLineItemRequest'
       responses:
@@ -1620,9 +1641,12 @@ paths:
         - name: purchaseOrderLineItemId
           in: path
           required: true
-          description: The id of the purchase order line item.
+          description: |
+            The internal id or external id of the purchase order line item. If using
+            the external id, you **must** pass `useSystem=external`.
           schema:
             type: string
+        - $ref: '#/components/parameters/UseSystem'
       responses:
         '204':
           $ref: '#/components/responses/PurchaseOrderLineItemDeletedResponse'
@@ -3341,6 +3365,11 @@ components:
         lineNumber:
           type: integer
           minimum: 1
+        externalId:
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         dimensions:
           type: array
           items:
@@ -3405,6 +3434,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DimensionRef'
+        externalId:
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
     UpdatePurchaseOrderLineItem:
       type: object
       required:
@@ -3452,6 +3486,14 @@ components:
         lineNumber:
           type: integer
           minimum: 1
+        externalId:
+          description: |
+            The ID of the purchase order item within the ERP. If left unspecified when
+            updating, it **will** be cleared.
+          oneOf:
+            - type: string
+              maxLength: 255
+            - type: 'null'
         dimensions:
           type: array
           items:
