@@ -1440,7 +1440,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1465,7 +1465,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1494,7 +1494,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1521,7 +1521,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1546,7 +1546,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1571,7 +1571,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order. If using the
+            The internal id or external id of the purchase order. If using the
             external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1615,7 +1615,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order line item. If using
+            The internal id or external id of the purchase order line item. If using
             the external id, you **must** pass `useSystem=external`.
           schema:
             type: string
@@ -1642,7 +1642,7 @@ paths:
           in: path
           required: true
           description: |
-            The internal or external of the purchase order line item. If using
+            The internal id or external id of the purchase order line item. If using
             the external id, you **must** pass `useSystem=external`.
           schema:
             type: string
