@@ -3682,6 +3682,8 @@ components:
     InvoiceState:
       type: string
       enum:
+        - ALL
+        - DELETED_BILL
         - NOT_READY
         - IN_APPROVALS
         - READY_FOR_POST
