@@ -2023,7 +2023,7 @@ components:
           - $ref: '#/components/schemas/InvoiceMarkedAs'
           - enum: [ALL, PAID]
     InvoiceBillStatusFilter:
-      name: markedAs
+      name: billStatus
       in: query
       description: |
         selects the bill status of invoices as which are to be searched
