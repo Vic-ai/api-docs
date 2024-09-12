@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
-- Add `DELETED_BILL` to '#/components/schemas/InvoiceState'
+- Add `markedAs` and `billStatus` to '#/components/schemas/Invoice'
+- Add `InvoiceMarkedAsFilter` and `InvoiceBillStatusFilter` to `listInvoices`
 
 ## v0.22.0
 
