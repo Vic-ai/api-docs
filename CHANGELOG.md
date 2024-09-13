@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+- Add `markedAs` and `billStatus` to '#/components/schemas/Invoice'
+- Add `InvoiceMarkedAsFilter` and `InvoiceBillStatusFilter` to `listInvoices`
+
 ## v0.22.0
 
 - Add `acceptedAt` to `#/components/schemas/Payment`.

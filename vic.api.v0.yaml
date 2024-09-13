@@ -572,6 +572,8 @@ paths:
         - $ref: '#/components/parameters/SinceFilter'
         - $ref: '#/components/parameters/SortOrder'
         - $ref: '#/components/parameters/InvoiceStateFilter'
+        - $ref: '#/components/parameters/InvoiceMarkedAsFilter'
+        - $ref: '#/components/parameters/InvoiceBillStatusFilter'
       responses:
         '200':
           $ref: '#/components/responses/InvoicesResponse'
@@ -2009,6 +2011,28 @@ components:
         anyOf:
           - $ref: '#/components/schemas/InvoiceState'
           - enum: [ALL, POSTED]
+    InvoiceMarkedAsFilter:
+      name: markedAs
+      in: query
+      description: |
+        selects the marked as of invoices which are to be searched
+        (defaults to `ALL`)
+      required: false
+      schema:
+        anyOf:
+          - $ref: '#/components/schemas/InvoiceMarkedAs'
+          - enum: [ALL]
+    InvoiceBillStatusFilter:
+      name: billStatus
+      in: query
+      description: |
+        selects the bill status of invoices as which are to be searched
+        (defaults to `ALL`)
+      required: false
+      schema:
+        anyOf:
+          - $ref: '#/components/schemas/InvoiceBillStatus'
+          - enum: [ALL]
     VendorConfirmedFilter:
       name: confirmed
       in: query
@@ -3653,6 +3677,12 @@ components:
             - type: string
               maxLength: 255
             - type: 'null'
+        markedAs:
+          oneOf:
+            - $ref: '#/components/schemas/InvoiceMarkedAs'
+            - type: 'null'
+        billStatus:
+          $ref: '#/components/schemas/InvoiceBillStatus'
     InvoiceConfirm:
       type: object
       required: [externalId, externalUpdatedAt]
@@ -3688,6 +3718,22 @@ components:
         - READY_FOR_TRANSFER
         - POSTED
         - TRANSFERRED
+    InvoiceMarkedAs:
+      type: string
+      enum:
+        - PAID
+        - UNPAID
+        - DELETED
+    InvoiceBillStatus:
+      type: string
+      enum:
+        - PAID
+        - UNPAID
+        - PARTIALLY_PAID
+        - PENDING
+        - REJECTED
+        - VOIDED
+        - SCHEDULED
     PurchaseOrderStatus:
       type: string
       description: The status of the purchase order.
