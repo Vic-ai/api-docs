@@ -2021,7 +2021,7 @@ components:
       schema:
         anyOf:
           - $ref: '#/components/schemas/InvoiceMarkedAs'
-          - enum: [ALL, PAID]
+          - enum: [ALL]
     InvoiceBillStatusFilter:
       name: billStatus
       in: query
@@ -2032,7 +2032,7 @@ components:
       schema:
         anyOf:
           - $ref: '#/components/schemas/InvoiceBillStatus'
-          - enum: [ALL, PAID]
+          - enum: [ALL]
     VendorConfirmedFilter:
       name: confirmed
       in: query
