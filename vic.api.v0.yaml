@@ -1656,6 +1656,56 @@ paths:
           $ref: '#/components/responses/ForbiddenResponse'
         '404':
           $ref: '#/components/responses/ResourceNotFoundResponse'
+  /purchaseOrderLineItems/{purchaseOrderLineItemId}/close:
+    post:
+      description: Closes a purchase order's line item.
+      summary: Close a purchase order's line item
+      operationId: closePurchaseOrderLineItem
+      tags: [Purchase orders]
+      parameters:
+        - name: purchaseOrderLineItemId
+          in: path
+          required: true
+          description: |
+            The internal id or external id of the purchase order line item. If using the
+            external id, you **must** pass `useSystem=external`.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          $ref: '#/components/responses/PurchaseOrderLineItemResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityResponse'
+  /purchaseOrdersLineItems/{purchaseOrderLineItemId}/open:
+    post:
+      description: Opens a purchase order's line item.
+      summary: Opens a purchase order's line item
+      operationId: openPurchaseOrderLineItem
+      tags: [Purchase orders]
+      parameters:
+        - name: purchaseOrderLineItemId
+          in: path
+          required: true
+          description: |
+            The internal id or external id of the purchase order line item. If using the
+            external id, you **must** pass `useSystem=external`.
+          schema:
+            type: string
+        - $ref: '#/components/parameters/UseSystem'
+      responses:
+        '200':
+          $ref: '#/components/responses/PurchaseOrderLineItemResponse'
+        '403':
+          $ref: '#/components/responses/ForbiddenResponse'
+        '404':
+          $ref: '#/components/responses/ResourceNotFoundResponse'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntityResponse'
   /tags:
     get:
       description: |
